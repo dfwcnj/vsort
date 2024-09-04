@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 	"strings"
-	"github.com/dfwcnj/govbinsort/types"
+	"github.com/dfwcnj/govbinsort/dtypes"
 )
 
 func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (kvallines, int64, error) {
