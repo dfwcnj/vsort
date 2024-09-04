@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"fmt"
+	"github.com/dfwcnj/govbinsort/types"
 	"io"
 	"log"
 	"os"
@@ -26,7 +27,7 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 		}
 	}
 	if dn == "" {
-		dn, err = initmergedir("", "rdxsort")
+		dn, err = initmergedir("", "somesort")
 		if err != nil {
 			log.Fatal(err)
 		}

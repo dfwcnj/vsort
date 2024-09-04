@@ -3,6 +3,7 @@ package sorts
 import (
 	"bufio"
 	"fmt"
+	"github.com/dfwcnj/govbinsort/types"
 	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
@@ -20,7 +21,7 @@ func Test_savemergefile(t *testing.T) {
 	dlim = "\n"
 
 	log.Print("savemergefile test")
-	dn, err := initmergedir("/tmp", "rdxsort")
+	dn, err := initmergedir("/tmp", "somesort")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -2,11 +2,12 @@ package sorts
 
 import (
 	"fmt"
+	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/govbinsort/types"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
-	"github.com/dfwcnj/govbinsort/merge"
 )
 
 func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
@@ -21,7 +22,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 	}
 	//log.Printf("sortfiles ofn %s\n", ofn)
 	if len(dn) == 0 {
-		dn, err = initmergedir("", "rdxsort")
+		dn, err = initmergedir("", "somesort")
 		if err != nil {
 			log.Fatal(err)
 		}

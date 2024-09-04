@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"fmt"
+	"github.com/dfwcnj/govbinsort/types"
 	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
@@ -23,7 +24,7 @@ func Test_sortvlrecfile(t *testing.T) {
 	var err error
 	var nr int
 
-	dn, err := initmergedir("/tmp", "rdxsort")
+	dn, err := initmergedir("/tmp", "somesort")
 
 	log.Println("sortvlrecfile test")
 

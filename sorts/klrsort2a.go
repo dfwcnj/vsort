@@ -10,6 +10,10 @@ package sorts
 // are highly instructive.
 // same license as rsc code - BSD
 
+import (
+	"github.com/dfwcnj/govbinsort/types"
+)
+
 func KLrsort2a(klns kvallines) {
 	klrsort2array(klns, make(kvallines, len(klns)), 0)
 }

@@ -22,7 +22,7 @@ func initmergedir(tn string, dn string) (string, error) {
 
 func makemergedir(tn string, dn string) (string, error) {
 	if dn == "" {
-		dn = "rdxsort"
+		dn = "somesort"
 	}
 	mdn, err := os.MkdirTemp(tn, dn)
 	return mdn, err

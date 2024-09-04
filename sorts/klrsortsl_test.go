@@ -1,6 +1,7 @@
 package sorts
 
 import (
+	"github.com/dfwcnj/govbinsort/types"
 	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"

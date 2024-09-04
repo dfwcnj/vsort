@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"bytes"
+	"github.com/dfwcnj/govbinsort/types"
 	"slices"
 )
 

@@ -3,6 +3,7 @@ package sorts
 import (
 	"bufio"
 	"fmt"
+	"github.com/dfwcnj/govbinsort/types"
 	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
@@ -24,7 +25,7 @@ func Test_sortfiles(t *testing.T) {
 
 	log.Print("sortfiles test")
 
-	dn, err := initmergedir("/tmp", "rdxsort")
+	dn, err := initmergedir("/tmp", "somesort")
 
 	var fns []string
 	for i := range nmf {
