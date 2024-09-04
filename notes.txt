@@ -1,0 +1,10 @@
+
+merge infrastructure sort lines
+if keyoff or keylen
+   produce kvallines
+   sort kvallines
+   merge using klnullsplit to separate key from line
+else
+   product lines
+   sort lines
+   merge lines
