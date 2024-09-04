@@ -1,4 +1,4 @@
-package dtypes
+package io
 
 type line []byte
 type lines []line
