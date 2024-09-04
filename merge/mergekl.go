@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"log"
 	"os"
+	"github.com/dfwcnj/govbinsort/dtypes"
 )
 
 func initmergedir(tn string, dn string) (string, error) {

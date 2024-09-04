@@ -8,7 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
-	"github.com/dfwcnj/govbinsort/types"
+	"github.com/dfwcnj/govbinsort/dtypes"
 )
 
 // kln.key serves as the priority
