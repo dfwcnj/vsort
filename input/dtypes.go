@@ -1,4 +1,4 @@
-package io
+package input
 
 type line []byte
 type lines []line

@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"container/heap"
 	"fmt"
-	"github.com/dfwcnj/govbinsort/io"
+	"github.com/dfwcnj/govbinsort/input"
 	"io"
 	"log"
 	"os"

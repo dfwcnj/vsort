@@ -2,7 +2,7 @@ package merge
 
 import (
 	"bufio"
-	"github.com/dfwcnj/govbinsort/io"
+	"github.com/dfwcnj/govbinsort/input"
 	"log"
 	"os"
 )
@@ -90,5 +90,5 @@ func Mergeklfiles(ofn string, reclen int, fns []string) {
 	}
 
 	// log.Print("mergefiles pqreademit ", reclen)
-	pqreademit(ofp, reclen, io.klnullsplit, fns)
+	pqreademit(ofp, reclen, input.klnullsplit, fns)
 }
