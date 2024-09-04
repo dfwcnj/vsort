@@ -1,4 +1,4 @@
-package types
+package dtypes
 
 type line []byte
 type lines []line
