@@ -15,5 +15,3 @@ func klnullsplit(bln []byte) [][]byte {
 	bls = bytes.Split(bln, sep)
 	return bls
 }
-
-

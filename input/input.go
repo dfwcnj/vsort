@@ -9,6 +9,16 @@ import (
 	"strings"
 )
 
+type line []byte
+type lines []line
+
+type kvalline struct {
+	key  line
+	line line
+}
+
+type kvallines []kvalline
+
 func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (kvallines, int64, error) {
 
 	var klns kvallines
