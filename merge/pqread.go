@@ -5,10 +5,10 @@ import (
 	"bytes"
 	"container/heap"
 	"fmt"
+	"github.com/dfwcnj/govbinsort/io"
 	"io"
 	"log"
 	"os"
-	"github.com/dfwcnj/govbinsort/io"
 )
 
 // kln.key serves as the priority

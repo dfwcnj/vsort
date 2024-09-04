@@ -23,5 +23,3 @@ func Mergefiles(ofn string, reclen int, fns []string) {
 
 	pqreademit(ofp, reclen, nil, fns)
 }
-
-
