@@ -3,7 +3,7 @@ package sorts
 import (
 	"bufio"
 	"fmt"
-	"github.com/dfwcnj/govbinsort/types"
+	"github.com/dfwcnj/govbinsort/dtypes"
 	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
