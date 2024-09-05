@@ -25,4 +25,3 @@ func makemergedir(tn string, dn string) (string, error) {
 	mdn, err := os.MkdirTemp(tn, dn)
 	return mdn, err
 }
-
