@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func initmergedir(tn string, dn string) (string, error) {
+func Initmergedir(tn string, dn string) (string, error) {
 	mdn, err := makemergedir(tn, dn)
 	if err != nil {
 		if os.IsExist(err) {
