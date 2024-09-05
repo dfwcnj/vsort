@@ -14,6 +14,12 @@ import (
 	"github.com/dfwcnj/govbinsort/merge"
 )
 
+type kvalline struct {
+	key  line
+	line line
+}
+type kvallines []kvalline
+
 func KLrsort2a(klns kvallines) {
 	klrsort2array(klns, make(kvallines, len(klns)), 0)
 }

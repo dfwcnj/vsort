@@ -4,8 +4,8 @@ import (
 	"bytes"
 )
 
-// type line []byte
-// type lines []line
+type line []byte
+type lines []line
 
 func inssort(lns lines) lines {
 	n := len(lns)
