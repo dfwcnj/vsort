@@ -44,6 +44,8 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 			return klns, mfiles, mrlen, err
 		}
 
+		// XXX if keyoff !!keylen switch stype else switch stype
+		log.Fatal("if keyoff !!keylen switch stype else switch stype")
 		sklns := KLrsort2a(klns, 0)
 
 		if offset > 0 && len(sklns) > 0 {

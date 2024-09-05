@@ -22,7 +22,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 	}
 	//log.Printf("sortfiles ofn %s\n", ofn)
 	if len(dn) == 0 {
-		dn, err = merge.Initmergedir("", "somesort")
+		dn, err = Initmergedir("", "somesort")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -48,7 +48,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 			log.Fatal("sortfiles after sort ", err)
 		}
 		if len(mfiles) > 0 {
-			Mergefiles(ofn, mrlen, mfiles)
+			merge.Mergefiles(ofn, mrlen, mfiles)
 			return
 		}
 
@@ -69,9 +69,9 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 
 		//log.Println("sortfiles sort ", fn, "", reclen)
 		if reclen != 0 {
-			klns, mfns, mrlen, err = sortflrecfile(fn, dn, reclen, keyoff, keylen, iomem)
+			klns, mfns, mrlen, err = sortflrecfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		} else {
-			klns, mfns, err = sortvlrecfile(fn, dn, reclen, keyoff, keylen, iomem)
+			klns, mfns, err = sortvlrecfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		}
 		if err != nil && err != io.EOF {
 			log.Fatal("sortfiles after sort ", err)
@@ -85,7 +85,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 		mpath := filepath.Join(dn, mfn)
 		//log.Println("sortfiles saving merge file ", mpath)
 		var mf string
-		mf, mrlen = savemergefile(klns, mpath, dlim)
+		mf, mrlen = merge.Savemergefile(klns, mpath, dlim)
 		if mf == "" {
 			log.Fatal("sortfiles savemergefile failes ", mpath)
 		}
@@ -93,9 +93,9 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 	}
 	if reclen > 0 {
 		//log.Println("sortfiles merging", ofn, " ", mrlen)
-		Mergefiles(ofn, mrlen, mfiles)
+		merge.Mergefiles(ofn, mrlen, mfiles)
 	} else {
 		//log.Println("sortfiles merging", ofn, " ", reclen)
-		Mergefiles(ofn, 0, mfiles)
+		merge.Mergefiles(ofn, 0, mfiles)
 	}
 }
