@@ -1,8 +1,6 @@
 package merge
 
 import (
-	"bufio"
-	"bytes"
 	"log"
 	"os"
 )

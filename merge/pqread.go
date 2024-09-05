@@ -5,21 +5,18 @@ import (
 	"bytes"
 	"container/heap"
 	"fmt"
-	"github.com/dfwcnj/govbinsort/input"
 	"io"
 	"log"
 	"os"
 )
 
-type line []byte
-type lines []line
-
-type kvalline struct {
-	key  line
-	line line
-}
-
-type kvallines []kvalline
+//type line []byte
+//type lines []line
+//type kvalline struct {
+//	key  line
+//	line line
+//}
+//type kvallines []kvalline
 
 // kln.key serves as the priority
 type ritem struct {

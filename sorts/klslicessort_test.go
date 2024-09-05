@@ -6,7 +6,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/dfwcnj/govbinsort/dtypes"
+	"github.com/dfwcnj/govbinsort/merge"
 	"github.com/dfwcnj/randomdata"
 )
 

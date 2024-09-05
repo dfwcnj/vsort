@@ -3,7 +3,6 @@ package sorts
 import (
 	"fmt"
 	"github.com/dfwcnj/govbinsort/merge"
-	"github.com/dfwcnj/govbinsort/dtypes"
 	"io"
 	"log"
 	"os"

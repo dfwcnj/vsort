@@ -11,7 +11,7 @@ package sorts
 // same license as rsc code - BSD
 
 import (
-	"github.com/dfwcnj/govbinsort/dtypes"
+	"github.com/dfwcnj/govbinsort/merge"
 )
 
 func KLrsort2a(klns kvallines) {

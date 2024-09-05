@@ -2,7 +2,7 @@ package sorts
 
 import (
 	"fmt"
-	"github.com/dfwcnj/govbinsort/dtypes"
+	"github.com/dfwcnj/govbinsort/merge"
 	"io"
 	"log"
 	"os"

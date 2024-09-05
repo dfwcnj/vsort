@@ -2,7 +2,6 @@ package merge
 
 import (
 	"bufio"
-	"github.com/dfwcnj/govbinsort/input"
 	"log"
 	"os"
 )

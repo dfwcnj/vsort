@@ -2,7 +2,7 @@ package sorts
 
 import (
 	"bytes"
-	"github.com/dfwcnj/govbinsort/dtypes"
+	"github.com/dfwcnj/govbinsort/merge"
 	"log"
 )
 
