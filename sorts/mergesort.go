@@ -8,7 +8,7 @@ import (
 )
 
 // func merge(ldata []string, rdata []string) (result []string) {
-func merge[S ~[]E, E cmp.Ordered](ldata S, rdata S) (result S) {
+func domerge[S ~[]E, E cmp.Ordered](ldata S, rdata S) (result S) {
 	result = make(S, len(ldata)+len(rdata))
 	lidx, ridx := 0, 0
 
@@ -43,5 +43,5 @@ func Mergesort[S ~[]E, E cmp.Ordered](data S) []E {
 	ldata := Mergesort(data[:middle])
 	rdata := Mergesort(data[middle:])
 
-	return merge(ldata, rdata)
+	return domerge(ldata, rdata)
 }
