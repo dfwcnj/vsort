@@ -90,5 +90,5 @@ func Mergeklfiles(ofn string, reclen int, fns []string) {
 	}
 
 	// log.Print("mergefiles pqreademit ", reclen)
-	pqreademit(ofp, reclen, input.klnullsplit, fns)
+	pqreademit(ofp, reclen, klnullsplit, fns)
 }
