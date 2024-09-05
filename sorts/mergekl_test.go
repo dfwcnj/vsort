@@ -24,7 +24,7 @@ func Test_mergeklfiles(t *testing.T) {
 
 	log.Print("mergefiles test")
 
-	dn, err := initmergedir("/tmp", "somesort")
+	dn, err := merge.Initmergedir("/tmp", "somesort")
 	if err != nil {
 		log.Fatal(err)
 	}

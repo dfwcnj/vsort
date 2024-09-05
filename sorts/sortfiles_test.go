@@ -25,7 +25,7 @@ func Test_sortfiles(t *testing.T) {
 
 	log.Print("sortfiles test")
 
-	dn, err := initmergedir("/tmp", "somesort")
+	dn, err := merge.Initmergedir("/tmp", "somesort")
 
 	var fns []string
 	for i := range nmf {

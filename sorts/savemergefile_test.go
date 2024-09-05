@@ -21,7 +21,7 @@ func Test_savemergefile(t *testing.T) {
 	dlim = "\n"
 
 	log.Print("savemergefile test")
-	dn, err := initmergedir("/tmp", "somesort")
+	dn, err := merge.Initmergedir("/tmp", "somesort")
 	if err != nil {
 		log.Fatal(err)
 	}
