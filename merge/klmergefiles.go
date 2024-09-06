@@ -8,7 +8,7 @@ import (
 
 // save merge file
 // save key and line separated by null bute
-func Savemergefile(klns kvallines, fn string, dlim string) (string, int) {
+func Saveklmergefile(klns kvallines, fn string, dlim string) (string, int) {
 
 	// log.Println("savemergefile len delim ", len(dlim))
 	var mrlen int

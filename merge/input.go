@@ -40,7 +40,9 @@ func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, io
 			return klns, 0, nil
 		}
 		kln.line = recbuf
-		kln.key = kln.line
+		if keyoff > 0 || keylen > 0 {
+			kln.key = kln.line[keyoff : keyoff+keylen]
+		}
 		klns = append(klns, kln)
 	}
 }
@@ -98,17 +100,12 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 		var kln kvalline
 		bls := klnullsplit(buf)
 		if len(bls) == 2 {
-			kln.key = bls[0]
 			kln.line = bls[1]
-		} else {
-			kln.line = buf
-			kln.key = kln.line
-		}
-		if keyoff != 0 {
-			kln.key = kln.line[keyoff:]
-			if keylen != 0 {
+			if keyoff > 0 || keylen > 0 {
 				kln.key = kln.line[keyoff : keyoff+keylen]
 			}
+		} else {
+			kln.line = buf
 		}
 		klns = append(klns, kln)
 
@@ -134,11 +131,12 @@ func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (
 		bln := []byte(l)
 		bls := klnullsplit(bln)
 		if len(bls) == 2 {
-			kln.key = bls[0]
 			kln.line = bls[1]
+			if keyoff > 0 || keylen > 0 {
+				kln.key = kln.line[keyoff : keyoff+keylen]
+			}
 		} else {
 			kln.line = bln
-			kln.key = bln
 		}
 		if keyoff != 0 {
 			kln.key = kln.line[keyoff:]

@@ -2,12 +2,11 @@ package sorts
 
 import (
 	"fmt"
+	"github.com/dfwcnj/govbinsort/merge"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
-
-	"github.com/dfwcnj/govbinsort/merge"
 )
 
 func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
@@ -85,7 +84,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 		mpath := filepath.Join(dn, mfn)
 		//log.Println("sortfiles saving merge file ", mpath)
 		var mf string
-		mf, mrlen = merge.Savemergefile(klns, mpath, dlim)
+		mf, mrlen = merge.Saveklmergefile(klns, mpath, dlim)
 		if mf == "" {
 			log.Fatal("sortfiles savemergefile failes ", mpath)
 		}

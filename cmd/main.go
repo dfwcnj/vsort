@@ -36,7 +36,7 @@ func main() {
 	flag.StringVar(&ofn, "ofn", "", "output file name")
 	flag.StringVar(&iomem, "iomem", "500mb", "max read memory size in kb, mb or gb")
 	flag.StringVar(&md, "md", "", "merge sirectory")
-	flag.StringVar(&stype, "stype", "", "sort type: merge, radix, std")
+	flag.StringVar(&stype, "stype", "std", "sort type: merge, radix, std")
 	flag.IntVar(&reclen, "reclen", 0, "length of the fixed length record")
 	flag.IntVar(&keyoff, "keyoff", 0, "offset of the key")
 	flag.IntVar(&keylen, "keylen", 0, "length of the key if not whole line")
@@ -44,9 +44,11 @@ func main() {
 	fns = flag.Args()
 
 	sortt := map[string]bool{
-		"merge": true,
-		"radix": true,
-		"std":   true,
+		"heap":      true,
+		"insertion": true,
+		"merge":     true,
+		"radix":     true,
+		"std":       true,
 	}
 	if _, ok := sortt[stype]; ok {
 		log.Fatal("bad sort type ", stype)
