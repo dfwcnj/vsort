@@ -3,21 +3,12 @@ package merge
 import (
 	"bufio"
 	"bytes"
+	"github.com/dfwcnj/govbinsort/types"
 	"io"
 	"log"
 	"os"
 	"strings"
 )
-
-type Line []byte
-type Lines []Line
-
-type Kvalline struct {
-	key  Line
-	line Line
-}
-
-type Kvallines []Kvalline
 
 func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
 
@@ -40,8 +31,11 @@ func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, io
 			return klns, 0, nil
 		}
 		kln.line = recbuf
-		if keyoff > 0 || keylen > 0 {
-			kln.key = kln.line[keyoff : keyoff+keylen]
+		if keyoff != 0 {
+			kln.Key = kln.line[keyoff:]
+			if keylen != 0 {
+				kln.Key = kln.Line[keyoff : keyoff+keylen]
+			}
 		}
 		klns = append(klns, kln)
 	}
@@ -101,11 +95,14 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 		bls := klnullsplit(buf)
 		if len(bls) == 2 {
 			kln.line = bls[1]
-			if keyoff > 0 || keylen > 0 {
-				kln.key = kln.line[keyoff : keyoff+keylen]
+			if keyoff != 0 {
+				kln.Key = kln.line[keyoff:]
+				if keylen != 0 {
+					kln.Key = kln.Line[keyoff : keyoff+keylen]
+				}
 			}
 		} else {
-			kln.line = buf
+			kln.Line = buf
 		}
 		klns = append(klns, kln)
 
@@ -133,15 +130,15 @@ func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (
 		if len(bls) == 2 {
 			kln.line = bls[1]
 			if keyoff > 0 || keylen > 0 {
-				kln.key = kln.line[keyoff : keyoff+keylen]
+				kln.Key = kln.Line[keyoff : keyoff+keylen]
 			}
 		} else {
-			kln.line = bln
+			kln.Line = bln
 		}
 		if keyoff != 0 {
-			kln.key = kln.line[keyoff:]
+			kln.Key = kln.line[keyoff:]
 			if keylen != 0 {
-				kln.key = kln.line[keyoff : keyoff+keylen]
+				kln.Key = kln.Line[keyoff : keyoff+keylen]
 			}
 		}
 		klns = append(klns, kln)
@@ -202,17 +199,7 @@ func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kv
 			}
 			kln.line = bls[1]
 		} else {
-			kln.key = bln
-			if bln[len(bln)-1] == '\n' {
-				kln.key = bln[:len(bln)-1]
-			}
 			kln.line = bln
-		}
-		if keyoff != 0 {
-			kln.key = kln.line[keyoff:]
-			if keylen != 0 {
-				kln.key = kln.line[keyoff : keyoff+keylen]
-			}
 		}
 
 		klns = append(klns, kln)

@@ -8,7 +8,7 @@ import (
 //type Line []byte
 //type Lines []line
 
-func inssort(lns merge.Lines) merge.Lines {
+func inssort(lns Lines) Lines {
 	n := len(lns)
 	if n == 1 {
 		return lns
