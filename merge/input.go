@@ -9,19 +9,19 @@ import (
 	"strings"
 )
 
-type line []byte
-type lines []line
+type Line []byte
+type Lines []Line
 
-type kvalline struct {
-	key  line
-	line line
+type Kvalline struct {
+	key  Line
+	line Line
 }
 
-type kvallines []kvalline
+type Kvallines []Kvalline
 
-func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (kvallines, int64, error) {
+func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
 
-	var klns kvallines
+	var klns Kvallines
 
 	buf, err := io.ReadAll(fp)
 	if err != nil {
@@ -31,7 +31,7 @@ func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, io
 
 	recbuf := make([]byte, reclen)
 	for {
-		var kln kvalline
+		var kln Kvalline
 		_, err := io.ReadFull(r, recbuf)
 		if err != nil {
 			if err != io.EOF {
@@ -47,9 +47,9 @@ func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, io
 	}
 }
 
-func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (kvallines, int64, error) {
+func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
 
-	var klns kvallines
+	var klns Kvallines
 	var nr int // number records read
 	var bl int
 	var err error
@@ -97,7 +97,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 			}
 		}
 
-		var kln kvalline
+		var kln Kvalline
 		bls := klnullsplit(buf)
 		if len(bls) == 2 {
 			kln.line = bls[1]
@@ -116,8 +116,8 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 
 }
 
-func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (kvallines, int64, error) {
-	var klns kvallines
+func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
+	var klns Kvallines
 	buf, err := io.ReadAll(fp)
 	if err != nil {
 		return klns, offset, err
@@ -127,7 +127,7 @@ func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (
 		if len(l) == 0 {
 			continue
 		}
-		var kln kvalline
+		var kln Kvalline
 		bln := []byte(l)
 		bls := klnullsplit(bln)
 		if len(bls) == 2 {
@@ -149,9 +149,9 @@ func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (
 	return klns, offset, nil
 }
 
-func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (kvallines, int64, error) {
+func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
 
-	var klns kvallines
+	var klns Kvallines
 	var memused int64
 
 	finf, err := fp.Stat()
@@ -191,7 +191,7 @@ func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (kv
 			log.Fatal(err)
 		}
 
-		var kln kvalline
+		var kln Kvalline
 
 		bln := []byte(l)
 		bls := klnullsplit(bln)

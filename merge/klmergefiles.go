@@ -8,7 +8,7 @@ import (
 
 // save merge file
 // save key and line separated by null bute
-func Saveklmergefile(klns kvallines, fn string, dlim string) (string, int) {
+func Saveklmergefile(klns Kvallines, fn string, dlim string) (string, int) {
 
 	// log.Println("savemergefile len delim ", len(dlim))
 	var mrlen int
@@ -43,9 +43,9 @@ func Saveklmergefile(klns kvallines, fn string, dlim string) (string, int) {
 // bufSplit(buf, reclen)
 //
 // split the buffer into a slice containing reclen records
-func bufSplit(buf []byte, reclen int) lines {
+func bufSplit(buf []byte, reclen int) Lines {
 	buflen := len(buf)
-	var lns lines
+	var lns Lines
 	for o := 0; o < buflen; o += reclen {
 		rec := buf[o : o+reclen-1]
 		lns = append(lns, rec)

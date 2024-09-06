@@ -10,17 +10,17 @@ import (
 	"os"
 )
 
-//type line []byte
-//type lines []line
-//type kvalline struct {
-//	key  line
-//	line line
+//type Line []byte
+//type Lines []line
+//type Kvalline struct {
+//	key  Line
+//	line Line
 //}
-//type kvallines []kvalline
+//type Kvallines []Kvalline
 
 // kln.key serves as the priority
 type ritem struct {
-	kln   kvalline
+	kln   Kvalline
 	br    *bufio.Reader
 	rlen  int
 	index int
@@ -62,9 +62,9 @@ func (pq *SPQ) update(ritem *ritem, value []byte, priority []byte) {
 	heap.Fix(pq, ritem.index)
 }
 
-func nextitem(itm ritem, kg func([]byte) [][]byte) (kvalline, error) {
+func nextitem(itm ritem, kg func([]byte) [][]byte) (Kvalline, error) {
 
-	var kln kvalline
+	var kln Kvalline
 	var bln []byte
 
 	if itm.rlen == 0 {
