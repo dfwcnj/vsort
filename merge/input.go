@@ -3,7 +3,7 @@ package merge
 import (
 	"bufio"
 	"bytes"
-	"github.com/dfwcnj/govbinsort/types"
+	"github.com/dfwcnj/govbinsort/stypes"
 	"io"
 	"log"
 	"os"
