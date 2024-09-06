@@ -1,0 +1,6 @@
+github.com/dfwcnj/govbinsort/merge v0.0.0-20240905120000-e6d02201464d h1:lNU5tipug8DbIBvkmo/UcDNksYQs74iX9F+umxZznao=
+github.com/dfwcnj/govbinsort/merge v0.0.0-20240905120000-e6d02201464d/go.mod h1:mz5oPgMSchxVVEK2xAjttZX9giXB7wIDdC6+6Pg+ynk=
+github.com/dfwcnj/govbinsort/sorts v0.0.0-20240905125548-337d1f322cab h1:ijBrYdcrOZSclljn1cuzULGnDsKK+120m1oqbTIUujk=
+github.com/dfwcnj/govbinsort/sorts v0.0.0-20240905125548-337d1f322cab/go.mod h1:tI9fFR1eYxcH7y8KBEkgBiZCj8POa7aHpxMMtKVjMhU=
+github.com/dfwcnj/randomdata v0.0.4 h1:+48Zfh/nwD4uo92k2cH8KEm20mxwHntFdiy0V4KXzRM=
+github.com/dfwcnj/randomdata v0.0.4/go.mod h1:bjv0JMDwlAcpWBfsuZH83BxASn/Y1MrDppmsyfRr9vk=
