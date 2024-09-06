@@ -17,7 +17,7 @@ func Test_rsort2a(t *testing.T) {
 	for _, ll := range ls {
 		for _, nl := range ns {
 
-			var lns lines
+			var lns Lines
 			var l int = ll
 			var r bool = true
 			var e bool = false

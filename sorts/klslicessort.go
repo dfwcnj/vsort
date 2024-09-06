@@ -6,10 +6,10 @@ import (
 	"slices"
 )
 
-func kllinescmp(a, b kvalline) int {
+func kllinescmp(a, b Kvalline) int {
 	return bytes.Compare(a.key, b.key)
 }
 
-func Klslicessort(lns kvallines) {
+func Klslicessort(lns Kvallines) {
 	slices.SortFunc(lns, kllinescmp)
 }

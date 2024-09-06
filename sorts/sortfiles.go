@@ -11,7 +11,7 @@ import (
 
 func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
-	var klns kvallines
+	var klns Kvallines
 	var err error
 	var mfiles []string
 	var mrlen int = reclen
@@ -63,7 +63,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 	}
 
 	for _, fn := range fns {
-		var klns kvallines
+		var klns Kvallines
 		var mfns []string
 
 		//log.Println("sortfiles sort ", fn, "", reclen)

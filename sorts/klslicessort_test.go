@@ -22,7 +22,7 @@ func Test_klslicessort(t *testing.T) {
 	for _, nl := range ls {
 
 		log.Print("klslicessort test ", nl)
-		var klns kvallines
+		var klns Kvallines
 
 		//log.Print("testing sort of ", nl)
 		rsl := randomdata.Randomstrings(nl, l, r, e)
@@ -30,7 +30,7 @@ func Test_klslicessort(t *testing.T) {
 			log.Fatal("rsl: wanted len ", nl, " got ", len(rsl))
 		}
 		for _, s := range rsl {
-			var kln kvalline
+			var kln Kvalline
 			bln := []byte(s)
 			kln.line = bln
 			kln.key = kln.line[8:24]

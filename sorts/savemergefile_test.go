@@ -28,8 +28,8 @@ func Test_savemergefile(t *testing.T) {
 	defer os.RemoveAll(dn)
 
 	for i := range 10 {
-		var klns kvallines
-		var kln kvalline
+		var klns Kvallines
+		var kln Kvalline
 
 		rsl := randomdata.Randomstrings(nrs, l, r, e)
 		for _, s := range rsl {

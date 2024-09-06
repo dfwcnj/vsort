@@ -14,17 +14,17 @@ import (
 	"github.com/dfwcnj/govbinsort/merge"
 )
 
-type kvalline struct {
-	key  line
-	line line
-}
-type kvallines []kvalline
+// type Kvalline struct {
+// 	key  Line
+// 	line Line
+// }
+// type Kvallines []Kvalline
 
-func KLrsort2a(klns kvallines) {
-	klrsort2array(klns, make(kvallines, len(klns)), 0)
+func KLrsort2a(klns Kvallines) {
+	klrsort2array(klns, make(Kvallines, len(klns)), 0)
 }
 
-func klrsort2array(klns, klns2 kvallines, ix int) {
+func klrsort2array(klns, klns2 Kvallines, ix int) {
 	if len(klns) < 16 {
 		binsertionsort(klns) // insertion sort
 		return

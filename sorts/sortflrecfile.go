@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 )
 
-func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) (kvallines, []string, int, error) {
-	var klns kvallines
+func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, []string, int, error) {
+	var klns Kvallines
 	var offset int64
 	var mrlen int
 	var err error

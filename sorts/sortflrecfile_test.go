@@ -19,7 +19,7 @@ func Test_sortflrecfile(t *testing.T) {
 	var iomem int64 = 1<<24 + 1<<20
 	var mrlen int
 
-	var tklns kvallines
+	var tklns Kvallines
 	var err error
 	var nr int
 

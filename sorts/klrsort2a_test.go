@@ -17,7 +17,7 @@ func Test_klrsort2a(t *testing.T) {
 	for _, ll := range ls {
 		for _, nl := range ns {
 
-			var klns kvallines
+			var klns Kvallines
 			var l int = ll
 			var r bool = false
 			var e bool = false
@@ -27,7 +27,7 @@ func Test_klrsort2a(t *testing.T) {
 				log.Fatal("klrsort2a test rsl: wanted len ", nl, " got ", len(rsl))
 			}
 			for _, s := range rsl {
-				var kln kvalline
+				var kln Kvalline
 				bln := []byte(s)
 				kln.line = bln
 				kln.key = kln.line[8:24]

@@ -31,8 +31,8 @@ func Test_mergeklfiles(t *testing.T) {
 	defer os.RemoveAll(dn)
 
 	for i := range nmf {
-		var klns kvallines
-		var kln kvalline
+		var klns Kvallines
+		var kln Kvalline
 
 		rsl := randomdata.Randomstrings(nrs, l, r, e)
 		for _, s := range rsl {

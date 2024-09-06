@@ -10,9 +10,9 @@ import (
 )
 
 // sort variable lengh records file
-func sortvlrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) (kvallines, []string, error) {
+func sortvlrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, []string, error) {
 	var offset int64
-	var klns kvallines
+	var klns Kvallines
 	var err error
 	var i int
 	var dlim string

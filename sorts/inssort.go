@@ -2,12 +2,13 @@ package sorts
 
 import (
 	"bytes"
+	"github.com/dfwcnj/govbinsort/merge"
 )
 
-type line []byte
-type lines []line
+//type Line []byte
+//type Lines []line
 
-func inssort(lns lines) lines {
+func inssort(lns merge.Lines) merge.Lines {
 	n := len(lns)
 	if n == 1 {
 		return lns

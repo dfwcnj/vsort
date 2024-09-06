@@ -55,7 +55,7 @@ func swim[S ~[]E, E cmp.Ordered](data S, i int) {
 
 }
 
-func ink[S ~[]E, E cmp.Ordered](data S, i int) {
+func sink[S ~[]E, E cmp.Ordered](data S, i int) {
 	for i<<1 <= len(data) {
 		j := i << 1
 		if j < len(data) && data[j] < data[j+1] {

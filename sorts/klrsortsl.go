@@ -8,7 +8,7 @@ import (
 
 const THRESHOLD int = 1 << 5
 
-func binsertionsort(klns kvallines) kvallines {
+func binsertionsort(klns Kvallines) Kvallines {
 	n := len(klns)
 	if n == 1 {
 		return klns
@@ -22,8 +22,8 @@ func binsertionsort(klns kvallines) kvallines {
 }
 
 // bostic
-func KLrsortsl(klns kvallines, recix int) kvallines {
-	var piles = make([]kvallines, 256)
+func KLrsortsl(klns Kvallines, recix int) Kvallines {
+	var piles = make([]Kvallines, 256)
 	var nc int // number piles
 	nl := len(klns)
 
@@ -39,7 +39,7 @@ func KLrsortsl(klns kvallines, recix int) kvallines {
 		var c int
 		if recix >= len(klns[i].key) {
 			c = 0
-		} else { // append kvalline to the pile indexed by c
+		} else { // append Kvalline to the pile indexed by c
 			c = int(klns[i].key[recix])
 		}
 
@@ -73,7 +73,7 @@ func KLrsortsl(klns kvallines, recix int) kvallines {
 		}
 	}
 
-	var slns kvallines
+	var slns Kvallines
 	for i, _ := range piles {
 		for j, _ := range piles[i] {
 			slns = append(slns, piles[i][j])

@@ -19,8 +19,8 @@ func Test_sortvlrecfile(t *testing.T) {
 	var nss int64
 	var iomem int64 = 1<<24 + 1<<20
 
-	//var klns kvallines
-	var tklns kvallines
+	//var klns Kvallines
+	var tklns Kvallines
 	var err error
 	var nr int
 
