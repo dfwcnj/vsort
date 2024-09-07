@@ -29,22 +29,19 @@ func Test_sortfiles(t *testing.T) {
 
 	var fns []string
 	for i := range nmf {
-		var klns Kvallines
-		var kln Kvalline
+		var lns [][]byte
+		var ln []byte
 
 		rsl := randomdata.Randomstrings(nrs, l, r, e)
 		for _, s := range rsl {
-			bln := []byte(s)
-			kln.line = bln
-			kln.key = kln.line
-			klns = append(klns, kln)
+			ln := []byte(s)
+			lns = append(lns, ln)
 		}
-		if len(klns) != int(nrs) {
-			log.Fatal("sortfiles test before sort wanted len ", l, " got ", len(klns))
+		if len(lns) != int(nrs) {
+			log.Fatal("sortfiles test before sort wanted len ", l, " got ", len(lns))
 		}
 
-		//log.Println("sorting file", i)
-		slns := KLrsort2a(klns, 0)
+		slns := dorsort2a(lns, l, l/4, 3*l/4, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("sortfilestest", i))
 		//log.Println("saving file", i)
 		savemergefile(slns, fn, dlim)
@@ -54,7 +51,6 @@ func Test_sortfiles(t *testing.T) {
 	mfn := "mergeout.txt"
 	mpath := filepath.Join(dn, mfn)
 
-	//log.Println("sortfiles test sorting files to ", mpath)
 	Sortfiles(fns, mpath, dn, "std", 0, 0, 0, iomem)
 
 	mfp, err := os.Open(mpath)

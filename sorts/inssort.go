@@ -5,10 +5,7 @@ import (
 	"github.com/dfwcnj/govbinsort/merge"
 )
 
-//type Line []byte
-//type Lines []line
-
-func inssort(lns Lines) Lines {
+func inssort(lns [][]byte) [][]byte {
 	n := len(lns)
 	if n == 1 {
 		return lns

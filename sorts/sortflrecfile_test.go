@@ -12,14 +12,14 @@ import (
 )
 
 func Test_sortflrecfile(t *testing.T) {
-	var l int = 32
+	var rlen int = 32
 	var r bool = false
 	var e bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = 1<<24 + 1<<20
 	var mrlen int
 
-	var tklns Kvallines
+	var lns [][]byte
 	var err error
 	var nr int
 
@@ -27,7 +27,7 @@ func Test_sortflrecfile(t *testing.T) {
 
 	log.Println("sortflrecfile test")
 
-	rsl := randomdata.Randomstrings(nrs, l, r, e)
+	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 
 	fn := path.Join(dn, "sortflrecfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
@@ -41,7 +41,7 @@ func Test_sortflrecfile(t *testing.T) {
 	}
 	fp.Close()
 
-	_, fns, mrlen, err := sortflrecfile(fn, dn, "std", int(l), 0, 0, iomem)
+	_, fns, mrlen, err := dosortflrecfile(fn, dn, "std", rlen, 0, 0, iomem)
 
 	var nss int
 	for _, f := range fns {
@@ -53,15 +53,15 @@ func Test_sortflrecfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortflrecfiletest ", err)
 		}
-		tklns, _, err = Flreadn(mfp, 0, mrlen, 0, 0, finf.Size())
+		slns, _, err = Flreadn(mfp, 0, rlen, 0, 0, finf.Size())
 		var lns = make([]string, 0)
-		for _, t := range tklns {
+		for _, t := range slns {
 			lns = append(lns, string(t.line))
 		}
 		if slices.IsSorted(lns) == false {
 			log.Fatal(f, " is not sorted")
 		}
-		nss += int(len(tklns))
+		nss += int(len(lns))
 	}
 	if nrs != int64(nss) {
 		log.Fatal("sortflrecfile test wanted ", nrs, " got ", nss)

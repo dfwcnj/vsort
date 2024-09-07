@@ -19,8 +19,7 @@ func Test_sortvlrecfile(t *testing.T) {
 	var nss int64
 	var iomem int64 = 1<<24 + 1<<20
 
-	//var klns Kvallines
-	var tklns Kvallines
+	var lns [][]byte
 	var err error
 	var nr int
 
@@ -41,10 +40,9 @@ func Test_sortvlrecfile(t *testing.T) {
 	}
 	fp.Close()
 
-	//log.Printf("sortvlrecfile test sortvlrecfile %s, %d\n", fn, iomem)
-	_, fns, err := sortvlrecfile(fn, dn, "std", int(l)+1, 0, 0, iomem)
+	_, fns, err := dosortvlrecfile(fn, dn, "std", 0, 0, 0, iomem)
 
-	//log.Println("sortvlrecfile test after  klns ", len(klns))
+	//log.Println("sortvlrecfile test after  lns ", len(lns))
 	//log.Println("sortvlrecfile test after fns ", fns)
 
 	for _, f := range fns {
@@ -53,17 +51,17 @@ func Test_sortvlrecfile(t *testing.T) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		tklns, _, err = Vlreadn(mfp, 0, 0, 0, iomem*2)
-		//log.Println("sortvlrecfile test tklns ", len(tklns))
+		lns, _, err = Vlreadn(mfp, 0, 0, 0, iomem*2)
+		//log.Println("sortvlrecfile test lns ", len(lns))
 
 		var lns = make([]string, 0)
-		for _, t := range tklns {
-			lns = append(lns, string(t.line))
+		for _, l := range lns {
+			lns = append(lns, string(l))
 		}
 		if slices.IsSorted(lns) == false {
 			log.Fatal(f, " is not sorted")
 		}
-		nss += int64(len(tklns))
+		nss += int64(len(lns))
 	}
 	if nrs != nss {
 		log.Fatal("sortvlrecfile test wanted ", nrs, " got ", nss)

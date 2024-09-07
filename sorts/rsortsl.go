@@ -4,16 +4,13 @@ import (
 	"log"
 )
 
-// type Line []byte
-// type Lines []Line
-
 // rsortsl(lns lines, recix int)
 // lns - [][]byte each []byte represents a line
 // recix - index into the line
-func rsortsl(lns Lines, recix int) Lines {
+func rsortsl(lns [][]byte, recix int) [][]byte {
 	const THRESHOLD int = 1 << 5
 	var sizes = make([]int, 256)
-	var piles = make([][]Line, 256)
+	var piles = make([][][]byte, 256)
 	var nc int
 	nl := len(lns)
 
@@ -40,7 +37,7 @@ func rsortsl(lns Lines, recix int) Lines {
 	// preallocate the piles so that they don't have to be resized
 	for i, _ := range sizes {
 		if sizes[i] != 0 {
-			piles[i] = make([]Line, 0, sizes[i])
+			piles[i] = make([][]byte, 0, sizes[i])
 		}
 	}
 
@@ -84,7 +81,7 @@ func rsortsl(lns Lines, recix int) Lines {
 	}
 
 	// combine the sorted piles
-	var slns Lines
+	var slns [][]byte
 	for i, _ := range piles {
 		for j, _ := range piles[i] {
 			slns = append(slns, piles[i][j])

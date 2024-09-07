@@ -17,7 +17,7 @@ func Test_rsort2a(t *testing.T) {
 	for _, ll := range ls {
 		for _, nl := range ns {
 
-			var lns Lines
+			var lns [][]byte
 			var l int = ll
 			var r bool = true
 			var e bool = false

@@ -10,11 +10,11 @@ package sorts
 // are highly instructive.
 // same license as rsc code - BSD
 
-func rsort2a(lns lines) {
-	rsort2array(lns, make(lines, len(lns)), 0)
+func rsort2a(lns [][]byte) {
+	rsort2array(lns, make([][]byte, len(lns)), 0)
 }
 
-func rsort2array(lns, lns2 lines, ix int) {
+func rsort2array(lns, lns2 [][]byte, ix int) {
 	if len(lns) < 16 {
 		inssort(lns) // insertion sort
 		return

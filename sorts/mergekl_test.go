@@ -13,7 +13,7 @@ import (
 )
 
 func Test_mergeklfiles(t *testing.T) {
-	var l int = 32
+	var rlen int = 32
 	var r bool = true
 	var e bool = false
 	var nrs int64 = 1 << 20
@@ -31,21 +31,19 @@ func Test_mergeklfiles(t *testing.T) {
 	defer os.RemoveAll(dn)
 
 	for i := range nmf {
-		var klns Kvallines
-		var kln Kvalline
+		var lns [][]byte
+		var ln []byte
 
-		rsl := randomdata.Randomstrings(nrs, l, r, e)
+		rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 		for _, s := range rsl {
 			bln := []byte(s)
-			kln.line = bln
-			kln.key = kln.line
-			klns = append(klns, kln)
+			lns = append(lns, ln)
 		}
-		if len(klns) != int(nrs) {
-			log.Fatal("klns: before sort wanted len ", l, " got ", len(klns))
+		if len(lns) != int(nrs) {
+			log.Fatal("lns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
-		slns := Klslicessort(klns, 0)
+		slns := doslicessort(lns, 0, 0, 0, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
 		savemergefile(slns, fn, dlim)
 		fns = append(fns, fn)
