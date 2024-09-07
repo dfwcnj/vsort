@@ -3,16 +3,15 @@ package merge
 import (
 	"bufio"
 	"bytes"
-	"github.com/dfwcnj/govbinsort/stypes"
 	"io"
 	"log"
 	"os"
 	"strings"
 )
 
-func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
+func flreadall(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int64, error) {
 
-	var klns Kvallines
+	var lns [][]byte
 
 	buf, err := io.ReadAll(fp)
 	if err != nil {
@@ -22,28 +21,20 @@ func flreadall(fp *os.File, offset int64, reclen int, keyoff int, keylen int, io
 
 	recbuf := make([]byte, reclen)
 	for {
-		var kln Kvalline
 		_, err := io.ReadFull(r, recbuf)
 		if err != nil {
 			if err != io.EOF {
 				log.Fatal(err)
 			}
-			return klns, 0, nil
+			return lns, 0, nil
 		}
-		kln.line = recbuf
-		if keyoff != 0 {
-			kln.Key = kln.line[keyoff:]
-			if keylen != 0 {
-				kln.Key = kln.Line[keyoff : keyoff+keylen]
-			}
-		}
-		klns = append(klns, kln)
+		lns = append(lns, recbuf)
 	}
 }
 
-func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
+func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int64, error) {
 
-	var klns Kvallines
+	var lns [][]byte
 	var nr int // number records read
 	var bl int
 	var err error
@@ -54,11 +45,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 		log.Fatal()
 	}
 	if finf.Size() < iomem {
-		return flreadall(fp, offset, reclen, keyoff, keylen, finf.Size())
-	}
-
-	if keyoff+keylen > reclen {
-		log.Fatal("key dimension extends beyond reclen")
+		return flreadall(fp, offset, reclen, finf.Size())
 	}
 
 	if offset != 0 {
@@ -81,30 +68,17 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 			if err != nil && err != io.EOF {
 				log.Fatal(err)
 			}
-			return klns, offset, err
+			return lns, offset, err
 		}
 
 		buf := make([]byte, reclen)
 		if bl, err = io.ReadFull(fp, buf); err != nil {
 			if err == io.EOF && bl == 0 {
-				return klns, offset, err
+				return lns, offset, err
 			}
 		}
 
-		var kln Kvalline
-		bls := klnullsplit(buf)
-		if len(bls) == 2 {
-			kln.line = bls[1]
-			if keyoff != 0 {
-				kln.Key = kln.line[keyoff:]
-				if keylen != 0 {
-					kln.Key = kln.Line[keyoff : keyoff+keylen]
-				}
-			}
-		} else {
-			kln.Line = buf
-		}
-		klns = append(klns, kln)
+		lns = append(lns, buf)
 
 		memused += int64(reclen)
 
@@ -113,42 +87,26 @@ func Flreadn(fp *os.File, offset int64, reclen int, keyoff int, keylen int, iome
 
 }
 
-func vlreadall(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
-	var klns Kvallines
+func vlreadall(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
+	var lns [][]byte
 	buf, err := io.ReadAll(fp)
 	if err != nil {
-		return klns, offset, err
+		return lns, offset, err
 	}
 	lines := strings.Split(string(buf), "\n")
 	for _, l := range lines {
 		if len(l) == 0 {
 			continue
 		}
-		var kln Kvalline
 		bln := []byte(l)
-		bls := klnullsplit(bln)
-		if len(bls) == 2 {
-			kln.line = bls[1]
-			if keyoff > 0 || keylen > 0 {
-				kln.Key = kln.Line[keyoff : keyoff+keylen]
-			}
-		} else {
-			kln.Line = bln
-		}
-		if keyoff != 0 {
-			kln.Key = kln.line[keyoff:]
-			if keylen != 0 {
-				kln.Key = kln.Line[keyoff : keyoff+keylen]
-			}
-		}
-		klns = append(klns, kln)
+		lns = append(lns, bln)
 	}
-	return klns, offset, nil
+	return lns, offset, nil
 }
 
-func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kvallines, int64, error) {
+func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 
-	var klns Kvallines
+	var lns [][]byte
 	var memused int64
 
 	finf, err := fp.Stat()
@@ -156,7 +114,7 @@ func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kv
 		log.Fatal()
 	}
 	if finf.Size() < iomem {
-		return vlreadall(fp, offset, keyoff, keylen, finf.Size())
+		return vlreadall(fp, offset, finf.Size())
 	}
 
 	if offset != 0 {
@@ -174,7 +132,7 @@ func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kv
 	for {
 		if memused >= iomem {
 			//log.Println("vlreadn memused >= iomem")
-			return klns, offset, err
+			return lns, offset, err
 		}
 
 		l, err := nw.ReadString('\n')
@@ -183,26 +141,14 @@ func Vlreadn(fp *os.File, offset int64, keyoff int, keylen int, iomem int64) (Kv
 		if err != nil {
 			if err == io.EOF && len(l) == 0 {
 				//log.Println("vlreadn readstring EOF ", offset)
-				return klns, offset, err
+				return lns, offset, err
 			}
 			log.Fatal(err)
 		}
 
-		var kln Kvalline
-
 		bln := []byte(l)
-		bls := klnullsplit(bln)
-		if len(bls) == 2 {
-			kln.key = bls[0]
-			if bls[0][len(bls[0])-1] == '\n' {
-				kln.key = bls[0][:len(bls)-1]
-			}
-			kln.line = bls[1]
-		} else {
-			kln.line = bln
-		}
 
-		klns = append(klns, kln)
+		lns = append(lns, bln)
 
 		memused += int64(len(l))
 	}

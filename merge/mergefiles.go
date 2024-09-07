@@ -5,8 +5,7 @@ import (
 	"os"
 )
 
-func Mergefiles(ofn string, reclen int, fns []string) {
-	// log.Print("multi step merge not implemented")
+func Mergefiles(ofn string, reclen int, keyoff int, keylen int, fns []string) {
 
 	var err error
 
@@ -19,5 +18,6 @@ func Mergefiles(ofn string, reclen int, fns []string) {
 		defer ofp.Close()
 	}
 
-	pqreademit(ofp, reclen, nil, fns)
+	// log.Print("mergefiles pqreademit ", reclen)
+	kvpqreademit(ofp, reclen, keyoff, keylen, fns)
 }
