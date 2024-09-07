@@ -8,7 +8,7 @@ import (
 
 // save merge file
 // save key and line separated by null bute
-func Savemergefile(lns [][]byte, fn string, dlim string) (string) {
+func Savemergefile(lns [][]byte, fn string, dlim string) string {
 
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
