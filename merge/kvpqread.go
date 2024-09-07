@@ -11,10 +11,10 @@ import (
 )
 
 type kvritem struct {
-	ln    []byte
-	br    *bufio.Reader
-	rlen, keyoff, keylen  int
-	index int
+	ln                   []byte
+	br                   *bufio.Reader
+	rlen, keyoff, keylen int
+	index                int
 }
 
 type KVSPQ []*kvritem
@@ -22,11 +22,11 @@ type KVSPQ []*kvritem
 func (pq KVSPQ) Len() int { return len(pq) }
 
 func (pq KVSPQ) Less(i, j int) bool {
-        if pq[i].keyoff != 0 || pq[i].keylen != 0 {
-            ik := pq[i].ln[pq[i].keyoff:pq[i].keyoff+pq[i].keylen]
-            jk := pq[j].ln[pq[j].keyoff:pq[j].keyoff+pq[j].keylen]
-	    return bytes.Compare(ik, jk) < 0
-        }
+	if pq[i].keyoff != 0 || pq[i].keylen != 0 {
+		ik := pq[i].ln[pq[i].keyoff : pq[i].keyoff+pq[i].keylen]
+		jk := pq[j].ln[pq[j].keyoff : pq[j].keyoff+pq[j].keylen]
+		return bytes.Compare(ik, jk) < 0
+	}
 	return bytes.Compare(pq[i].ln, pq[j].ln) < 0
 }
 
@@ -126,9 +126,9 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 		if err != nil {
 			continue
 		}
-                ritem.rlen = reclen
-                ritem.keyoff = keyoff
-                ritem.keylen = keylen
+		ritem.rlen = reclen
+		ritem.keyoff = keyoff
+		ritem.keylen = keylen
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)

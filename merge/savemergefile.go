@@ -32,4 +32,3 @@ func Savemergefile(lns [][]byte, fn string, dlim string) (string, int) {
 	}
 	return fn, mrlen
 }
-
