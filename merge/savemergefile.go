@@ -10,6 +10,9 @@ import (
 // save key and line separated by null bute
 func Savemergefile(lns [][]byte, fn string, dlim string) string {
 
+	if dlim != "\n" {
+		log.Fatal("WTF?")
+	}
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
 		log.Fatal(err)
@@ -19,7 +22,9 @@ func Savemergefile(lns [][]byte, fn string, dlim string) string {
 
 	for _, ln := range lns {
 
-		_, err := nw.WriteString(string(ln))
+		nl := string(ln) + dlim
+		log.Print(nl)
+		n, err := nw.WriteString(nl)
 		if err != nil {
 			log.Fatal(err)
 		}
