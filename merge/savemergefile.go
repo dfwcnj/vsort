@@ -12,14 +12,24 @@ import (
 // save key and line separated by null bute
 func Savemergefile(lns [][]byte, fn string, dlim string) string {
 
-	log.Fatal("are you calling me??")
-	return "are you even calling me??"
-
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer fp.Close()
+
+	log.Fatal("are you calling me??")
+	return "are you even calling me??"
+
+}
+
+func hidethis() string {
+	// just to quite the errors
+	var lns [][]byte
+	fp := os.Stdout
+	dlim := "\n"
+	fn := "fix me"
+
 	nw := bufio.NewWriter(fp)
 	//sz := (len(lns[0]) + len(dlim)) / 4
 	//nw := bufio.NewWriterSize(fp, sz)
