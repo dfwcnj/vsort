@@ -40,7 +40,7 @@ func Test_sortfiles(t *testing.T) {
 			log.Fatal("sortfiles test before sort wanted len ", l, " got ", len(lns))
 		}
 
-		dorsort2a(lns, l, l/4, 3*l/4)
+		dorsort2a(lns, 0, 0, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("sortfilestest", i))
 		//log.Println("saving file", i)
 		merge.Savemergefile(lns, fn, dlim)

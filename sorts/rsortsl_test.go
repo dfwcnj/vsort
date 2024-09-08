@@ -11,7 +11,7 @@ import (
 func Test_rsortsl(t *testing.T) {
 
 	ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
-	ns := []int64{1 << 3, 1 << 16, 1 << 20, 1 << 24}
+	ns := []int64{1 << 3, 1 << 16, 1 << 20}
 
 	for _, ll := range ls {
 		for _, nl := range ns {

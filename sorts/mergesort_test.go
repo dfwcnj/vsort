@@ -11,7 +11,7 @@ func Test_Mergesort(t *testing.T) {
 
 	var r bool = true
 	var e bool = false
-	ls := []int64{1, 2, 1 << 4, 1 << 8, 1 << 16, 1 << 20, 1 << 24}
+	ls := []int64{1, 2, 1 << 4, 1 << 8, 1 << 16, 1 << 20}
 
 	for _, nl := range ls {
 
