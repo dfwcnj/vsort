@@ -24,7 +24,7 @@ func Savemergefile(lns [][]byte, fn string, dlim string) string {
 
 		nl := string(ln) + dlim
 		log.Print(nl)
-		n, err := nw.WriteString(nl)
+		_, err := nw.WriteString(nl)
 		if err != nil {
 			log.Fatal(err)
 		}
