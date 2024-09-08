@@ -35,12 +35,13 @@ func Test_savemergefile(t *testing.T) {
 			lns = append(lns, ln)
 		}
 		if len(lns) != int(nrs) {
-			//log.Print(klns)
-			log.Fatal("klns: before sort wanted len ", rlen, " got ", len(lns))
+			//log.Print(lns)
+			log.Fatal("savemergefile test lns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
-		merge.Savemergefile(lns, fn, dlim)
+		mf := merge.Savemergefile(lns, fn, dlim)
+		log.Print("savemergefile test Savemergefile returned ", mf)
 
 		fp, err := os.Open(fn)
 		if err != nil {
@@ -58,8 +59,8 @@ func Test_savemergefile(t *testing.T) {
 			rlns = append(rlns, l)
 		}
 		if len(rlns) != int(nrs) {
-			log.Fatal("rlns wanted ", nrs, " got ", len(rlns))
+			log.Fatal("savemergefile test failed rlns wanted ", nrs, " got ", len(rlns))
 		}
 	}
-	log.Print("Savemergefile test passed")
+	log.Print("savemergefile test passed")
 }
