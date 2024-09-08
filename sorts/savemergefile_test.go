@@ -8,12 +8,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 )
 
 func Test_savemergefile(t *testing.T) {
-	var l int = 32
+	var rlen int = 32
 	var r bool = true
 	var e bool = false
 	var nrs int64 = 1 << 20
@@ -21,7 +20,7 @@ func Test_savemergefile(t *testing.T) {
 	dlim = "\n"
 
 	log.Print("savemergefile test")
-	dn, err := merge.Initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "somesort")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,21 +28,20 @@ func Test_savemergefile(t *testing.T) {
 
 	for i := range 10 {
 		var lns [][]byte
-		var ln []byte
 
-		rsl := randomdata.Randomstrings(nrs, l, r, e)
+		rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 		for _, s := range rsl {
 			ln := []byte(s)
 			lns = append(lns, ln)
 		}
-		if len(kns) != int(nrs) {
+		if len(lns) != int(nrs) {
 			//log.Print(klns)
 			log.Fatal("klns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
-		slns := doslicessort(lns, 0, 0, 0, 0)
+		kvslicessort(lns, 0, 0, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
-		savemergefile(slns, fn, dlim)
+		merge.Savemergefile(lns, fn, dlim)
 
 		fp, err := os.Open(fn)
 		if err != nil {

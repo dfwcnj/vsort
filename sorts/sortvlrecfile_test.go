@@ -23,7 +23,7 @@ func Test_sortvlrecfile(t *testing.T) {
 	var err error
 	var nr int
 
-	dn, err := merge.Initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "somesort")
 
 	log.Println("sortvlrecfile test")
 
@@ -51,14 +51,14 @@ func Test_sortvlrecfile(t *testing.T) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		lns, _, err = Vlreadn(mfp, 0, 0, 0, iomem*2)
+		lns, _, err = merge.Vlreadn(mfp, 0, iomem*2)
 		//log.Println("sortvlrecfile test lns ", len(lns))
 
-		var lns = make([]string, 0)
+		var slns = make([]string, 0)
 		for _, l := range lns {
-			lns = append(lns, string(l))
+			slns = append(slns, string(l))
 		}
-		if slices.IsSorted(lns) == false {
+		if slices.IsSorted(slns) == false {
 			log.Fatal(f, " is not sorted")
 		}
 		nss += int64(len(lns))

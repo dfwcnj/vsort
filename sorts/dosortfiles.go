@@ -20,7 +20,7 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 	}
 	//log.Printf("sortfiles ofn %s\n", ofn)
 	if len(dn) == 0 {
-		dn, err = Initmergedir("", "somesort")
+		dn, err = initmergedir("", "somesort")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -89,11 +89,6 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 		}
 		mfiles = append(mfiles, mpath)
 	}
-	if reclen > 0 {
-		//log.Println("sortfiles merging", ofn)
-		merge.Mergefiles(ofn, mfiles)
-	} else {
-		//log.Println("sortfiles merging", ofn, " ", reclen)
-		merge.Mergefiles(ofn, 0, mfiles)
-	}
+	//log.Println("sortfiles merging", ofn)
+	merge.Mergefiles(ofn, reclen, keyoff, keylen, mfiles)
 }

@@ -2,7 +2,6 @@ package sorts
 
 import (
 	"bytes"
-	"github.com/dfwcnj/govbinsort/merge"
 )
 
 func doinssort(lns [][]byte, keyoff, keylen int) [][]byte {

@@ -17,13 +17,11 @@ func Test_sortflrecfile(t *testing.T) {
 	var e bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = 1<<24 + 1<<20
-	var mrlen int
 
-	var lns [][]byte
 	var err error
 	var nr int
 
-	dn, err := merge.Initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "somesort")
 
 	log.Println("sortflrecfile test")
 
@@ -41,7 +39,7 @@ func Test_sortflrecfile(t *testing.T) {
 	}
 	fp.Close()
 
-	_, fns, mrlen, err := dosortflrecfile(fn, dn, "std", rlen, 0, 0, iomem)
+	_, fns, err := dosortflrecfile(fn, dn, "std", rlen, 0, 0, iomem)
 
 	var nss int
 	for _, f := range fns {
@@ -53,10 +51,10 @@ func Test_sortflrecfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortflrecfiletest ", err)
 		}
-		slns, _, err = Flreadn(mfp, 0, rlen, 0, 0, finf.Size())
+		slns, _, err := merge.Flreadn(mfp, 0, rlen, finf.Size())
 		var lns = make([]string, 0)
-		for _, t := range slns {
-			lns = append(lns, string(t.line))
+		for _, s := range slns {
+			lns = append(lns, string(s))
 		}
 		if slices.IsSorted(lns) == false {
 			log.Fatal(f, " is not sorted")

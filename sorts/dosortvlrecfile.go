@@ -28,7 +28,7 @@ func dosortvlrecfile(fn string, dn string, stype string, reclen int,
 		}
 	}
 	if dn == "" {
-		dn, err = merge.Initmergedir("", "somesort")
+		dn, err = initmergedir("", "somesort")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -36,7 +36,7 @@ func dosortvlrecfile(fn string, dn string, stype string, reclen int,
 	}
 
 	for {
-		lns, offset, err = Vlreadn(fp, offset, keyoff, keylen, iomem)
+		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
 
 		if err == io.EOF && len(mfiles) == 0 {
 			return lns, mfiles, err
@@ -46,12 +46,12 @@ func dosortvlrecfile(fn string, dn string, stype string, reclen int,
 			return lns, mfiles, err
 		}
 
-		slns := dorsort2a(lns, reclen, keyoff, keylen, 0)
-		//log.Println("sortvlrecfile slns ", len(slns))
+		dorsort2a(lns, reclen, keyoff, keylen)
+		//log.Println("sortvlrecfile lns ", len(lns))
 
-		if offset > 0 && len(slns) > 0 {
+		if offset > 0 && len(lns) > 0 {
 			mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-			f, _ := savemergefile(slns, mfn, dlim)
+			f := merge.Savemergefile(lns, mfn, dlim)
 			if f == "" {
 				log.Fatal("savemergefile failed: ", mfn, " ", dn)
 			}

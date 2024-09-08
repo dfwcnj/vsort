@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-func Test_mergeklfiles(t *testing.T) {
+func Test_mergefiles(t *testing.T) {
 	var rlen int = 32
 	var r bool = true
 	var e bool = false
@@ -24,7 +24,7 @@ func Test_mergeklfiles(t *testing.T) {
 
 	log.Print("mergefiles test")
 
-	dn, err := merge.Initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "somesort")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,26 +32,25 @@ func Test_mergeklfiles(t *testing.T) {
 
 	for i := range nmf {
 		var lns [][]byte
-		var ln []byte
 
 		rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 		for _, s := range rsl {
-			bln := []byte(s)
+			ln := []byte(s)
 			lns = append(lns, ln)
 		}
 		if len(lns) != int(nrs) {
 			log.Fatal("lns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
-		slns := doslicessort(lns, 0, 0, 0, 0)
+		kvslicessort(lns, 0, 0, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
-		savemergefile(slns, fn, dlim)
+		merge.Savemergefile(lns, fn, dlim)
 		fns = append(fns, fn)
 	}
 
 	mfn := "mergeout.txt"
 	mpath := filepath.Join(dn, mfn)
-	Mergeklfiles(mpath, 0, fns)
+	merge.Mergefiles(mpath, 0, 0, 0, fns)
 
 	mfp, err := os.Open(mpath)
 	if err != nil {
