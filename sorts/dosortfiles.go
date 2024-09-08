@@ -85,7 +85,7 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 		var mf string
 		mf = merge.Savemergefile(lns, mpath, dlim)
 		if mf == "" {
-			log.Fatal("sortfiles savemergefile failes ", mpath)
+			log.Fatal("sortfiles Savemergefile failed ", mpath)
 		}
 		mfiles = append(mfiles, mpath)
 	}

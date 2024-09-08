@@ -51,7 +51,7 @@ func dosortflrecfile(fn string, dn string, stype string, reclen int, keyoff int,
 			mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
 			fn = merge.Savemergefile(lns, mfn, dlim)
 			if fn == "" {
-				log.Fatal("savemergefile failed: ", fn, " ", dn)
+				log.Fatal("Savemergefile failed: ", fn, " ", dn)
 			}
 			mfiles = append(mfiles, mfn)
 		}

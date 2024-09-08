@@ -17,8 +17,7 @@ func Test_mergefiles(t *testing.T) {
 	var r bool = true
 	var e bool = false
 	var nrs int64 = 1 << 20
-	var dlim string
-	dlim = "\n"
+	dlim := "\n"
 	var nmf = 10
 	var fns []string
 
@@ -42,14 +41,16 @@ func Test_mergefiles(t *testing.T) {
 			log.Fatal("lns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
-		kvslicessort(lns, 0, 0, 0)
+		Mergesort(lns)
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
+		log.Print("mergefiles test ", fn, " ", len(dlim))
 		merge.Savemergefile(lns, fn, dlim)
 		fns = append(fns, fn)
 	}
 
 	mfn := "mergeout.txt"
 	mpath := filepath.Join(dn, mfn)
+	log.Print("merge.Mergefiles ", fns)
 	merge.Mergefiles(mpath, 0, 0, 0, fns)
 
 	mfp, err := os.Open(mpath)

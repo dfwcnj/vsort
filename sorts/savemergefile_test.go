@@ -3,12 +3,13 @@ package sorts
 import (
 	"bufio"
 	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
-	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/randomdata"
 )
 
 func Test_savemergefile(t *testing.T) {
@@ -16,8 +17,7 @@ func Test_savemergefile(t *testing.T) {
 	var r bool = true
 	var e bool = false
 	var nrs int64 = 1 << 20
-	var dlim string
-	dlim = "\n"
+	dlim := "\n"
 
 	log.Print("savemergefile test")
 	dn, err := initmergedir("/tmp", "somesort")
@@ -39,7 +39,6 @@ func Test_savemergefile(t *testing.T) {
 			log.Fatal("klns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
-		kvslicessort(lns, 0, 0, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
 		merge.Savemergefile(lns, fn, dlim)
 
@@ -62,5 +61,5 @@ func Test_savemergefile(t *testing.T) {
 			log.Fatal("rlns wanted ", nrs, " got ", len(rlns))
 		}
 	}
-	log.Print("savemergefile test passed")
+	log.Print("Savemergefile test passed")
 }
