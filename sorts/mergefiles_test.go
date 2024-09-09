@@ -3,13 +3,14 @@ package sorts
 import (
 	"bufio"
 	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
-	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
 	"path/filepath"
 	"slices"
 	"testing"
+
+	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/randomdata"
 )
 
 func Test_mergefiles(t *testing.T) {
@@ -33,15 +34,14 @@ func Test_mergefiles(t *testing.T) {
 		var lns [][]byte
 
 		rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+
 		for _, s := range rsl {
 			ln := []byte(s)
 			lns = append(lns, ln)
 		}
-		if len(lns) != int(nrs) {
-			log.Fatal("lns: before sort wanted len ", rlen, " got ", len(lns))
-		}
 
-		Mergesort(lns)
+		rsort2a(lns)
+
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
 		log.Print("mergefiles test ", fn, " ", len(dlim))
 		merge.Savemergefile(lns, fn, dlim)
@@ -69,7 +69,7 @@ func Test_mergefiles(t *testing.T) {
 		log.Fatal(mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 	}
 	if !slices.IsSorted(mlns) {
-		log.Fatal("lines in ", mfn, " not in sort order")
+		log.Fatal("lines in ", mpath, " not in sort order")
 	}
 	log.Print("mergefiles test passed")
 

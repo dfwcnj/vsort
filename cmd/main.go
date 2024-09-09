@@ -53,6 +53,17 @@ func main() {
 	if _, ok := sortt[stype]; ok {
 		log.Fatal("bad sort type ", stype)
 	}
+	if keyoff != 0 || keylen != 0 {
+		if reclen == 0 {
+			log.Fatal("keyoff, keylen only allowed in fixed len resords")
+		}
+		if keyoff+keylen > reclen {
+			log.Fatal("key must fall within record boundaries")
+		}
+		if keyoff < 0 || keylen < 0 {
+			log.Fatal("bad key boundaries")
+		}
+	}
 
 	var iom int64
 	if iomem != "" {

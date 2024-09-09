@@ -34,6 +34,9 @@ func Test_savemergefile(t *testing.T) {
 			ln := []byte(s)
 			lns = append(lns, ln)
 		}
+
+		rsort2a(lns)
+
 		if len(lns) != int(nrs) {
 			//log.Print(lns)
 			log.Fatal("savemergefile test lns: before sort wanted len ", rlen, " got ", len(lns))

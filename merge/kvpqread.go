@@ -25,9 +25,12 @@ func (pq KVSPQ) Less(i, j int) bool {
 	if pq[i].keyoff != 0 || pq[i].keylen != 0 {
 		ik := pq[i].ln[pq[i].keyoff : pq[i].keyoff+pq[i].keylen]
 		jk := pq[j].ln[pq[j].keyoff : pq[j].keyoff+pq[j].keylen]
+		log.Print("KVSPQ.Less keys ", ik, " ", jk)
 		return bytes.Compare(ik, jk) < 0
 	}
-	return bytes.Compare(pq[i].ln, pq[j].ln) < 0
+	r := bytes.Compare(pq[i].ln, pq[j].ln) < 0
+	//log.Print("KVSPQ compare ", string(pq[i].ln), " ", string(pq[j].ln))
+	return r
 }
 
 func (pq KVSPQ) Swap(i, j int) {
@@ -90,7 +93,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 		fp, err := os.Open(fn)
 		if err != nil {
-			log.Fatal("pqreademit open ", fn, " ", err)
+			log.Fatal("kvpqreademit open ", fn, " ", err)
 		}
 
 		itm.rlen = reclen
@@ -101,7 +104,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 		itm.ln, err = nextitem(itm)
 		if err != nil {
-			log.Fatal("pqreademit setup nextitem ", fn, " ", err)
+			log.Fatal("kvpqreademit setup nextitem ", fn, " ", err)
 		}
 		itm.index = i
 
@@ -119,11 +122,12 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 		s := fmt.Sprintf("%s", string(ritem.ln))
 		_, err := nw.WriteString(s)
 		if err != nil {
-			log.Fatal("pqreademit write ", err)
+			log.Fatal("kvpqreademit write ", err)
 		}
 
 		ritem.ln, err = nextitem(*ritem)
 		if err != nil {
+			log.Println("kvpqreademit nextitem: ", err)
 			continue
 		}
 		ritem.rlen = reclen
@@ -135,6 +139,6 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 	}
 	err := nw.Flush()
 	if err != nil {
-		log.Fatal("pqreademit flush", err)
+		log.Fatal("kvpqreademit flush", err)
 	}
 }
