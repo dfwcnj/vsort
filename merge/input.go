@@ -44,7 +44,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int6
 	if err != nil {
 		log.Fatal()
 	}
-	if finf.Size() < iomem {
+	if finf.Size() <= iomem {
 		return flreadall(fp, offset, reclen, finf.Size())
 	}
 
@@ -74,7 +74,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int6
 		buf := make([]byte, reclen)
 		if bl, err = io.ReadFull(fp, buf); err != nil {
 			if err == io.EOF && bl == 0 {
-				return lns, offset, err
+				return lns, int64(0), err
 			}
 		}
 
@@ -113,7 +113,7 @@ func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 	if err != nil {
 		log.Fatal()
 	}
-	if finf.Size() < iomem {
+	if finf.Size() <= iomem {
 		return vlreadall(fp, offset, finf.Size())
 	}
 
@@ -141,7 +141,7 @@ func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 		if err != nil {
 			if err == io.EOF && len(l) == 0 {
 				//log.Println("vlreadn readstring EOF ", offset)
-				return lns, offset, err
+				return lns, int64(0), err
 			}
 			log.Fatal(err)
 		}

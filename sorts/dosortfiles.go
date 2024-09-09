@@ -2,11 +2,12 @@ package sorts
 
 import (
 	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/dfwcnj/govbinsort/merge"
 )
 
 func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
@@ -65,7 +66,7 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 		var lns [][]byte
 		var mfns []string
 
-		//log.Println("sortfiles sort ", fn, "", reclen)
+		log.Println("sortfiles sort ", fn, "", reclen)
 		if reclen != 0 {
 			lns, mfns, err = dosortflrecfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		} else {

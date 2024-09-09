@@ -1,7 +1,7 @@
 package sorts
 
 import (
-	"fmt"
+	"bufio"
 	"github.com/dfwcnj/govbinsort/merge"
 	"github.com/dfwcnj/randomdata"
 	"log"
@@ -16,7 +16,7 @@ func Test_sortflrecfile(t *testing.T) {
 	var r bool = false
 	var e bool = false
 	var nrs int64 = 1 << 20
-	var iomem int64 = 1<<24 + 1<<20
+	var iomem int64 = 1<<20 * 32
 
 	var err error
 	var nr int
@@ -29,15 +29,18 @@ func Test_sortflrecfile(t *testing.T) {
 
 	fn := path.Join(dn, "sortflrecfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	nw := bufio.NewWriter(fp)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for i, _ := range rsl {
-		fmt.Fprint(fp, rsl[i])
+		nw.WriteString(rsl[i])
 		nr++
 	}
+	nw.Flush()
 	fp.Close()
+	log.Print("sortflrecfile test ", fn)
 
 	_, fns, err := dosortflrecfile(fn, dn, "std", rlen, 0, 0, iomem)
 

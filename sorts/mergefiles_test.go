@@ -43,14 +43,15 @@ func Test_mergefiles(t *testing.T) {
 		rsort2a(lns)
 
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
-		log.Print("mergefiles test ", fn, " ", len(dlim))
+		//log.Print("mergefiles test ", fn, " ", len(dlim))
 		merge.Savemergefile(lns, fn, dlim)
 		fns = append(fns, fn)
 	}
 
 	mfn := "mergeout.txt"
 	mpath := filepath.Join(dn, mfn)
-	log.Print("merge.Mergefiles ", fns)
+	//log.Print("merge.Mergefiles ", fns)
+
 	merge.Mergefiles(mpath, 0, 0, 0, fns)
 
 	mfp, err := os.Open(mpath)

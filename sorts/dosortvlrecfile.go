@@ -2,11 +2,12 @@ package sorts
 
 import (
 	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/dfwcnj/govbinsort/merge"
 )
 
 // sort variable lengh records file
@@ -41,7 +42,7 @@ func dosortvlrecfile(fn string, dn string, stype string, reclen int,
 		if err == io.EOF && len(mfiles) == 0 {
 			return lns, mfiles, err
 		}
-		//log.Println("sortvlrecfile vlreadn lns ", len(lns))
+		log.Println("sortvlrecfile vlreadn lns ", len(lns))
 		if len(lns) == 0 {
 			return lns, mfiles, err
 		}

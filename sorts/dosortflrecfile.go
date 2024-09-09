@@ -35,16 +35,18 @@ func dosortflrecfile(fn string, dn string, stype string, reclen int, keyoff int,
 	for {
 
 		lns, offset, err = merge.Flreadn(fp, offset, reclen, iomem)
+		log.Print("dosortflrecfile Flreadn ", len(lns), " ", offset)
 
 		if err == io.EOF && len(mfiles) == 0 {
+			log.Print("dosortflrecfile returning error ", err)
 			return lns, mfiles, err
 		}
 		if len(lns) == 0 {
+			log.Print("dosortflrecfile returning 0 len(lns)")
 			return lns, mfiles, err
 		}
 
-		// XXX if keyoff !!keylen switch stype else switch stype
-		log.Fatal("if keyoff !!keylen switch stype else switch stype")
+		log.Print("dosortflrecfile dosort2a ", reclen, " ", keyoff, " ", keylen)
 		dorsort2a(lns, reclen, keyoff, keylen)
 
 		if offset > 0 && len(lns) > 0 {

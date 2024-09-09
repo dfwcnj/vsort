@@ -1,14 +1,15 @@
 package sorts
 
 import (
-	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
-	"github.com/dfwcnj/randomdata"
+	"bufio"
 	"log"
 	"os"
 	"path"
 	"slices"
 	"testing"
+
+	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/randomdata"
 )
 
 func Test_sortvlrecfile(t *testing.T) {
@@ -31,14 +32,19 @@ func Test_sortvlrecfile(t *testing.T) {
 
 	fn := path.Join(dn, "sortvlrecfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	defer fp.Close()
+	nw := bufio.NewWriter(fp)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for i, _ := range rsl {
-		fmt.Fprintln(fp, rsl[i])
+		_, err := nw.WriteString(rsl[i] + "\n")
+		if err != nil {
+			log.Fatal(err)
+		}
 		nr++
 	}
-	fp.Close()
+	log.Print("sortvlrecfile test file ", fn)
 
 	_, fns, err := dosortvlrecfile(fn, dn, "std", 0, 0, 0, iomem)
 

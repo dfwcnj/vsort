@@ -43,8 +43,8 @@ func Test_savemergefile(t *testing.T) {
 		}
 
 		var fn = filepath.Join(dn, fmt.Sprint("file", i))
-		mf := merge.Savemergefile(lns, fn, dlim)
-		log.Print("savemergefile test Savemergefile returned ", mf)
+		merge.Savemergefile(lns, fn, dlim)
+		//log.Print("savemergefile test Savemergefile returned ", mf)
 
 		fp, err := os.Open(fn)
 		if err != nil {

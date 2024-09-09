@@ -15,12 +15,6 @@ import (
 )
 
 func dorsort2a(lns [][]byte, reclen int, keyoff int, keylen int) {
-	if reclen == 0 {
-		log.Fatal("this sort only works with fixed length records")
-	}
-	if reclen < keyoff+keylen {
-		log.Fatal("key must fall within record boundaries")
-	}
 	dorsort2array(lns, make([][]byte, len(lns)), keyoff, keylen, 0)
 }
 
