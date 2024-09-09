@@ -46,7 +46,7 @@ func dosortflrecfile(fn string, dn string, stype string, reclen int, keyoff int,
 			return lns, mfiles, err
 		}
 
-		log.Print("dosortflrecfile dosort2a ", reclen, " ", keyoff, " ", keylen)
+		log.Print("dosortflrecfile dosort2a ", len(lns))
 		dorsort2a(lns, reclen, keyoff, keylen)
 
 		if offset > 0 && len(lns) > 0 {
