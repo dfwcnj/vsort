@@ -38,28 +38,43 @@ func dosortvlrecfile(fn string, dn string, stype string, reclen int,
 
 	for {
 		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
+		log.Print("dosortverecfile ", len(lns), " ", offset)
 
-		if err == io.EOF && len(mfiles) == 0 {
-			return lns, mfiles, err
-		}
-		log.Println("sortvlrecfile vlreadn lns ", len(lns))
 		if len(lns) == 0 {
 			return lns, mfiles, err
 		}
 
-		dorsort2a(lns, reclen, keyoff, keylen)
-		//log.Println("sortvlrecfile lns ", len(lns))
-
-		if offset > 0 && len(lns) > 0 {
-			mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-			f := merge.Savemergefile(lns, mfn, dlim)
-			if f == "" {
-				log.Fatal("Savemergefile failed: ", mfn, " ", dn)
+		log.Print("dosortflrecfile ", stype, " ", len(lns))
+		if reclen != 0 {
+			switch stype {
+			case "radix":
+				dorsort2a(lns, reclen, keyoff, keylen)
+			case "std":
+				kvslicessort(lns, reclen, keyoff, keylen)
+			default:
+				log.Fatal("dosortflrecfile stype ", stype)
 			}
-			mfiles = append(mfiles, mfn)
-			//log.Println("sortvlrecfile Savemergefile ", mfn)
+		} else {
+			switch stype {
+			case "radix":
+				rsort2a(lns)
+			case "std":
+				kvslicessort(lns, 0, 0, 0)
+			default:
+				log.Fatal("dosortflrecfile stype ", stype)
+			}
 		}
+
+		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
+		log.Println("sortvlrecfile save file name ", mfn)
+		f := merge.Savemergefile(lns, mfn, dlim)
+		if f == "" {
+			log.Fatal("dosortvlrecfile Savemergefile failed: ", mfn, " ", dn)
+		}
+		mfiles = append(mfiles, mfn)
+		log.Println("dosortvlrecfile Savemergefile ", mfn)
 		if err == io.EOF {
+			log.Print("dosortvlrecfile return on EOF")
 			return lns, mfiles, err
 		}
 		i++

@@ -12,7 +12,7 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_sortvlrecfile(t *testing.T) {
+func Test_dosortvlrecfile(t *testing.T) {
 	var l int = 32
 	var r bool = true
 	var e bool = false
@@ -26,11 +26,11 @@ func Test_sortvlrecfile(t *testing.T) {
 
 	dn, err := initmergedir("/tmp", "somesort")
 
-	log.Println("sortvlrecfile test")
+	log.Println("dosortvlrecfile test")
 
 	rsl := randomdata.Randomstrings(nrs, l, r, e)
 
-	fn := path.Join(dn, "sortvlrecfiletest")
+	fn := path.Join(dn, "dosortvlrecfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	defer fp.Close()
 	nw := bufio.NewWriter(fp)
@@ -44,21 +44,20 @@ func Test_sortvlrecfile(t *testing.T) {
 		}
 		nr++
 	}
-	log.Print("sortvlrecfile test file ", fn)
+	log.Print("dosortvlrecfile test file ", fn)
 
 	_, fns, err := dosortvlrecfile(fn, dn, "std", 0, 0, 0, iomem)
 
-	//log.Println("sortvlrecfile test after  lns ", len(lns))
-	//log.Println("sortvlrecfile test after fns ", fns)
+	log.Println("dosortvlrecfile test after fns ", fns, " ", err)
 
 	for _, f := range fns {
-		//log.Println("sortvlrecfile chacking ", f)
+		log.Println("dosortvlrecfile chacking ", f)
 		mfp, err := os.Open(f)
 		if err != nil {
 			log.Fatal(err)
 		}
 		lns, _, err = merge.Vlreadn(mfp, 0, iomem*2)
-		//log.Println("sortvlrecfile test lns ", len(lns))
+		//log.Println("dosortvlrecfile test lns ", len(lns))
 
 		var slns = make([]string, 0)
 		for _, l := range lns {
@@ -70,7 +69,7 @@ func Test_sortvlrecfile(t *testing.T) {
 		nss += int64(len(lns))
 	}
 	if nrs != nss {
-		log.Fatal("sortvlrecfile test wanted ", nrs, " got ", nss)
+		log.Fatal("dosortvlrecfile test wanted ", nrs, " got ", nss)
 	}
-	log.Println("sortvlrecfile passed")
+	log.Println("dosortvlrecfile passed")
 }

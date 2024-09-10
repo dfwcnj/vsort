@@ -15,7 +15,7 @@ func flreadall(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, in
 
 	buf, err := io.ReadAll(fp)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("flreadall ", err)
 	}
 	var r io.Reader = bytes.NewReader(buf)
 
@@ -24,7 +24,7 @@ func flreadall(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, in
 		_, err := io.ReadFull(r, recbuf)
 		if err != nil {
 			if err != io.EOF {
-				log.Fatal(err)
+				log.Fatal("flreadall ", err)
 			}
 			return lns, 0, nil
 		}
@@ -42,7 +42,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int6
 
 	finf, err := fp.Stat()
 	if err != nil {
-		log.Fatal()
+		log.Fatal("flreadn stat ", err)
 	}
 	if finf.Size() <= iomem {
 		return flreadall(fp, offset, reclen, finf.Size())
@@ -55,7 +55,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int6
 		//log.Printf("flreadn %s  seeking to %d\n", fp.Name(), offset)
 		o, err := fp.Seek(offset, 0)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("flreadn seek", err)
 		}
 		if o != offset {
 			log.Fatal("flreadn seek wanted", offset, " got ", o)
@@ -66,7 +66,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int6
 		if memused >= iomem {
 			offset, err = fp.Seek(0, 1)
 			if err != nil && err != io.EOF {
-				log.Fatal(err)
+				log.Fatal("flreadn seek ", err)
 			}
 			return lns, offset, err
 		}
@@ -91,7 +91,7 @@ func vlreadall(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) 
 	var lns [][]byte
 	buf, err := io.ReadAll(fp)
 	if err != nil {
-		return lns, offset, err
+		log.Fatal("vlreadall ", err)
 	}
 	lines := strings.Split(string(buf), "\n")
 	for _, l := range lines {
@@ -111,7 +111,7 @@ func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 
 	finf, err := fp.Stat()
 	if err != nil {
-		log.Fatal()
+		log.Fatal("vlreadn stat ", err)
 	}
 	if finf.Size() <= iomem {
 		return vlreadall(fp, offset, finf.Size())
@@ -141,9 +141,9 @@ func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 		if err != nil {
 			if err == io.EOF && len(l) == 0 {
 				//log.Println("vlreadn readstring EOF ", offset)
-				return lns, int64(0), err
+				return lns, offset, err
 			}
-			log.Fatal(err)
+			log.Fatal("vlreadall readstring ", err)
 		}
 
 		bln := []byte(l)

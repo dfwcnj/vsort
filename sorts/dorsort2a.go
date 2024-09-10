@@ -4,6 +4,7 @@ package sorts
 // https://github.com/rsc/tmp/blob/master/rsort/rsort.go sortWithTmp
 // without the goto, using byte slices instead of strings
 // commented so that I can understand it better
+// rsc calls the tmp folder throwaray but the rsort directory is good
 // the rsc github directory is a great place to see an analysis of radix
 // sort compared to slices.sort.
 // if you are interested in radix sort, his three functions in rsort.go

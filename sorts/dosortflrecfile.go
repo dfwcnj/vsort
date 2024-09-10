@@ -2,11 +2,12 @@ package sorts
 
 import (
 	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/dfwcnj/govbinsort/merge"
 )
 
 func dosortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([][]byte, []string, error) {
@@ -37,26 +38,37 @@ func dosortflrecfile(fn string, dn string, stype string, reclen int, keyoff int,
 		lns, offset, err = merge.Flreadn(fp, offset, reclen, iomem)
 		log.Print("dosortflrecfile Flreadn ", len(lns), " ", offset)
 
-		if err == io.EOF && len(mfiles) == 0 {
-			log.Print("dosortflrecfile returning error ", err)
-			return lns, mfiles, err
-		}
 		if len(lns) == 0 {
-			log.Print("dosortflrecfile returning 0 len(lns)")
 			return lns, mfiles, err
 		}
 
-		log.Print("dosortflrecfile dosort2a ", len(lns))
-		dorsort2a(lns, reclen, keyoff, keylen)
-
-		if offset > 0 && len(lns) > 0 {
-			mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-			fn = merge.Savemergefile(lns, mfn, dlim)
-			if fn == "" {
-				log.Fatal("Savemergefile failed: ", fn, " ", dn)
+		log.Print("dosortflrecfile ", stype, " ", len(lns))
+		if reclen != 0 {
+			switch stype {
+			case "radix":
+				dorsort2a(lns, reclen, keyoff, keylen)
+			case "std":
+				kvslicessort(lns, reclen, keyoff, keylen)
+			default:
+				log.Fatal("dosortflrecfile stype ", stype)
 			}
-			mfiles = append(mfiles, mfn)
+		} else {
+			switch stype {
+			case "radix":
+				rsort2a(lns)
+			case "std":
+				kvslicessort(lns, 0, 0, 0)
+			default:
+				log.Fatal("dosortflrecfile stype ", stype)
+			}
 		}
+
+		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
+		fn = merge.Savemergefile(lns, mfn, dlim)
+		if fn == "" {
+			log.Fatal("Savemergefile failed: ", fn, " ", dn)
+		}
+		mfiles = append(mfiles, mfn)
 		if err == io.EOF {
 			return lns, mfiles, err
 		}

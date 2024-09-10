@@ -16,7 +16,7 @@ func Test_sortflrecfile(t *testing.T) {
 	var r bool = false
 	var e bool = false
 	var nrs int64 = 1 << 20
-	var iomem int64 = 1<<20 * 32
+	var iomem int64 = 1 << 20 * 32
 
 	var err error
 	var nr int
