@@ -16,7 +16,7 @@ func Test_Mergesort(t *testing.T) {
 
 	for _, nl := range ls {
 
-		log.Print("testing mergesort of ", nl, " random strings")
+		//log.Print("testing mergesort of ", nl, " random strings")
 		var l int = 32
 		lns := randomdata.Randomstrings(nl, l, r, e)
 		if len(lns) != int(nl) {
@@ -39,7 +39,7 @@ func Test_Mergesort(t *testing.T) {
 
 	for _, nl := range ls {
 
-		log.Print("testing mergesort of ", nl, " random uints")
+		//log.Print("testing mergesort of ", nl, " random uints")
 		lns := randomdata.Randomuints(nl, e)
 		if len(lns) != int(nl) {
 			log.Fatal("randomdata lns: wanted len ", nl, " got ", len(lns))

@@ -20,7 +20,7 @@ func Test_insertionsort(t *testing.T) {
 			var l int = ll
 			var r bool = true
 			var e bool = false
-			log.Print("testing insertionsort of ", nl, " random strings length ", l)
+			//log.Print("testing insertionsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
 				log.Fatal("insertionsort test rsl: wanted len ", nl, " got ", len(rsl))

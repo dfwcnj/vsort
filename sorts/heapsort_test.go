@@ -21,7 +21,7 @@ func Test_heapsort(t *testing.T) {
 			var l int = ll
 			var r bool = true
 			var e bool = false
-			log.Print("testing heapsort of ", nl, " random strings length ", l)
+			//log.Print("testing heapsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
 				log.Fatal("heapsort test rsl: wanted len ", nl, " got ", len(rsl))

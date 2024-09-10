@@ -15,7 +15,7 @@ func Test_flreadn(t *testing.T) {
 	var r bool = false
 	var e bool = false
 	var nrs int64 = 1 << 20
-	var iomem int64 = nrs * int64(rlen / 2)
+	var iomem int64 = nrs * int64(rlen/2)
 
 	var lns [][]byte
 	var tlns [][]byte
