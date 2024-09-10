@@ -25,7 +25,7 @@ func (pq KVSPQ) Less(i, j int) bool {
 	if pq[i].keyoff != 0 || pq[i].keylen != 0 {
 		ik := pq[i].ln[pq[i].keyoff : pq[i].keyoff+pq[i].keylen]
 		jk := pq[j].ln[pq[j].keyoff : pq[j].keyoff+pq[j].keylen]
-		log.Print("KVSPQ.Less keys ", ik, " ", jk)
+		//log.Print("KVSPQ.Less keys ", ik, " ", jk)
 		return bytes.Compare(ik, jk) < 0
 	}
 	r := bytes.Compare(pq[i].ln, pq[j].ln) < 0
@@ -127,7 +127,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 		ritem.ln, err = nextitem(*ritem)
 		if err != nil {
-			log.Println("kvpqreademit nextitem: ", err)
+			//log.Println("kvpqreademit nextitem: ", err)
 			continue
 		}
 		ritem.rlen = reclen

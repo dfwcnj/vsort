@@ -11,11 +11,11 @@ import (
 )
 
 func Test_flreadn(t *testing.T) {
-	var l int = 32
+	var rlen int = 32
 	var r bool = false
 	var e bool = false
-	var lrs int64 = 1 << 20
-	var iomem int64 = 1 << 30
+	var nrs int64 = 1 << 20
+	var iomem int64 = nrs * int64(rlen / 2)
 
 	var lns [][]byte
 	var tlns [][]byte
@@ -25,7 +25,7 @@ func Test_flreadn(t *testing.T) {
 
 	log.Println("flreadn test")
 
-	rsl := randomdata.Randomstrings(lrs, l, r, e)
+	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 	log.Println("flreadn test rsl ", len(rsl))
 
 	dn, err := initmergedir("/tmp", "rdxsort")
@@ -61,20 +61,20 @@ func Test_flreadn(t *testing.T) {
 
 	for {
 		//log.Println("flreadn test flreadn ", fn, " ", l)
-		lns, offset, err = merge.Flreadn(fp, offset, int(l), iomem)
+		lns, offset, err = merge.Flreadn(fp, offset, int(rlen), iomem)
 		if len(lns) == 0 {
 			break
 		}
 		for _, ln := range lns {
-			if len(ln) != int(l) {
+			if len(ln) != int(rlen) {
 				log.Fatal("ln ", ln, " len ", len(ln))
 			}
 			//log.Print(string(ln))
 		}
 		tlns = append(tlns, lns...)
 	}
-	if len(tlns) != int(lrs) {
-		log.Fatal("flreadn: expected ", lrs, " got ", len(lns))
+	if len(tlns) != int(nrs) {
+		log.Fatal("flreadn: expected ", nrs, " got ", len(lns))
 	}
 	log.Print("flreadn test passed")
 }

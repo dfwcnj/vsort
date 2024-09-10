@@ -3,22 +3,23 @@ package sorts
 import (
 	"bufio"
 	"fmt"
-	"github.com/dfwcnj/govbinsort/merge"
-	"github.com/dfwcnj/randomdata"
 	"log"
 	"os"
 	"path/filepath"
 	"slices"
 	"testing"
+
+	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/randomdata"
 )
 
 func Test_sortfiles(t *testing.T) {
-	var l int = 32
-	var r bool = true
+	var rlen int = 32
+	var r bool = false
 	var e bool = false
 	var nrs int64 = 1 << 20
 	//var iomem int64 = 1 << 29
-	var iomem int64 = 1<<24 + 1<<20
+	var iomem int64 = nrs * int64(rlen / 2)
 	var nmf = 10
 	var dlim string
 	dlim = "\n"
@@ -28,19 +29,19 @@ func Test_sortfiles(t *testing.T) {
 	dn, err := initmergedir("/tmp", "somesort")
 
 	var fns []string
+	log.Print("sortfiled test making files to sort")
 	for i := range nmf {
 		var lns [][]byte
 
-		rsl := randomdata.Randomstrings(nrs, l, r, e)
+		rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 		for _, s := range rsl {
 			ln := []byte(s)
 			lns = append(lns, ln)
 		}
 		if len(lns) != int(nrs) {
-			log.Fatal("sortfiles test before sort wanted len ", l, " got ", len(lns))
+			log.Fatal("sortfiles test before sort wanted len ", nrs, " got ", len(lns))
 		}
 
-		dorsort2a(lns, 0, 0, 0)
 		var fn = filepath.Join(dn, fmt.Sprint("sortfilestest", i))
 		//log.Println("saving file", i)
 		merge.Savemergefile(lns, fn, dlim)

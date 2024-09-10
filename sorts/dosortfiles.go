@@ -1,6 +1,7 @@
 package sorts
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"log"
@@ -35,13 +36,14 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 		}
 		defer fp.Close()
 	}
+	nw := bufio.NewWriter(fp)
 
 	if len(fns) == 0 {
 		log.Println("sortfiles stdin ", reclen)
 		if reclen != 0 {
 			lns, mfiles, err = dosortflrecfile("", "", stype, reclen, keyoff, keylen, iomem)
 		} else {
-			lns, mfiles, err = dosortvlrecfile("", "", stype, reclen, keyoff, keylen, iomem)
+			lns, mfiles, err = dosortvlrecfile("", "", stype, iomem)
 		}
 		if err != nil && err != io.EOF {
 			log.Fatal("sortfiles after sort ", err)
@@ -53,10 +55,15 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 
 		for _, ln := range lns {
 
-			_, err := fp.Write(ln)
+			//_, err := fp.Write(ln)
+			_, err := nw.WriteString(string(ln))
 			if err != nil {
-				log.Fatal("sortfiles writing ", err)
+				log.Fatal("sortfiles writestring ", err)
 			}
+		}
+		err := nw.Flush()
+		if err != nil {
+			log.Fatal("sortfiles flush ", err)
 		}
 
 		return
@@ -70,7 +77,7 @@ func DoSortfiles(fns []string, ofn string, dn string, stype string, reclen int, 
 		if reclen != 0 {
 			lns, mfns, err = dosortflrecfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		} else {
-			lns, mfns, err = dosortvlrecfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
+			lns, mfns, err = dosortvlrecfile(fn, dn, stype, iomem)
 		}
 		if err != nil && err != io.EOF {
 			log.Fatal("sortfiles after sort ", err)

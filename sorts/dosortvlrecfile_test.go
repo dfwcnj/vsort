@@ -13,12 +13,12 @@ import (
 )
 
 func Test_dosortvlrecfile(t *testing.T) {
-	var l int = 32
+	var rlen int = 32
 	var r bool = true
 	var e bool = false
 	var nrs int64 = 1 << 20
 	var nss int64
-	var iomem int64 = 1<<24 + 1<<20
+	var iomem int64 = nrs * int64(rlen / 2)
 
 	var lns [][]byte
 	var err error
@@ -28,7 +28,7 @@ func Test_dosortvlrecfile(t *testing.T) {
 
 	log.Println("dosortvlrecfile test")
 
-	rsl := randomdata.Randomstrings(nrs, l, r, e)
+	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 
 	fn := path.Join(dn, "dosortvlrecfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
@@ -44,9 +44,11 @@ func Test_dosortvlrecfile(t *testing.T) {
 		}
 		nr++
 	}
+	nw.Flush()
+	fp.Close()
 	log.Print("dosortvlrecfile test file ", fn)
 
-	_, fns, err := dosortvlrecfile(fn, dn, "std", 0, 0, 0, iomem)
+	_, fns, err := dosortvlrecfile(fn, dn, "std", iomem)
 
 	log.Println("dosortvlrecfile test after fns ", fns, " ", err)
 

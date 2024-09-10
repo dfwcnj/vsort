@@ -36,31 +36,20 @@ func dosortflrecfile(fn string, dn string, stype string, reclen int, keyoff int,
 	for {
 
 		lns, offset, err = merge.Flreadn(fp, offset, reclen, iomem)
-		log.Print("dosortflrecfile Flreadn ", len(lns), " ", offset)
+		//log.Print("dosortflrecfile Flreadn ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
 		}
 
-		log.Print("dosortflrecfile ", stype, " ", len(lns))
-		if reclen != 0 {
-			switch stype {
-			case "radix":
-				dorsort2a(lns, reclen, keyoff, keylen)
-			case "std":
-				kvslicessort(lns, reclen, keyoff, keylen)
-			default:
-				log.Fatal("dosortflrecfile stype ", stype)
-			}
-		} else {
-			switch stype {
-			case "radix":
-				rsort2a(lns)
-			case "std":
-				kvslicessort(lns, 0, 0, 0)
-			default:
-				log.Fatal("dosortflrecfile stype ", stype)
-			}
+		//log.Print("dosortflrecfile ", stype, " ", len(lns))
+		switch stype {
+		case "radix":
+			dorsort2a(lns, reclen, keyoff, keylen)
+		case "std":
+			kvslicessort(lns, reclen, keyoff, keylen)
+		default:
+			log.Fatal("dosortflrecfile stype ", stype)
 		}
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))

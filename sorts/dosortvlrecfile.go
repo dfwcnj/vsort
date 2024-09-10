@@ -11,14 +11,12 @@ import (
 )
 
 // sort variable lengh records file
-func dosortvlrecfile(fn string, dn string, stype string, reclen int,
-	keyoff int, keylen int, iomem int64) ([][]byte, []string, error) {
+func dosortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, []string, error) {
 	var offset int64
 	var lns [][]byte
 	var err error
 	var i int
-	var dlim string
-	dlim = ""
+	dlim := "\n"
 	var mfiles []string
 
 	fp := os.Stdin
@@ -38,43 +36,33 @@ func dosortvlrecfile(fn string, dn string, stype string, reclen int,
 
 	for {
 		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
-		log.Print("dosortverecfile ", len(lns), " ", offset)
+		//log.Print("dosortverecfile ", len(lns), " ", offset, " ", err)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
 		}
 
-		log.Print("dosortflrecfile ", stype, " ", len(lns))
-		if reclen != 0 {
-			switch stype {
-			case "radix":
-				dorsort2a(lns, reclen, keyoff, keylen)
-			case "std":
-				kvslicessort(lns, reclen, keyoff, keylen)
-			default:
-				log.Fatal("dosortflrecfile stype ", stype)
-			}
-		} else {
-			switch stype {
-			case "radix":
-				rsort2a(lns)
-			case "std":
-				kvslicessort(lns, 0, 0, 0)
-			default:
-				log.Fatal("dosortflrecfile stype ", stype)
-			}
+		//log.Print("dosortflrecfile ", stype, " ", len(lns))
+		switch stype {
+		case "radix":
+			rsort2a(lns)
+		case "std":
+			kvslicessort(lns, 0, 0, 0)
+		default:
+			log.Fatal("dosortflrecfile stype ", stype)
 		}
+		//log.Print("dosortvlrecfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		log.Println("sortvlrecfile save file name ", mfn)
+		//log.Println("sortvlrecfile save file name ", mfn)
 		f := merge.Savemergefile(lns, mfn, dlim)
 		if f == "" {
 			log.Fatal("dosortvlrecfile Savemergefile failed: ", mfn, " ", dn)
 		}
 		mfiles = append(mfiles, mfn)
-		log.Println("dosortvlrecfile Savemergefile ", mfn)
+		//log.Println("dosortvlrecfile Savemergefile ", mfn)
 		if err == io.EOF {
-			log.Print("dosortvlrecfile return on EOF")
+			//log.Print("dosortvlrecfile return on EOF")
 			return lns, mfiles, err
 		}
 		i++
