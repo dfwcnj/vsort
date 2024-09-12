@@ -137,8 +137,13 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
 	}
+	err := os.Sync()
+	if err != nil {
+		log.Fatal("kvpqreademit sync", err)
+	}
 	err := nw.Flush()
 	if err != nil {
 		log.Fatal("kvpqreademit flush", err)
 	}
+
 }
