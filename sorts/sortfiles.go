@@ -22,7 +22,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 	}
 	//log.Printf("sortfiles ofn %s\n", ofn)
 	if len(dn) == 0 {
-		dn, err = initmergedir("", "somesort")
+		dn, err = initmergedir("/tmp", "vsort")
 		if err != nil {
 			log.Fatal("Sortfiles initmergedir ", err)
 		}

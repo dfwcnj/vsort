@@ -25,7 +25,7 @@ func Test_sortfiles(t *testing.T) {
 
 	log.Print("sortfiles test")
 
-	dn, err := initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "vsort")
 	if err != nil {
 		log.Fatal("sortfile test initmergedir ", err)
 	}

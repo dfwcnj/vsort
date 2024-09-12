@@ -20,7 +20,7 @@ func Test_savemergefile(t *testing.T) {
 	dlim := "\n"
 
 	//log.Print("savemergefile test")
-	dn, err := initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "vsort")
 	if err != nil {
 		log.Fatal(err)
 	}

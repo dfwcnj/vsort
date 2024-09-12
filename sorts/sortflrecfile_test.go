@@ -21,7 +21,7 @@ func Test_sortflrecfile(t *testing.T) {
 	var err error
 	var nr int
 
-	dn, err := initmergedir("/tmp", "somesort")
+	dn, err := initmergedir("/tmp", "vsort")
 
 	//log.Print("sortflrecfile test")
 
