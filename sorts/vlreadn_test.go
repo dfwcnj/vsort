@@ -20,11 +20,11 @@ func Test_vlreadn(t *testing.T) {
 
 	var lns [][]byte
 
-	log.Print("vlreadn test")
+	//log.Print("vlreadn test")
 
 	dn, err := initmergedir("/tmp", "rdxsort")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("vlreadn test initmergedir ", err)
 	}
 	defer os.RemoveAll(dn)
 
@@ -33,7 +33,7 @@ func Test_vlreadn(t *testing.T) {
 	fn := path.Join(dn, "vlreadn")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("vlreadn test open ", err)
 	}
 	defer fp.Close()
 
@@ -44,17 +44,17 @@ func Test_vlreadn(t *testing.T) {
 
 	_, err = fp.Seek(0, 0)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("vlreadn test seek ", err)
 	}
 	lns, _, err = merge.Vlreadn(fp, int64(0), iomem)
 	for _, ln := range lns {
 		if len(ln) == 0 {
-			log.Fatal("vlreadn len(ln) == 0")
+			log.Fatal("vlreadn test len(ln) == 0")
 		}
 		//log.Print(string(ln))
 	}
 	if len(lns) != int(nrs) {
-		log.Fatal("vlreadn: expected ", nrs, " got ", len(lns))
+		t.Error("vlreadn: expected ", nrs, " got ", len(lns))
 	}
 	log.Print("vlreadn test passed")
 }

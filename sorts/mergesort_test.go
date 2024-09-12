@@ -20,13 +20,13 @@ func Test_Mergesort(t *testing.T) {
 		var l int = 32
 		lns := randomdata.Randomstrings(nl, l, r, e)
 		if len(lns) != int(nl) {
-			log.Fatal("randomdata lns: wanted len ", nl, " got ", len(lns))
+			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
 
 		slns := Mergesort(lns)
 
 		if len(slns) != int(nl) {
-			log.Fatal("mergesort slns: wanted len ", nl, " got ", len(slns))
+			log.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
 		}
 
 		if !slices.IsSorted(slns) {
@@ -42,13 +42,13 @@ func Test_Mergesort(t *testing.T) {
 		//log.Print("testing mergesort of ", nl, " random uints")
 		lns := randomdata.Randomuints(nl, e)
 		if len(lns) != int(nl) {
-			log.Fatal("randomdata lns: wanted len ", nl, " got ", len(lns))
+			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
 
 		slns := Mergesort(lns)
 
 		if len(slns) != int(nl) {
-			log.Fatal("mergesort slns: wanted len ", nl, " got ", len(slns))
+			log.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
 		}
 
 		if !slices.IsSorted(slns) {

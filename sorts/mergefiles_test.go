@@ -22,11 +22,11 @@ func Test_mergefiles(t *testing.T) {
 	var nmf = 10
 	var fns []string
 
-	log.Print("mergefiles test")
+	// log.Print("mergefiles test")
 
 	dn, err := initmergedir("/tmp", "somesort")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("mergefiles test initmergedir ", err)
 	}
 	defer os.RemoveAll(dn)
 
@@ -56,7 +56,7 @@ func Test_mergefiles(t *testing.T) {
 
 	mfp, err := os.Open(mpath)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("mergefiles test open ", err)
 	}
 	defer mfp.Close()
 
@@ -67,10 +67,10 @@ func Test_mergefiles(t *testing.T) {
 		mlns = append(mlns, l)
 	}
 	if len(mlns) != int(nrs)*nmf {
-		log.Fatal(mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+		log.Fatal("mergefiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 	}
 	if !slices.IsSorted(mlns) {
-		log.Fatal("lines in ", mpath, " not in sort order")
+		t.Error("mergefiles test ", mpath, " not in sort order")
 	}
 	log.Print("mergefiles test passed")
 

@@ -23,10 +23,10 @@ func Test_flreadn(t *testing.T) {
 	var err error
 	var nr int
 
-	log.Println("flreadn test")
+	// log.Print("flreadn test")
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
-	log.Println("flreadn test rsl ", len(rsl))
+	// log.Print("flreadn test rsl ", len(rsl))
 
 	dn, err := initmergedir("/tmp", "rdxsort")
 	if err != nil {
@@ -74,7 +74,7 @@ func Test_flreadn(t *testing.T) {
 		tlns = append(tlns, lns...)
 	}
 	if len(tlns) != int(nrs) {
-		log.Fatal("flreadn: expected ", nrs, " got ", len(lns))
+		t.Error("flreadn failed  expected ", nrs, " got ", len(lns))
 	}
 	log.Print("flreadn test passed")
 }

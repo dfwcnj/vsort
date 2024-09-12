@@ -22,7 +22,7 @@ func Test_rsortsl(t *testing.T) {
 			var l int = ll
 			var r bool = true
 			var e bool = false
-			log.Print("testing rsortsl of ", nl, " random strings length ", l)
+			//log.Print("testing rsortsl of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
 				log.Fatal("rsortsl test rsl: wanted len ", nl, " got ", len(rsl))
@@ -32,12 +32,10 @@ func Test_rsortsl(t *testing.T) {
 				lns = append(lns, bln)
 			}
 			if len(lns) != int(nl) {
-				log.Print(lns)
 				log.Fatal("rsortsl test lns: before rsortsl wanted len ", nl, " got ", len(lns))
 			}
 			slns := rsortsl(lns, 0)
 			if len(slns) != int(nl) {
-				//log.Print(ulns)
 				log.Fatal("rsortsl test ulns: after rsortsl wanted len ", nl, " got ", len(slns))
 			}
 			var ssl []string
@@ -46,7 +44,7 @@ func Test_rsortsl(t *testing.T) {
 			}
 
 			if !slices.IsSorted(ssl) {
-				log.Fatal("rsortsl test failed for size ", nl)
+				t.Error("rsortsl test failed for size ", nl)
 			} else {
 				log.Print("rsortsl test passed for ", nl)
 			}

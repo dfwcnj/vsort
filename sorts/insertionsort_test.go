@@ -27,7 +27,7 @@ func Test_insertionsort(t *testing.T) {
 			}
 			Insertionsort(rsl)
 			if !slices.IsSorted(rsl) {
-				log.Fatal("insertionsort test failed for size ", nl)
+				t.Error("insertionsort test failed for size ", nl)
 			} else {
 				log.Print("insertionsort test passed for ", nl)
 			}

@@ -23,7 +23,7 @@ func Test_rsort2a(t *testing.T) {
 			var l int = ll
 			var r bool = true
 			var e bool = false
-			log.Print("testing rsort2a of ", nl, " random strings length ", l)
+			//log.Print("testing rsort2a of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
 				log.Fatal("rsort2a test rsl: wanted len ", nl, " got ", len(rsl))
@@ -33,12 +33,10 @@ func Test_rsort2a(t *testing.T) {
 				lns = append(lns, bln)
 			}
 			if len(lns) != int(nl) {
-				log.Print(lns)
 				log.Fatal("rsort2a test lns: before rsort2a wanted len ", nl, " got ", len(lns))
 			}
 			rsort2a(lns)
 			if len(lns) != int(nl) {
-				//log.Print(ulns)
 				log.Fatal("rsort2a test ulns: after rsort2a wanted len ", nl, " got ", len(lns))
 			}
 			var ssl []string
@@ -47,12 +45,12 @@ func Test_rsort2a(t *testing.T) {
 			}
 
 			if !slices.IsSorted(ssl) {
-				log.Fatal("rsort2a test failed for size ", nl)
+				t.Error("rsort2a test failed for size ", nl)
 			} else {
 				log.Print("rsort2a test passed for ", nl)
 			}
 
-			log.Print("testing rsort2a of ", nl, " random uints")
+			//log.Print("testing rsort2a of ", nl, " random uints")
 			ulns := randomdata.Randomuints(nl, e)
 			if len(ulns) != int(nl) {
 				log.Fatal("rsort2a test rui: wanted len ", nl, " got ", len(lns))
@@ -65,7 +63,6 @@ func Test_rsort2a(t *testing.T) {
 			}
 			rsort2a(lns)
 			if len(lns) != int(nl) {
-				//log.Print(ulns)
 				log.Fatal("rsort2a test ulns: after rsort2a wanted len ", nl, " got ", len(lns))
 			}
 			ulns = ulns[:0]
@@ -78,7 +75,7 @@ func Test_rsort2a(t *testing.T) {
 				log.Fatal("rsort2a test ssl: wanted len ", nl, " got ", len(ulns))
 			}
 			if !slices.IsSorted(ulns) {
-				log.Fatal("rsort2a test failed for size ", nl)
+				t.Error("rsort2a test failed for size ", nl)
 			} else {
 				log.Print("rsort2a test passed for ", nl)
 			}

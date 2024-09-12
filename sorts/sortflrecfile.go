@@ -53,9 +53,9 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 		}
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		fn = merge.Savemergefile(lns, mfn, dlim)
-		if fn == "" {
-			log.Fatal("Savemergefile failed: ", fn, " ", dn)
+		f := merge.Savemergefile(lns, mfn, dlim)
+		if f != mfn {
+			log.Fatal("Savemergefile failed: ", f, " ", dn)
 		}
 		mfiles = append(mfiles, mfn)
 		if err == io.EOF {

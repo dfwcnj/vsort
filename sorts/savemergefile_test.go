@@ -19,7 +19,7 @@ func Test_savemergefile(t *testing.T) {
 	var nrs int64 = 1 << 20
 	dlim := "\n"
 
-	log.Print("savemergefile test")
+	//log.Print("savemergefile test")
 	dn, err := initmergedir("/tmp", "somesort")
 	if err != nil {
 		log.Fatal(err)
@@ -38,7 +38,6 @@ func Test_savemergefile(t *testing.T) {
 		rsort2a(lns)
 
 		if len(lns) != int(nrs) {
-			//log.Print(lns)
 			log.Fatal("savemergefile test lns: before sort wanted len ", rlen, " got ", len(lns))
 		}
 
@@ -62,7 +61,7 @@ func Test_savemergefile(t *testing.T) {
 			rlns = append(rlns, l)
 		}
 		if len(rlns) != int(nrs) {
-			log.Fatal("savemergefile test failed rlns wanted ", nrs, " got ", len(rlns))
+			t.Error("savemergefile test failed rlns wanted ", nrs, " got ", len(rlns))
 		}
 	}
 	log.Print("savemergefile test passed")

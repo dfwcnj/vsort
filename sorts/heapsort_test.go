@@ -29,6 +29,7 @@ func Test_heapsort(t *testing.T) {
 			Heapsort(rsl)
 			//floyd(rsl)
 			if !slices.IsSorted(rsl) {
+				t.Error("heapsort test failed not sorted")
 			} else {
 				log.Print("heapsort test passed for ", nl)
 			}

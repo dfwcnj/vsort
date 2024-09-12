@@ -23,7 +23,7 @@ func Test_sortflrecfile(t *testing.T) {
 
 	dn, err := initmergedir("/tmp", "somesort")
 
-	log.Println("sortflrecfile test")
+	//log.Print("sortflrecfile test")
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 
@@ -40,9 +40,13 @@ func Test_sortflrecfile(t *testing.T) {
 	}
 	nw.Flush()
 	fp.Close()
-	log.Print("sortflrecfile test ", fn)
+	//log.Print("sortflrecfile test ", fn)
 
-	_, fns, err := sortflrecfile(fn, dn, "std", rlen, 0, 0, iomem)
+	lns, fns, err := sortflrecfile(fn, dn, "std", rlen, 0, 0, iomem)
+	if len(lns) != 0 {
+		log.Fatal("sortflrecfile test lns ", len(lns))
+	}
+	//log.Print("sortflrecfile test fns ", fns)
 
 	var nss int
 	for _, f := range fns {
@@ -60,13 +64,13 @@ func Test_sortflrecfile(t *testing.T) {
 			lns = append(lns, string(s))
 		}
 		if slices.IsSorted(lns) == false {
-			log.Fatal(f, " is not sorted")
+			t.Error(f, " is not sorted")
 		}
 		nss += int(len(lns))
 	}
 	if nrs != int64(nss) {
-		log.Fatal("sortflrecfile test wanted ", nrs, " got ", nss)
+		t.Error("sortflrecfile test wanted ", nrs, " got ", nss)
 	}
-	log.Println("sortflrecfile passed")
+	log.Print("sortflrecfile passed")
 
 }
