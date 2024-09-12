@@ -5,6 +5,7 @@ import (
 	"log"
 	"os/exec"
 	"strconv"
+	"strings"
 )
 
 func filelinecount(fn string) int64 {
@@ -21,7 +22,9 @@ func filelinecount(fn string) int64 {
 	if err != nil {
 		log.Fatal("sortfiles test filelinecount read ", err)
 	}
-	i, err := strconv.ParseInt(string(r), 10, 64)
+	rsl := strings.Split(string(r), " ")
+	//log.Print(rsl)
+	i, err := strconv.ParseInt(rsl[1], 10, 64)
 	if err != nil {
 		log.Fatal("sortfiles test filelinecount parse ", err)
 	}
