@@ -92,6 +92,7 @@ func nextitem(itm kvritem) ([]byte, error) {
 
 func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {
 
+	log.Print("kvpqreademit merging ", fns)
 	pq := make(KVSPQ, len(fns))
 
 	var fp *os.File
