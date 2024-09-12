@@ -88,6 +88,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 	pq := make(KVSPQ, len(fns))
 
+	var fp *os.File
 	for i, fn := range fns {
 		var itm kvritem
 
@@ -112,8 +113,10 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 	}
 
 	heap.Init(&pq)
+	defer fp.Close()
 
 	nw := bufio.NewWriter(ofp)
+	defer nw.Flush()
 
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvritem)
