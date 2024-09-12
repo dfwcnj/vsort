@@ -113,12 +113,10 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 	heap.Init(&pq)
 
-	//nw := bufio.NewWriter(ofp)
-	nw := bufio.NewWriterSize(ofp, 1<<30)
+	nw := bufio.NewWriter(ofp)
 
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvritem)
-		//s := fmt.Sprintf("%s\n", string(ritem.ln))
 		s := fmt.Sprintf("%s", string(ritem.ln))
 		_, err := nw.WriteString(s)
 		if err != nil {
@@ -127,7 +125,6 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 		ritem.ln, err = nextitem(*ritem)
 		if err != nil {
-			//log.Println("kvpqreademit nextitem: ", err)
 			continue
 		}
 		ritem.rlen = reclen
