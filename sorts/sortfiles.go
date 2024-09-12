@@ -73,7 +73,6 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 		var lns [][]byte
 		var mfns []string
 
-		log.Print("sortfiles sorting ", fn, "", reclen)
 		if reclen != 0 {
 			lns, mfns, err = sortflrecfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		} else {
@@ -83,20 +82,17 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 			log.Fatal("sortfiles after sort ", err)
 		}
 		if len(mfns) > 0 {
-			log.Print("sortfiles appending ", mfns)
 			mfiles = append(mfiles, mfns...)
 			continue
 		}
 
 		mfn := fmt.Sprintf("%s", filepath.Base(fn))
 		mpath := filepath.Join(dn, mfn)
-		//log.Print("sortfiles saving merge file ", mpath)
 		var mf string
 		mf = merge.Savemergefile(lns, mpath, dlim)
 		if mf == "" {
 			log.Fatal("sortfiles Savemergefile failed ", mpath)
 		}
-		log.Print("sortfiles appending singleton ", mpath)
 		mfiles = append(mfiles, mpath)
 	}
 	//log.Println("sortfiles merging", ofn)
