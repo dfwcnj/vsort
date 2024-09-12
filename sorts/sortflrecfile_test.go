@@ -21,7 +21,10 @@ func Test_sortflrecfile(t *testing.T) {
 	var err error
 	var nr int
 
-	dn, err := initmergedir("/tmp", "vsort")
+	dn, err := initmergedir("/tmp", "sortflrecfiletest")
+	if err != nil {
+		log.Fatal("sortflrecfile test initmergedir ", err)
+	}
 
 	//log.Print("sortflrecfile test")
 
@@ -31,7 +34,7 @@ func Test_sortflrecfile(t *testing.T) {
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	nw := bufio.NewWriter(fp)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("sortflrecfile test open ", err)
 	}
 
 	for i, _ := range rsl {
@@ -52,7 +55,7 @@ func Test_sortflrecfile(t *testing.T) {
 	for _, f := range fns {
 		mfp, err := os.Open(f)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("sortflrecfile test open ", err)
 		}
 		finf, err := mfp.Stat()
 		if err != nil {
@@ -64,7 +67,7 @@ func Test_sortflrecfile(t *testing.T) {
 			lns = append(lns, string(s))
 		}
 		if slices.IsSorted(lns) == false {
-			t.Fatal(f, " is not sorted")
+			t.Fatal("sortflrecfile test ", f, " is not sorted")
 		}
 		nss += int(len(lns))
 	}

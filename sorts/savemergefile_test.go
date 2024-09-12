@@ -20,9 +20,9 @@ func Test_savemergefile(t *testing.T) {
 	dlim := "\n"
 
 	//log.Print("savemergefile test")
-	dn, err := initmergedir("/tmp", "vsort")
+	dn, err := initmergedir("/tmp", "savemergefiletest")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("savemergefile test initmergedir ", err)
 	}
 	defer os.RemoveAll(dn)
 
@@ -47,7 +47,7 @@ func Test_savemergefile(t *testing.T) {
 
 		fp, err := os.Open(fn)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("savemergefile test open ", err)
 		}
 		defer fp.Close()
 

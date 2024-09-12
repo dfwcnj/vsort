@@ -22,13 +22,13 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 	if fn != "" {
 		fp, err = os.Open(fn)
 		if err != nil {
-			log.Fatal("sortvlrecfile ", err)
+			log.Fatal("sortvlrecfile open ", err)
 		}
 	}
 	if dn == "" {
-		dn, err = initmergedir("/tmp", "vsort")
+		dn, err = initmergedir("/tmp", "sortvlrecfile")
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("sortvlrecfile initmergedir ", err)
 		}
 		// log.Println("sortvlrecfile dn ", dn)
 	}
@@ -36,7 +36,7 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 	var offset int64
 	for {
 		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
-		log.Print("sortvlrecfile vlreadn ", len(lns), " ", offset)
+		// log.Print("sortvlrecfile vlreadn ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -58,7 +58,7 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		}
 		mfiles = append(mfiles, mfn)
 		if err == io.EOF {
-			log.Print("sortvlrecfile return on EOF")
+			//log.Print("sortvlrecfile return on EOF")
 			return lns[:0], mfiles, err
 		}
 		i++

@@ -26,7 +26,7 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 		}
 	}
 	if dn == "" {
-		dn, err = initmergedir("/tmp", "vsort")
+		dn, err = initmergedir("/tmp", "sortflrecfile")
 		if err != nil {
 			log.Fatal(err)
 		}

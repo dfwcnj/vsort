@@ -23,7 +23,10 @@ func Test_sortvlrecfile(t *testing.T) {
 	var err error
 	var nr int
 
-	dn, err := initmergedir("/tmp", "vsort")
+	dn, err := initmergedir("/tmp", "sortvlrecfiletest")
+	if err != nil {
+		log.Fatal("sortvlrecfile test initmergedir ", err)
+	}
 
 	//log.Println("sortvlrecfile test")
 

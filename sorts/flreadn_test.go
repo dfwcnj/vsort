@@ -28,16 +28,16 @@ func Test_flreadn(t *testing.T) {
 	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 	// log.Print("flreadn test rsl ", len(rsl))
 
-	dn, err := initmergedir("/tmp", "rdxsort")
+	dn, err := initmergedir("/tmp", "flreadntest")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("flreadn test initmergedir ", err)
 	}
 	defer os.RemoveAll(dn)
 
 	fn := path.Join(dn, "flreadntest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("flreadn test open ", err)
 	}
 	defer fp.Close()
 
@@ -50,13 +50,13 @@ func Test_flreadn(t *testing.T) {
 	// file length
 	offset, err = fp.Seek(0, 1)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("flreadn test seek 1 ", err)
 	}
 
 	// rewind file
 	offset, err = fp.Seek(0, 0)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("flreadn test seek 0 ", err)
 	}
 
 	for {
