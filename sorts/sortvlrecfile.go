@@ -12,7 +12,6 @@ import (
 
 // sort variable lengh records file
 func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, []string, error) {
-	var offset int64
 	var lns [][]byte
 	var err error
 	var i int
@@ -35,8 +34,9 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 	}
 
 	for {
+		var offset int64
 		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
-		log.Print("sortverecfile Vlreadn ", len(lns), " ", offset, " ", err)
+		log.Print("sortverlcfile Vlreadn ", len(lns), " ", offset, " ", err)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -51,7 +51,7 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		default:
 			log.Fatal("sortflrecfile stype ", stype)
 		}
-		//log.Print("sortvlrecfile sorted ", len(lns))
+		// log.Print("sortvlrecfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
 		//log.Println("sortvlrecfile save file name ", mfn)
