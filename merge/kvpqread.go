@@ -68,7 +68,10 @@ func nextitem(itm kvritem) ([]byte, error) {
 		l, err := itm.br.ReadString('\n')
 		if err != nil {
 			// log.Println("nextitem readstring ", err)
-			return []byte(l), err
+			if err == io.EOF {
+				return []byte(l), err
+			}
+			log.Fatal("kvpqread readstring ", err)
 		}
 		// log.Print("nextitem readstring ", l)
 		ln = []byte(l)
@@ -77,7 +80,10 @@ func nextitem(itm kvritem) ([]byte, error) {
 		_, err := io.ReadFull(itm.br, ln)
 		if err != nil {
 			// log.Println("nextitem readfull ", err)
-			return ln, err
+			if err == io.EOF {
+				return ln, err
+			}
+			log.Fatal("kvpqread readfull ", err)
 		}
 	}
 
@@ -94,7 +100,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 
 		fp, err := os.Open(fn)
 		if err != nil {
-			log.Fatal("kvpqreademit open ", fn, " ", err)
+			log.Fatal("kvpqreademit setup open ", fn, " ", err)
 		}
 
 		itm.rlen = reclen
@@ -137,11 +143,11 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
 	}
-	err := os.Sync()
+	err := fp.Sync()
 	if err != nil {
 		log.Fatal("kvpqreademit sync", err)
 	}
-	err := nw.Flush()
+	err = nw.Flush()
 	if err != nil {
 		log.Fatal("kvpqreademit flush", err)
 	}
