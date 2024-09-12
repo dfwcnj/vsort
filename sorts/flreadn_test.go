@@ -74,7 +74,7 @@ func Test_flreadn(t *testing.T) {
 		tlns = append(tlns, lns...)
 	}
 	if len(tlns) != int(nrs) {
-		t.Error("flreadn failed  expected ", nrs, " got ", len(lns))
+		t.Fatal("flreadn failed  expected ", nrs, " got ", len(lns))
 	}
 	log.Print("flreadn test passed")
 }

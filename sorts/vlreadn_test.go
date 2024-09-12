@@ -49,12 +49,12 @@ func Test_vlreadn(t *testing.T) {
 	lns, _, err = merge.Vlreadn(fp, int64(0), iomem)
 	for _, ln := range lns {
 		if len(ln) == 0 {
-			log.Fatal("vlreadn test len(ln) == 0")
+			t.Fatal("vlreadn test len(ln) == 0")
 		}
 		//log.Print(string(ln))
 	}
 	if len(lns) != int(nrs) {
-		t.Error("vlreadn: expected ", nrs, " got ", len(lns))
+		t.Fatal("vlreadn: expected ", nrs, " got ", len(lns))
 	}
 	log.Print("vlreadn test passed")
 }

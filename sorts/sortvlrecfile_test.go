@@ -69,12 +69,12 @@ func Test_sortvlrecfile(t *testing.T) {
 			slns = append(slns, string(l))
 		}
 		if slices.IsSorted(slns) == false {
-			t.Error("sortvlrecfile test ", f, " is not sorted")
+			t.Fatal("sortvlrecfile test failed  ", f, " is not sorted")
 		}
 		nss += int64(len(slns))
 	}
 	if nrs != nss {
-		t.Error("sortvlrecfile test wanted ", nrs, " got ", nss)
+		t.Fatal("sortvlrecfile failed test wanted ", nrs, " got ", nss)
 	}
 	log.Print("sortvlrecfile test passed")
 }

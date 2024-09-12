@@ -23,11 +23,11 @@ func Test_insertionsort(t *testing.T) {
 			//log.Print("testing insertionsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
-				log.Fatal("insertionsort test rsl: wanted len ", nl, " got ", len(rsl))
+				t.Fatal("insertionsort test rsl: wanted len ", nl, " got ", len(rsl))
 			}
 			Insertionsort(rsl)
 			if !slices.IsSorted(rsl) {
-				t.Error("insertionsort test failed for size ", nl)
+				t.Fatal("insertionsort test failed for size ", nl)
 			} else {
 				log.Print("insertionsort test passed for ", nl)
 			}

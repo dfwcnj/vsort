@@ -67,10 +67,10 @@ func Test_mergefiles(t *testing.T) {
 		mlns = append(mlns, l)
 	}
 	if len(mlns) != int(nrs)*nmf {
-		log.Fatal("mergefiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+		t.Fatal("mergefiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 	}
 	if !slices.IsSorted(mlns) {
-		t.Error("mergefiles test ", mpath, " not in sort order")
+		t.Fatal("mergefiles test ", mpath, " not in sort order")
 	}
 	log.Print("mergefiles test passed")
 

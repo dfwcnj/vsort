@@ -33,9 +33,10 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		// log.Println("sortvlrecfile dn ", dn)
 	}
 
+	var offset int64
 	for {
-		var offset int64
 		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
+		log.Print("sortvlrecfile vlreadn ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -57,7 +58,7 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		}
 		mfiles = append(mfiles, mfn)
 		if err == io.EOF {
-			//log.Print("sortvlrecfile return on EOF")
+			log.Print("sortvlrecfile return on EOF")
 			return lns[:0], mfiles, err
 		}
 		i++

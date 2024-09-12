@@ -64,12 +64,12 @@ func Test_sortflrecfile(t *testing.T) {
 			lns = append(lns, string(s))
 		}
 		if slices.IsSorted(lns) == false {
-			t.Error(f, " is not sorted")
+			t.Fatal(f, " is not sorted")
 		}
 		nss += int(len(lns))
 	}
 	if nrs != int64(nss) {
-		t.Error("sortflrecfile test wanted ", nrs, " got ", nss)
+		t.Fatal("sortflrecfile test wanted ", nrs, " got ", nss)
 	}
 	log.Print("sortflrecfile passed")
 

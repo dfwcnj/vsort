@@ -48,11 +48,11 @@ func Test_Mergesort(t *testing.T) {
 		slns := Mergesort(lns)
 
 		if len(slns) != int(nl) {
-			log.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
+			t.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
 		}
 
 		if !slices.IsSorted(slns) {
-			t.Error("mergesort failed for size ", nl)
+			t.Fatal("mergesort failed for size ", nl)
 		} else {
 			log.Print("mergesort test passed for ", nl)
 		}

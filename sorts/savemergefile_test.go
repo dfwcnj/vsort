@@ -61,7 +61,7 @@ func Test_savemergefile(t *testing.T) {
 			rlns = append(rlns, l)
 		}
 		if len(rlns) != int(nrs) {
-			t.Error("savemergefile test failed rlns wanted ", nrs, " got ", len(rlns))
+			t.Fatal("savemergefile test failed rlns wanted ", nrs, " got ", len(rlns))
 		}
 	}
 	log.Print("savemergefile test passed")

@@ -44,7 +44,7 @@ func Test_rsortsl(t *testing.T) {
 			}
 
 			if !slices.IsSorted(ssl) {
-				t.Error("rsortsl test failed for size ", nl)
+				t.Fatal("rsortsl test failed for size ", nl)
 			} else {
 				log.Print("rsortsl test passed for ", nl)
 			}

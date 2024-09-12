@@ -24,12 +24,12 @@ func Test_heapsort(t *testing.T) {
 			//log.Print("testing heapsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
-				log.Fatal("heapsort test rsl: wanted len ", nl, " got ", len(rsl))
+				t.Fatal("heapsort test rsl: wanted len ", nl, " got ", len(rsl))
 			}
 			Heapsort(rsl)
 			//floyd(rsl)
 			if !slices.IsSorted(rsl) {
-				t.Error("heapsort test failed not sorted")
+				t.Fatal("heapsort test failed not sorted")
 			} else {
 				log.Print("heapsort test passed for ", nl)
 			}

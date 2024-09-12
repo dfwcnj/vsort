@@ -72,10 +72,10 @@ func Test_rsort2a(t *testing.T) {
 			}
 
 			if len(ulns) != int(nl) {
-				log.Fatal("rsort2a test ssl: wanted len ", nl, " got ", len(ulns))
+				t.Fatal("rsort2a test ssl: wanted len ", nl, " got ", len(ulns))
 			}
 			if !slices.IsSorted(ulns) {
-				t.Error("rsort2a test failed for size ", nl)
+				t.Fatal("rsort2a test failed for size ", nl)
 			} else {
 				log.Print("rsort2a test passed for ", nl)
 			}
