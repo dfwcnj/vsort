@@ -15,10 +15,11 @@ import (
 
 func Test_mergefiles(t *testing.T) {
 	var rlen int = 32
-	var r bool = true
+	var r bool = false
 	var e bool = false
 	var nrs int64 = 1 << 20
-	dlim := "\n"
+	dlim := ""
+
 	var nmf = 10
 	var fns []string
 

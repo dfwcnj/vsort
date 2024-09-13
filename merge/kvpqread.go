@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"container/heap"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -92,7 +91,7 @@ func nextitem(itm kvritem) ([]byte, error) {
 
 func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {
 
-	log.Print("kvpqreademit merging ", fns)
+	// log.Print("kvpqreademit merging ", fns)
 	pq := make(KVSPQ, len(fns))
 
 	var fp *os.File
@@ -128,8 +127,10 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 	var ne int64
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvritem)
-		s := fmt.Sprintf("%s", string(ritem.ln))
-		_, err := nw.WriteString(s)
+		if string(ritem.ln) == "\n" {
+			log.Fatal("kvpqreademit pop line ", string(ritem.ln))
+		}
+		_, err := nw.WriteString(string(ritem.ln))
 		if err != nil {
 			log.Fatal("kvpqreademit writestring ", err)
 		}
