@@ -1,6 +1,7 @@
 package merge
 
 import (
+	"bufio"
 	"log"
 	"os"
 )
@@ -17,15 +18,17 @@ func Savemergefile(lns [][]byte, fn string) string {
 		log.Fatal("Savemergefile open ", err)
 	}
 	defer fp.Close()
+	nw := bufio.NewWriterSize(fp, 1<<20)
 
 	for _, ln := range lns {
 
-		_, err := fp.Write(ln)
+		//_, err := fp.Write(ln)
+		_, err := nw.Write(ln)
 		if err != nil {
 			log.Fatal("Savemergefile Write ", err)
 		}
 	}
-	err = fp.Sync()
+	err = nw.Flush()
 	if err != nil {
 		log.Fatal("Savemergefile sync ", err)
 	}
