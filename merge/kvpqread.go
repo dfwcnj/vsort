@@ -10,6 +10,7 @@ import (
 )
 
 type kvritem struct {
+	fn                   string
 	ln                   []byte
 	br                   *bufio.Reader
 	rlen, keyoff, keylen int
@@ -103,6 +104,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 			log.Fatal("kvpqreademit setup open ", fn, " ", err)
 		}
 
+		itm.fn = fn
 		itm.rlen = reclen
 		itm.keyoff = keyoff
 		itm.keylen = keylen
