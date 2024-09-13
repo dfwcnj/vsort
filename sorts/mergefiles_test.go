@@ -3,6 +3,7 @@ package sorts
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,63 +16,85 @@ import (
 
 func Test_mergefiles(t *testing.T) {
 	var rlen int = 32
-	var r bool = false
+	var bools []bool = make([]bool, 0, 2)
+	bools[0] = true
+	bools[1] = false
 	var e bool = false
 	var nrs int64 = 1 << 20
-	dlim := ""
 
 	var nmf = 10
 	var fns []string
 
-	// log.Print("mergefiles test")
-
-	dn, err := initmergedir("/tmp", "mergefilestest")
-	if err != nil {
-		log.Fatal("mergefiles test initmergedir ", err)
-	}
-	defer os.RemoveAll(dn)
-
-	for i := range nmf {
-		var lns [][]byte
-
-		rsl := randomdata.Randomstrings(nrs, rlen, r, e)
-
-		for _, s := range rsl {
-			ln := []byte(s)
-			lns = append(lns, ln)
+	for _, r := range bools {
+		log.Print("mergefiles test", r)
+		dn, err := initmergedir("/tmp", "mergefilestest")
+		if err != nil {
+			log.Fatal("mergefiles test initmergedir ", err)
 		}
 
-		rsort2a(lns)
+		for i := range nmf {
+			var lns [][]byte
 
-		var fn = filepath.Join(dn, fmt.Sprint("file", i))
-		//log.Print("mergefiles test ", fn, " ", len(dlim))
-		merge.Savemergefile(lns, fn, dlim)
-		fns = append(fns, fn)
-	}
+			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 
-	mfn := "mergeout.txt"
-	mpath := filepath.Join(dn, mfn)
-	//log.Print("merge.Mergefiles ", fns)
+			for _, s := range rsl {
+				ln := []byte(s)
+				lns = append(lns, ln)
+			}
 
-	merge.Mergefiles(mpath, 0, 0, 0, fns)
+			rsort2a(lns)
 
-	mfp, err := os.Open(mpath)
-	if err != nil {
-		log.Fatal("mergefiles test open ", err)
-	}
-	defer mfp.Close()
+			var fn = filepath.Join(dn, fmt.Sprint("file", i))
+			if r == true {
+				merge.Savemergefile(lns, fn, "\n")
+			} else {
+				merge.Savemergefile(lns, fn, "")
+			}
+			fns = append(fns, fn)
+		}
 
-	scanner := bufio.NewScanner(mfp)
-	var mlns []string
-	for scanner.Scan() {
-		l := scanner.Text()
-		mlns = append(mlns, l)
-	}
-	if len(mlns) != int(nrs)*nmf {
-		t.Fatal("mergefiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
-	}
-	if !slices.IsSorted(mlns) {
-		t.Fatal("mergefiles test ", mpath, " not in sort order")
+		mfn := "mergeout.txt"
+		mpath := filepath.Join(dn, mfn)
+		//log.Print("merge.Mergefiles ", fns)
+
+		if r == true {
+			merge.Mergefiles(mpath, 0, 0, 0, fns)
+		} else {
+			merge.Mergefiles(mpath, rlen, 0, 0, fns)
+		}
+
+		mfp, err := os.Open(mpath)
+		if err != nil {
+			log.Fatal("mergefiles test open ", err)
+		}
+		defer mfp.Close()
+
+		var mlns []string
+		if r == true {
+			scanner := bufio.NewScanner(mfp)
+			for scanner.Scan() {
+				l := scanner.Text()
+				mlns = append(mlns, l)
+			}
+		} else {
+			for {
+				ln := make([]byte, rlen)
+				_, err := io.ReadFull(mfp, ln)
+				if err != nil {
+					if err == io.EOF {
+						break
+					}
+					log.Fatal("mergefiles test  readfull ", err)
+				}
+				mlns = append(mlns, string(ln))
+			}
+		}
+		if len(mlns) != int(nrs)*nmf {
+			t.Fatal("mergefiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+		}
+		if !slices.IsSorted(mlns) {
+			t.Fatal("mergefiles test ", mpath, " not in sort order")
+		}
 	}
 	log.Print("mergefiles test passed")
 

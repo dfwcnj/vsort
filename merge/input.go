@@ -126,8 +126,7 @@ func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 	}
 
 	r := io.Reader(fp)
-	//nw := bufio.NewReader(r)
-	nw := bufio.NewReaderSize(r, 1<<30)
+	nw := bufio.NewReader(r)
 
 	for {
 		if memused >= iomem {
