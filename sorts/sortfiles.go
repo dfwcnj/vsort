@@ -16,11 +16,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 	var lns [][]byte
 	var err error
 	var mfiles []string
-	var dlim string = ""
-	if reclen == 0 {
-		dlim = "\n"
-	}
-	//log.Printf("sortfiles ofn %s\n", ofn)
+	//log.Print("sortfiles ofn  ", ofn)
 	if len(dn) == 0 {
 		dn, err = initmergedir("/tmp", "sortfiles")
 		if err != nil {
@@ -89,7 +85,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 		mfn := fmt.Sprintf("%s", filepath.Base(fn))
 		mpath := filepath.Join(dn, mfn)
 		var mf string
-		mf = merge.Savemergefile(lns, mpath, dlim)
+		mf = merge.Savemergefile(lns, mpath)
 		if mf == "" {
 			log.Fatal("sortfiles Savemergefile failed ", mpath)
 		}

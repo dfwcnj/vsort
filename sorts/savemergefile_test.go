@@ -15,14 +15,14 @@ import (
 
 func Test_savemergefile(t *testing.T) {
 	var rlen int = 32
-	var bools []bool = make([]bool, 0, 2)
+	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
 	bools[1] = false
 	var e bool = false
 	var nrs int64 = 1 << 20
 
 	for _, r := range bools {
-		log.Print("savemergefile test", r)
+		log.Print("savemergefile test ", r)
 		dn, err := initmergedir("/tmp", "savemergefiletest")
 		if err != nil {
 			log.Fatal("savemergefile test initmergedir ", err)
@@ -35,6 +35,9 @@ func Test_savemergefile(t *testing.T) {
 			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 			for _, s := range rsl {
 				ln := []byte(s)
+				if r == true {
+					ln = append(ln, "\n"...)
+				}
 				lns = append(lns, ln)
 			}
 
@@ -45,12 +48,8 @@ func Test_savemergefile(t *testing.T) {
 			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
-			if r == true {
-				merge.Savemergefile(lns, fn, "\n")
-			} else {
-				merge.Savemergefile(lns, fn, "")
-			}
-			//log.Print("savemergefile test Savemergefile returned ", mf)
+
+			merge.Savemergefile(lns, fn)
 
 			fp, err := os.Open(fn)
 			if err != nil {
@@ -64,9 +63,12 @@ func Test_savemergefile(t *testing.T) {
 				for scanner.Scan() {
 					l := scanner.Text()
 					if len(l) == 0 {
-						continue
+						t.Fatal("savemergefile test text")
 					}
 					rlns = append(rlns, l)
+				}
+				if err := scanner.Err(); err != nil {
+					t.Error("savemergefile test scanner ", err)
 				}
 			} else {
 				for {

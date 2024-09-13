@@ -15,7 +15,6 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 	var lns [][]byte
 	var err error
 	var i int
-	dlim := "\n"
 	var mfiles []string
 
 	fp := os.Stdin
@@ -52,7 +51,7 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		}
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		f := merge.Savemergefile(lns, mfn, dlim)
+		f := merge.Savemergefile(lns, mfn)
 		if f != mfn {
 			log.Fatal("sortvlrecfile Savemergefile failed: ", mfn, " ", dn)
 		}

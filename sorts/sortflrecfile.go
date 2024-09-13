@@ -13,8 +13,6 @@ import (
 func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([][]byte, []string, error) {
 	var lns [][]byte
 	var err error
-	var dlim string
-	dlim = ""
 	var i int
 	var mfiles []string
 
@@ -54,7 +52,7 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 		// log.Print("sortvlrecfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		f := merge.Savemergefile(lns, mfn, dlim)
+		f := merge.Savemergefile(lns, mfn)
 		if f != mfn {
 			log.Fatal("Savemergefile failed: ", f, " ", dn)
 		}

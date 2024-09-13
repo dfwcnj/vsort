@@ -16,7 +16,7 @@ import (
 
 func Test_sortfiles(t *testing.T) {
 	var rlen int = 32
-	var bools []bool = make([]bool, 0, 2)
+	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
 	bools[1] = false
 	var e bool = false
@@ -42,6 +42,9 @@ func Test_sortfiles(t *testing.T) {
 			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 			for _, s := range rsl {
 				ln := []byte(s)
+				if r == true {
+					ln = append(ln, "\n"...)
+				}
 				lns = append(lns, ln)
 			}
 			if len(lns) != int(nrs) {
@@ -50,11 +53,7 @@ func Test_sortfiles(t *testing.T) {
 
 			var fn = filepath.Join(dn, fmt.Sprint("sortfilestest", i))
 			// log.Println("sortfiles test saving ", fn)
-			if r == true {
-				merge.Savemergefile(lns, fn, "\n")
-			} else {
-				merge.Savemergefile(lns, fn, "")
-			}
+			merge.Savemergefile(lns, fn)
 			fns = append(fns, fn)
 			tns += filelinecount(fn)
 		}
