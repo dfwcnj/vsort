@@ -77,13 +77,12 @@ func nextitem(itm kvritem) ([]byte, error) {
 		ln = []byte(l)
 	} else {
 		ln = make([]byte, itm.rlen)
-		_, err := io.ReadFull(itm.br, ln)
+		n, err := io.ReadFull(itm.br, ln)
 		if err != nil {
-			// log.Println("nextitem readfull ", err)
 			if err == io.EOF {
 				return ln, err
 			}
-			log.Fatal("kvpqread readfull ", err)
+			log.Fatal("kvpqread readfull ", itm.fn, " ", n, " ", err)
 		}
 	}
 
@@ -95,7 +94,6 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 	// log.Print("kvpqreademit merging ", fns)
 	pq := make(KVSPQ, len(fns))
 
-	var fp *os.File
 	for i, fn := range fns {
 		var itm kvritem
 
@@ -103,6 +101,7 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 		if err != nil {
 			log.Fatal("kvpqreademit setup open ", fn, " ", err)
 		}
+		defer fp.Close()
 
 		itm.fn = fn
 		itm.rlen = reclen
@@ -121,7 +120,6 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 	}
 
 	heap.Init(&pq)
-	defer fp.Close()
 
 	nw := bufio.NewWriter(ofp)
 	defer nw.Flush()

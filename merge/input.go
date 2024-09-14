@@ -90,7 +90,7 @@ func Flreadn(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int6
 func vlreadall(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 	var lns [][]byte
 	buf, err := io.ReadAll(fp)
-	if err != nil {
+	if err != nil && err != io.EOF {
 		log.Fatal("vlreadall ", err)
 	}
 	lines := strings.Split(string(buf), "\n")
@@ -138,11 +138,13 @@ func Vlreadn(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 		// Seek seens to return the buffer offset
 		offset += int64(len(l))
 		if err != nil {
-			if err == io.EOF && len(l) == 0 {
-				//log.Println("vlreadn readstring EOF ", offset)
+			if err == io.EOF {
+				if len(l) != 0 {
+					lns = append(lns, []byte(l))
+				}
 				return lns, offset, err
 			}
-			log.Fatal("vlreadall readstring ", err)
+			log.Fatal("vlreadn readstring ", err)
 		}
 
 		bln := []byte(l)

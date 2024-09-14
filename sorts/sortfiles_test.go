@@ -25,12 +25,11 @@ func Test_sortfiles(t *testing.T) {
 	var nmf = 10
 
 	for _, r := range bools {
-		log.Print("mergefiles test", r)
-		log.Print("sortfiles test")
+		log.Print("sortfiles test ", r)
 
 		dn, err := initmergedir("/tmp", "sortfilestest")
 		if err != nil {
-			log.Fatal("sortfile test initmergedir ", err)
+			log.Fatal("sortfiles test initmergedir ", err)
 		}
 
 		var fns []string
@@ -44,6 +43,9 @@ func Test_sortfiles(t *testing.T) {
 				ln := []byte(s)
 				if r == true {
 					ln = append(ln, "\n"...)
+					if len(ln) != len(s)+1 {
+						log.Fatal("sortfiles test ", len(s), " ", len(ln))
+					}
 				}
 				lns = append(lns, ln)
 			}
@@ -52,12 +54,17 @@ func Test_sortfiles(t *testing.T) {
 			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("sortfilestest", i))
-			// log.Println("sortfiles test saving ", fn)
+			log.Println("sortfiles test saving ", fn)
 			merge.Savemergefile(lns, fn)
 			fns = append(fns, fn)
-			tns += filelinecount(fn)
+			if r == true {
+				tns += filelinecount(fn)
+			} else {
+				tns += filereccount(fn, rlen)
+			}
 		}
-		log.Print("sortfiles test test files line count ", tns)
+
+		log.Print("sortfiles test test files record count ", tns)
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
@@ -85,7 +92,7 @@ func Test_sortfiles(t *testing.T) {
 					if err == io.EOF {
 						break
 					}
-					log.Fatal("mergefiles test  readfull ", err)
+					log.Fatal("sortfiles test  readfull ", err)
 				}
 				mlns = append(mlns, string(ln))
 			}

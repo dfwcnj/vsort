@@ -23,14 +23,15 @@ func Test_mergefiles(t *testing.T) {
 	var nrs int64 = 1 << 20
 
 	var nmf = 10
-	var fns []string
 
 	for _, r := range bools {
 		log.Print("mergefiles test ", r)
+		var fns []string
 		dn, err := initmergedir("/tmp", "mergefilestest")
 		if err != nil {
 			log.Fatal("mergefiles test initmergedir ", err)
 		}
+		log.Print("mergefiles test initmergedir ", dn)
 
 		for i := range nmf {
 			var lns [][]byte
@@ -39,16 +40,16 @@ func Test_mergefiles(t *testing.T) {
 
 			for _, s := range rsl {
 				ln := []byte(s)
-                                if r == true {
-                                ln = append(ln, `\n`)
-                                }
+				if r == true {
+					ln = append(ln, "\n"...)
+				}
 				lns = append(lns, ln)
 			}
 
 			rsort2a(lns)
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
-			merge.Savemergefile(lns)
+			merge.Savemergefile(lns, fn)
 			fns = append(fns, fn)
 		}
 

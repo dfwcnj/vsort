@@ -18,7 +18,7 @@ func Savemergefile(lns [][]byte, fn string) string {
 		log.Fatal("Savemergefile open ", err)
 	}
 	defer fp.Close()
-	nw := bufio.NewWriterSize(fp, 1<<20)
+	nw := bufio.NewWriterSize(fp, 1<<16)
 
 	for _, ln := range lns {
 
