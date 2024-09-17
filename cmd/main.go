@@ -69,5 +69,5 @@ func main() {
 	if iomem != "" {
 		iom = parseiomem(iomem)
 	}
-	sorts.DoSortfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+	sorts.Sortfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 }
