@@ -1,9 +1,7 @@
 package sorts
 
 import (
-	"bufio"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -22,16 +20,17 @@ func Test_savemergefile(t *testing.T) {
 	var nrs int64 = 1 << 20
 
 	for _, r := range bools {
+
 		log.Print("savemergefile test ", r)
 		dn, err := initmergedir("/tmp", "savemergefiletest")
 		if err != nil {
 			log.Fatal("savemergefile test initmergedir ", err)
 		}
 		defer os.RemoveAll(dn)
+		//log.Print("savemergeگile test initmergedir ", dn)
 
 		for i := range 10 {
 			var lns [][]byte
-
 			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 			for _, s := range rsl {
 				ln := []byte(s)
@@ -50,43 +49,17 @@ func Test_savemergefile(t *testing.T) {
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
 
 			merge.Savemergefile(lns, fn)
+			//log.Print("savemergefile test ", fn)
 
-			fp, err := os.Open(fn)
-			if err != nil {
-				log.Fatal("savemergefile test open ", err)
-			}
-			defer fp.Close()
-
-			var rlns []string
+			var nl int64
 			if r == true {
-				scanner := bufio.NewScanner(fp)
-				for scanner.Scan() {
-					l := scanner.Text()
-					if len(l) == 0 {
-						t.Fatal("savemergefile test text")
-					}
-					rlns = append(rlns, l)
-				}
-				if err := scanner.Err(); err != nil {
-					t.Error("savemergefile test scanner ", err)
-				}
+				nl = filelinecount(fn)
 			} else {
-				for {
-					for {
-						ln := make([]byte, rlen)
-						_, err := io.ReadFull(fp, ln)
-						if err != nil {
-							if err == io.EOF {
-								break
-							}
-							log.Fatal("mergefiles test  readfull ", err)
-						}
-						rlns = append(rlns, string(ln))
-					}
-				}
+				nl = filereccount(fn, rlen)
 			}
-			if len(rlns) != int(nrs) {
-				t.Fatal("savemergefile test failed rlns wanted ", nrs, " got ", len(rlns))
+
+			if nl != nrs {
+				t.Fatal("savemergefile test failed rlns wanted ", nrs, " got ", nl)
 			}
 		}
 	}
