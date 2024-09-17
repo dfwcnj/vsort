@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func Test_Mergesort(t *testing.T) {
+func Test_gmergesort(t *testing.T) {
 
 	var r bool = true
 	var e bool = false
@@ -23,7 +23,7 @@ func Test_Mergesort(t *testing.T) {
 			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
 
-		slns := Mergesort(lns)
+		slns := gmergesort(lns)
 
 		if len(slns) != int(nl) {
 			log.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
@@ -45,7 +45,7 @@ func Test_Mergesort(t *testing.T) {
 			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
 
-		slns := Mergesort(lns)
+		slns := gmergesort(lns)
 
 		if len(slns) != int(nl) {
 			t.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))

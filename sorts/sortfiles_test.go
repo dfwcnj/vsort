@@ -31,9 +31,10 @@ func Test_sortfiles(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortfiles test initmergedir ", err)
 		}
+		//log.Print("sortfiles test initmergedir ", dn)
 
 		var fns []string
-		log.Print("sortfiles test making ", nmf, " files to sort")
+		//log.Print("sortfiles test making ", nmf, " files to sort")
 		var tns int64
 		for i := range nmf {
 			var lns [][]byte
@@ -43,9 +44,6 @@ func Test_sortfiles(t *testing.T) {
 				ln := []byte(s)
 				if r == true {
 					ln = append(ln, "\n"...)
-					if len(ln) != len(s)+1 {
-						log.Fatal("sortfiles test ", len(s), " ", len(ln))
-					}
 				}
 				lns = append(lns, ln)
 			}
@@ -54,7 +52,7 @@ func Test_sortfiles(t *testing.T) {
 			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("sortfilestest", i))
-			log.Println("sortfiles test saving ", fn)
+			//log.Println("sortfiles test saving ", fn)
 			merge.Savemergefile(lns, fn)
 			fns = append(fns, fn)
 			if r == true {
@@ -64,12 +62,16 @@ func Test_sortfiles(t *testing.T) {
 			}
 		}
 
-		log.Print("sortfiles test test files record count ", tns)
+		// log.Print("sortfiles test test files record count ", tns)
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
 
-		Sortfiles(fns, mpath, "", "std", 0, 0, 0, iomem)
+		if r == true {
+			Sortfiles(fns, mpath, "", "std", 0, 0, 0, iomem)
+		} else {
+			Sortfiles(fns, mpath, "", "std", rlen, 0, 0, iomem)
+		}
 
 		mfp, err := os.Open(mpath)
 		if err != nil {
@@ -101,7 +103,7 @@ func Test_sortfiles(t *testing.T) {
 			t.Fatal("sortfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 		}
 		if !slices.IsSorted(mlns) {
-			t.Fatal("sortfiles test lines in ", mfn, " not in sort order")
+			t.Fatal("sortfiles test lines in ", mpath, " not in sort order")
 		}
 	}
 	log.Print("sortfiles test passed")

@@ -22,6 +22,7 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 		if err != nil {
 			log.Fatal("Sortfiles initmergedir ", err)
 		}
+		//log.Print("Sortfiles initmergedir ", dn)
 	}
 
 	fp := os.Stdout
@@ -92,5 +93,6 @@ func Sortfiles(fns []string, ofn string, dn string, stype string, reclen int, ke
 		mfiles = append(mfiles, mpath)
 	}
 	//log.Println("sortfiles merging", ofn)
+	//log.Println("sortfiles merging", reclen, " ", mfiles)
 	merge.Mergefiles(ofn, reclen, keyoff, keylen, mfiles)
 }

@@ -82,7 +82,7 @@ func nextitem(itm kvritem) ([]byte, error) {
 			if err == io.EOF {
 				return ln, err
 			}
-			log.Fatal("kvpqread readfull ", itm.fn, " ", n, " ", err)
+			log.Fatal("kvpqread readfull ", n, " ", err)
 		}
 	}
 
@@ -139,9 +139,9 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 		if err != nil {
 			continue
 		}
-		ritem.rlen = reclen
-		ritem.keyoff = keyoff
-		ritem.keylen = keylen
+		//ritem.rlen = reclen
+		//ritem.keyoff = keyoff
+		//ritem.keylen = keylen
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
@@ -151,6 +151,6 @@ func kvpqreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string
 	if err != nil {
 		log.Fatal("kvpqreademit flush ", err)
 	}
-	log.Print("kvpqreademit lines written ", ne)
+	//log.Print("kvpqreademit lines written ", ne)
 
 }

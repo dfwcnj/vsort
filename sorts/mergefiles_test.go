@@ -31,7 +31,7 @@ func Test_mergefiles(t *testing.T) {
 		if err != nil {
 			log.Fatal("mergefiles test initmergedir ", err)
 		}
-		log.Print("mergefiles test initmergedir ", dn)
+		//log.Print("mergefiles test initmergedir ", dn)
 
 		for i := range nmf {
 			var lns [][]byte
@@ -55,7 +55,7 @@ func Test_mergefiles(t *testing.T) {
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
-		log.Print("merge.Mergefiles ", fns)
+		//log.Print("merge.Mergefiles ", fns)
 
 		if r == true {
 			merge.Mergefiles(mpath, 0, 0, 0, fns)
@@ -69,7 +69,7 @@ func Test_mergefiles(t *testing.T) {
 		}
 		defer mfp.Close()
 
-		log.Print("counting merged records")
+		//log.Print("counting merged records")
 		var mlns []string
 		if r == true {
 			scanner := bufio.NewScanner(mfp)

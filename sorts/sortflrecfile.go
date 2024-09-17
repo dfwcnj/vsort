@@ -16,6 +16,8 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 	var i int
 	var mfiles []string
 
+	//log.Print("sortflrecfile ", fn, " ", dn)
+
 	fp := os.Stdin
 	if fn != "" {
 		fp, err = os.Open(fn)
@@ -26,8 +28,9 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 	if dn == "" {
 		dn, err = initmergedir("/tmp", "sortflrecfile")
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("sortflrecfile initmergedir ", err)
 		}
+		//log.Print("sortflrecfile initmergedir ", dn)
 	}
 
 	for {
@@ -42,6 +45,12 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 
 		//log.Print("sortflrecfile ", stype, " ", len(lns))
 		switch stype {
+		case "heap":
+			kvheapsort(lns, reclen, keyoff, keylen)
+		case "insertion":
+			kvinsertionsort(lns, reclen, keyoff, keylen)
+		case "merge":
+			kvmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
 			kvrsort2a(lns, reclen, keyoff, keylen)
 		case "std":
@@ -49,7 +58,7 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 		default:
 			log.Fatal("sortflrecfile stype ", stype)
 		}
-		// log.Print("sortvlrecfile sorted ", len(lns))
+		//log.Print("sortflrecfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
 		f := merge.Savemergefile(lns, mfn)

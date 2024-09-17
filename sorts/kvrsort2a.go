@@ -15,13 +15,13 @@ import (
 	"log"
 )
 
-func kvrsort2a(lns [][]byte, reclen int, keyoff int, keylen int) {
-	kvrsort2array(lns, make([][]byte, len(lns)), keyoff, keylen, 0)
+func kvrsort2a(lns [][]byte, reclen, keyoff, keylen int) {
+	kvrsort2array(lns, make([][]byte, len(lns)), reclen, keyoff, keylen, 0)
 }
 
-func kvrsort2array(lns, lns2 [][]byte, keyoff int, keylen int, ix int) {
+func kvrsort2array(lns, lns2 [][]byte, reclen, keyoff, keylen, ix int) {
 	if len(lns) < 16 {
-		kvinssort(lns, keyoff, keylen) // insertion sort
+		kvinsertionsort(lns, reclen, keyoff, keylen) // insertion sort
 		return
 	}
 
@@ -78,7 +78,7 @@ func kvrsort2array(lns, lns2 [][]byte, keyoff int, keylen int, ix int) {
 	for c := fbin; c <= lbin; c++ {
 		n := sizes[c] // size of bin
 		if c > 0 && n > 1 {
-			kvrsort2array(lns[off:off+n], lns2, keyoff, keylen, ix+1)
+			kvrsort2array(lns[off:off+n], lns2, reclen, keyoff, keylen, ix+1)
 		}
 		off += n // offset to next bin
 	}

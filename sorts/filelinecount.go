@@ -24,7 +24,7 @@ func filelinecount(fn string) int64 {
 		log.Fatal("sortfiles test filelinecount read ", err)
 	}
 	rsl := strings.Split(string(r), " ")
-	log.Print(rsl, " ", len(rsl), " ", rsl[len(rsl)-1])
+	//log.Print(rsl, " ", len(rsl), " ", rsl[len(rsl)-1])
 	i, err := strconv.ParseInt(rsl[len(rsl)-2], 10, 64)
 	if err != nil {
 		log.Fatal("sortfiles test filelinecount parse ", err)

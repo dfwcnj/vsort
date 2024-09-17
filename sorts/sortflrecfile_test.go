@@ -25,6 +25,7 @@ func Test_sortflrecfile(t *testing.T) {
 	if err != nil {
 		log.Fatal("sortflrecfile test initmergedir ", err)
 	}
+	//log.Print("sortflrecfile initmergedir ", dn)
 
 	//log.Print("sortflrecfile test")
 

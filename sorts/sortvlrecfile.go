@@ -17,6 +17,8 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 	var i int
 	var mfiles []string
 
+	//log.Print("sortvlrecfile ", fn, " ", dn)
+
 	fp := os.Stdin
 	if fn != "" {
 		fp, err = os.Open(fn)
@@ -29,13 +31,13 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		if err != nil {
 			log.Fatal("sortvlrecfile initmergedir ", err)
 		}
-		// log.Println("sortvlrecfile dn ", dn)
+		//log.Println("sortvlrecfile initmergedir ", dn)
 	}
 
 	var offset int64
 	for {
 		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
-		// log.Print("sortvlrecfile vlreadn ", len(lns), " ", offset)
+		//log.Print("sortvlrecfile vlreadn ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -47,8 +49,9 @@ func sortvlrecfile(fn string, dn string, stype string, iomem int64) ([][]byte, [
 		case "std":
 			kvslicessort(lns, 0, 0, 0)
 		default:
-			log.Fatal("sortflrecfile stype ", stype)
+			log.Fatal("sortvlrecfile stype ", stype)
 		}
+		//log.Print("sortvlrecfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
 		f := merge.Savemergefile(lns, mfn)

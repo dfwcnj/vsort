@@ -8,11 +8,12 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_insertionsort(t *testing.T) {
+func Test_gheapsort(t *testing.T) {
 
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
-	ns := []int64{1 << 16}
+	//ns := []int64{1 << 3, 1 << 16, 1 << 20}
+	ns := []int64{1 << 20}
 
 	for _, ll := range ls {
 		for _, nl := range ns {
@@ -20,16 +21,16 @@ func Test_insertionsort(t *testing.T) {
 			var l int = ll
 			var r bool = true
 			var e bool = false
-			//log.Print("testing insertionsort of ", nl, " random strings length ", l)
+			//log.Print("testing gheapsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
-				t.Fatal("insertionsort test rsl: wanted len ", nl, " got ", len(rsl))
+				t.Fatal("gheapsort test rsl: wanted len ", nl, " got ", len(rsl))
 			}
-			Insertionsort(rsl)
+			gheapsort(rsl)
 			if !slices.IsSorted(rsl) {
-				t.Fatal("insertionsort test failed for size ", nl)
+				t.Fatal("gheapsort test failed not sorted")
 			} else {
-				log.Print("insertionsort test passed for ", nl)
+				log.Print("gheapsort test passed for ", nl)
 			}
 
 		}
