@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func KVmergefiles(ofn string, reclen int, keyoff int, keylen int, fns []string) {
+func KVmergebytefiles(ofn string, reclen int, keyoff int, keylen int, fns []string) {
 	var err error
 
 	ofp := os.Stdout
@@ -17,5 +17,20 @@ func KVmergefiles(ofn string, reclen int, keyoff int, keylen int, fns []string) 
 		defer ofp.Close()
 	}
 
-	kvpqreademit(ofp, reclen, keyoff, keylen, fns)
+	kvpqbreademit(ofp, reclen, keyoff, keylen, fns)
+}
+
+func KVmergestringfiles(ofn string, reclen int, keyoff int, keylen int, fns []string) {
+	var err error
+
+	ofp := os.Stdout
+	if ofn != "" {
+		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer ofp.Close()
+	}
+
+	kvpqsreademit(ofp, reclen, keyoff, keylen, fns)
 }
