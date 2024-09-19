@@ -10,40 +10,40 @@ import (
 	"github.com/dfwcnj/govbinsort/merge"
 )
 
-func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([][]byte, []string, error) {
+// sort fixed lengh records file
+func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff,
+	keylen int, iomem int64) ([][]byte, []string, error) {
 	var lns [][]byte
 	var err error
 	var i int
 	var mfiles []string
 
-	//log.Print("sortflrecfile ", fn, " ", dn)
+	//log.Print("sortflbytesfile ", fn, " ", dn)
 
 	fp := os.Stdin
 	if fn != "" {
 		fp, err = os.Open(fn)
 		if err != nil {
-			log.Fatal("sortflrecfile ", err)
+			log.Fatal("sortflbytesfile open ", err)
 		}
 	}
 	if dn == "" {
-		dn, err = initmergedir("/tmp", "sortflrecfile")
+		dn, err = initmergedir("/tmp", "sortflbytesfile")
 		if err != nil {
-			log.Fatal("sortflrecfile initmergedir ", err)
+			log.Fatal("sortflbytesfile initmergedir ", err)
 		}
-		//log.Print("sortflrecfile initmergedir ", dn)
+		//log.Println("sortflbytesfile initmergedir ", dn)
 	}
 
+	var offset int64
 	for {
-		var offset int64
-
-		lns, offset, err = merge.Flreadn(fp, offset, reclen, iomem)
-		//log.Print("sortflrecfile Flreadn ", len(lns), " ", offset)
+		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
+		//log.Print("sortflbytesfile vlreadn ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
 		}
 
-		//log.Print("sortflrecfile ", stype, " ", len(lns))
 		switch stype {
 		case "heap":
 			kvheapsort(lns, reclen, keyoff, keylen)
@@ -56,20 +56,21 @@ func sortflrecfile(fn string, dn string, stype string, reclen int, keyoff int, k
 		case "std":
 			kvslicessort(lns, reclen, keyoff, keylen)
 		default:
-			log.Fatal("sortflrecfile stype ", stype)
+			log.Fatal("sortflbytesfile stype ", stype)
 		}
-		//log.Print("sortflrecfile sorted ", len(lns))
+
+		//log.Print("sortflbytesfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
 		f := merge.Savemergefile(lns, mfn)
 		if f != mfn {
-			log.Fatal("Savemergefile failed: ", f, " ", dn)
+			log.Fatal("sortflbytesfile Savemergefile failed: ", mfn, " ", dn)
 		}
 		mfiles = append(mfiles, mfn)
 		if err == io.EOF {
-			return lns, mfiles, err
+			//log.Print("sortflbytesfile return on EOF")
+			return lns[:0], mfiles, err
 		}
-
 		i++
 
 	}

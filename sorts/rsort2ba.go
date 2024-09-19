@@ -10,11 +10,11 @@ package sorts
 // are highly instructive.
 // same license as rsc code - BSD
 
-func rsort2a(lns [][]byte) {
-	rsort2array(lns, make([][]byte, len(lns)), 0)
+func rsort2ba(lns [][]byte) {
+	rsort2bytesarray(lns, make([][]byte, len(lns)), 0)
 }
 
-func rsort2array(lns, lns2 [][]byte, ix int) {
+func rsort2bytesarray(lns, lns2 [][]byte, ix int) {
 	if len(lns) < 16 {
 		inssort(lns) // insertion sort
 		return
@@ -69,7 +69,7 @@ func rsort2array(lns, lns2 [][]byte, ix int) {
 	for c := fbin; c <= lbin; c++ {
 		n := sizes[c] // size of bin
 		if c > 0 && n > 1 {
-			rsort2array(lns[off:off+n], lns2, ix+1)
+			rsort2bytesarray(lns[off:off+n], lns2, ix+1)
 		}
 		off += n // offset to next bin
 	}

@@ -11,7 +11,7 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_savemergefile(t *testing.T) {
+func Test_savebytemergefile(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
@@ -21,10 +21,10 @@ func Test_savemergefile(t *testing.T) {
 
 	for _, r := range bools {
 
-		log.Print("savemergefile test ", r)
-		dn, err := initmergedir("/tmp", "savemergefiletest")
+		log.Print("savebytemergefile test ", r)
+		dn, err := initmergedir("/tmp", "savebytemergefiletest")
 		if err != nil {
-			log.Fatal("savemergefile test initmergedir ", err)
+			log.Fatal("savebytemergefile test initmergedir ", err)
 		}
 		defer os.RemoveAll(dn)
 		//log.Print("savemergeگile test initmergedir ", dn)
@@ -40,16 +40,16 @@ func Test_savemergefile(t *testing.T) {
 				lns = append(lns, ln)
 			}
 
-			rsort2a(lns)
+			rsort2ba(lns)
 
 			if len(lns) != int(nrs) {
-				log.Fatal("savemergefile test lns: before sort wanted len ", rlen, " got ", len(lns))
+				log.Fatal("savebytemergefile test lns: before sort wanted len ", rlen, " got ", len(lns))
 			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
 
-			merge.Savemergefile(lns, fn)
-			//log.Print("savemergefile test ", fn)
+			merge.Savebytemergefile(lns, fn)
+			//log.Print("savebytemergefile test ", fn)
 
 			var nl int64
 			if r == true {
@@ -59,9 +59,9 @@ func Test_savemergefile(t *testing.T) {
 			}
 
 			if nl != nrs {
-				t.Fatal("savemergefile test failed rlns wanted ", nrs, " got ", nl)
+				t.Fatal("savebytemergefile test failed rlns wanted ", nrs, " got ", nl)
 			}
 		}
 	}
-	log.Print("savemergefile test passed")
+	log.Print("savebytemergefile test passed")
 }

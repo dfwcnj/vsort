@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func Test_flreadn(t *testing.T) {
+func Test_flreadbytes(t *testing.T) {
 	var rlen int = 32
 	var r bool = false
 	var e bool = false
@@ -23,22 +23,22 @@ func Test_flreadn(t *testing.T) {
 	var err error
 	var nr int
 
-	// log.Print("flreadn test")
+	// log.Print("flreadbytes test")
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
-	// log.Print("flreadn test rsl ", len(rsl))
+	// log.Print("flreadbytes test rsl ", len(rsl))
 
-	dn, err := initmergedir("/tmp", "flreadntest")
+	dn, err := initmergedir("/tmp", "flreadbytestest")
 	if err != nil {
-		log.Fatal("flreadn test initmergedir ", err)
+		log.Fatal("flreadbytes test initmergedir ", err)
 	}
-	log.Print("flreadn initmergedir ", dn)
+	log.Print("flreadbytes initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
-	fn := path.Join(dn, "flreadntest")
+	fn := path.Join(dn, "flreadbytestest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		log.Fatal("flreadn test open ", err)
+		log.Fatal("flreadbytes test open ", err)
 	}
 	defer fp.Close()
 
@@ -51,18 +51,18 @@ func Test_flreadn(t *testing.T) {
 	// file length
 	offset, err = fp.Seek(0, 1)
 	if err != nil {
-		log.Fatal("flreadn test seek 1 ", err)
+		log.Fatal("flreadbytes test seek 1 ", err)
 	}
 
 	// rewind file
 	offset, err = fp.Seek(0, 0)
 	if err != nil {
-		log.Fatal("flreadn test seek 0 ", err)
+		log.Fatal("flreadbytes test seek 0 ", err)
 	}
 
 	for {
-		//log.Println("flreadn test flreadn ", fn, " ", l)
-		lns, offset, err = merge.Flreadn(fp, offset, int(rlen), iomem)
+		//log.Println("flreadbytes test flreadbytes ", fn, " ", l)
+		lns, offset, err = merge.Flreadbytes(fp, offset, int(rlen), iomem)
 		if len(lns) == 0 {
 			break
 		}
@@ -75,7 +75,7 @@ func Test_flreadn(t *testing.T) {
 		tlns = append(tlns, lns...)
 	}
 	if len(tlns) != int(nrs) {
-		t.Fatal("flreadn failed  expected ", nrs, " got ", len(lns))
+		t.Fatal("flreadbytes failed  expected ", nrs, " got ", len(lns))
 	}
-	log.Print("flreadn test passed")
+	log.Print("flreadbytes test passed")
 }

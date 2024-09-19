@@ -1,6 +1,8 @@
 package sorts
 
 import (
+	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -42,4 +44,24 @@ func filereccount(fn string, rlen int) int64 {
 		log.Fatal("filereccount ", err)
 	}
 	return finf.Size() / int64(rlen)
+}
+
+func Flfileemit(fn string, rlen int) {
+	fp, err := os.Open(fn)
+	if err != nil {
+		log.Fatal(fn, " ", err)
+	}
+	defer fp.Close()
+	nr := bufio.NewReader(fp)
+	r := make([]byte, 0, rlen)
+	for {
+		_, err := nr.Read(r)
+		if err != nil {
+			if err == io.EOF {
+				return
+			}
+			log.Fatal("flfileemit read ", err)
+		}
+		fmt.Println(string(r))
+	}
 }

@@ -14,7 +14,7 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_mergefiles(t *testing.T) {
+func Test_mergestringfiles(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
@@ -25,13 +25,13 @@ func Test_mergefiles(t *testing.T) {
 	var nmf = 10
 
 	for _, r := range bools {
-		log.Print("mergefiles test ", r)
+		log.Print("mergestringfiles test ", r)
 		var fns []string
-		dn, err := initmergedir("/tmp", "mergefilestest")
+		dn, err := initmergedir("/tmp", "mergestringfilestest")
 		if err != nil {
-			log.Fatal("mergefiles test initmergedir ", err)
+			log.Fatal("mergestringfiles test initmergedir ", err)
 		}
-		//log.Print("mergefiles test initmergedir ", dn)
+		//log.Print("mergestringfiles test initmergedir ", dn)
 
 		for i := range nmf {
 			var lns [][]byte
@@ -55,17 +55,17 @@ func Test_mergefiles(t *testing.T) {
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
-		//log.Print("merge.Mergefiles ", fns)
+		//log.Print("merge.Mergestringfiles ", fns)
 
 		if r == true {
-			merge.Mergefiles(mpath, 0, 0, 0, fns)
+			merge.Mergestringfiles(mpath, 0, 0, 0, fns)
 		} else {
-			merge.Mergefiles(mpath, rlen, 0, 0, fns)
+			merge.Mergestringfiles(mpath, rlen, 0, 0, fns)
 		}
 
 		mfp, err := os.Open(mpath)
 		if err != nil {
-			log.Fatal("mergefiles test open ", err)
+			log.Fatal("mergestringfiles test open ", err)
 		}
 		defer mfp.Close()
 
@@ -85,18 +85,18 @@ func Test_mergefiles(t *testing.T) {
 					if err == io.EOF {
 						break
 					}
-					log.Fatal("mergefiles test  readfull ", err)
+					log.Fatal("mergestringfiles test  readfull ", err)
 				}
 				mlns = append(mlns, string(ln))
 			}
 		}
 		if len(mlns) != int(nrs)*nmf {
-			t.Fatal("mergefiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+			t.Fatal("mergestringfiles test ", mpath, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 		}
 		if !slices.IsSorted(mlns) {
-			t.Fatal("mergefiles test ", mpath, " not in sort order")
+			t.Fatal("mergestringfiles test ", mpath, " not in sort order")
 		}
 	}
-	log.Print("mergefiles test passed")
+	log.Print("mergestringfiles test passed")
 
 }

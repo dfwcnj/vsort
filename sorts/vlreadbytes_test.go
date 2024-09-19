@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func Test_vlreadn(t *testing.T) {
+func Test_vlreadbytes(t *testing.T) {
 	var rlen int = 32
 	var r bool = true
 	var e bool = false
@@ -20,21 +20,21 @@ func Test_vlreadn(t *testing.T) {
 
 	var lns [][]byte
 
-	//log.Print("vlreadn test")
+	//log.Print("vlreadbytes test")
 
-	dn, err := initmergedir("/tmp", "vlreadntest")
+	dn, err := initmergedir("/tmp", "vlreadbytestest")
 	if err != nil {
-		log.Fatal("vlreadn test initmergedir ", err)
+		log.Fatal("vlreadbytes test initmergedir ", err)
 	}
-	log.Print("vlreadn test initmergedir ", dn)
+	log.Print("vlreadbytes test initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 
-	fn := path.Join(dn, "vlreadn")
+	fn := path.Join(dn, "vlreadbytes")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		log.Fatal("vlreadn test open ", err)
+		log.Fatal("vlreadbytes test open ", err)
 	}
 	defer fp.Close()
 
@@ -45,17 +45,17 @@ func Test_vlreadn(t *testing.T) {
 
 	_, err = fp.Seek(0, 0)
 	if err != nil {
-		log.Fatal("vlreadn test seek ", err)
+		log.Fatal("vlreadbytes test seek ", err)
 	}
-	lns, _, err = merge.Vlreadn(fp, int64(0), iomem)
+	lns, _, err = merge.Vlreadbytes(fp, int64(0), iomem)
 	for _, ln := range lns {
 		if len(ln) == 0 {
-			t.Fatal("vlreadn test len(ln) == 0")
+			t.Fatal("vlreadbytes test len(ln) == 0")
 		}
 		//log.Print(string(ln))
 	}
 	if len(lns) != int(nrs) {
-		t.Fatal("vlreadn: expected ", nrs, " got ", len(lns))
+		t.Fatal("vlreadbytes: expected ", nrs, " got ", len(lns))
 	}
 	log.Print("vlreadn test passed")
 }

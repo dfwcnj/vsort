@@ -12,7 +12,7 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_sortvlrecfile(t *testing.T) {
+func Test_sortvlbytesfile(t *testing.T) {
 	var rlen int = 32
 	var r bool = true
 	var e bool = false
@@ -23,62 +23,62 @@ func Test_sortvlrecfile(t *testing.T) {
 	var err error
 	var nr int
 
-	dn, err := initmergedir("/tmp", "sortvlrecfiletest")
+	dn, err := initmergedir("/tmp", "sortvlbytesfiletest")
 	if err != nil {
-		log.Fatal("sortvlrecfile test initmergedir ", err)
+		log.Fatal("sortvlbytesfile test initmergedir ", err)
 	}
-	//log.Print("sortvlrecfile test initmergedir ", dn)
+	//log.Print("sortvlbytesfile test initmergedir ", dn)
 
-	//log.Println("sortvlrecfile test")
+	//log.Println("sortvlbytesfile test")
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
 
-	fn := path.Join(dn, "sortvlrecfiletest")
+	fn := path.Join(dn, "sortvlbytesfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	defer fp.Close()
 	nw := bufio.NewWriter(fp)
 	if err != nil {
-		log.Fatal("sortvlrecfile test NewWriter ", err)
+		log.Fatal("sortvlbytesfile test NewWriter ", err)
 	}
 	for i, _ := range rsl {
 		_, err := nw.WriteString(rsl[i] + "\n")
 		if err != nil {
-			log.Fatal("sortvlrecfile test WriteString ", err)
+			log.Fatal("sortvlbytesfile test WriteString ", err)
 		}
 		nr++
 	}
 	nw.Flush()
 	fp.Close()
-	//log.Print("sortvlrecfile test file ", fn)
+	//log.Print("sortvlbytesfile test file ", fn)
 
-	lns, fns, err := sortvlrecfile(fn, dn, "std", iomem)
+	lns, fns, err := sortvlbytesfile(fn, dn, "std", iomem)
 	if len(lns) != 0 {
-		log.Fatal("sortvlrecfile test lns ", len(lns))
+		log.Fatal("sortvlbytesfile test lns ", len(lns))
 	}
 
-	//log.Println("sortvlrecfile test after fns ", fns, " ", err)
+	//log.Println("sortvlbytesfile test after fns ", fns, " ", err)
 
 	var nss int64
 	for _, f := range fns {
 		mfp, err := os.Open(f)
 		if err != nil {
-			log.Fatal("sortvlrecfile test open ", err)
+			log.Fatal("sortvlbytesfile test open ", err)
 		}
 		finf, err := mfp.Stat()
 		lns, _, err = merge.Vlreadn(mfp, 0, finf.Size())
-		//log.Println("sortvlrecfile test lns ", len(lns))
+		//log.Println("sortvlbytesfile test lns ", len(lns))
 
 		var slns = make([]string, 0)
 		for _, l := range lns {
 			slns = append(slns, string(l))
 		}
 		if slices.IsSorted(slns) == false {
-			t.Fatal("sortvlrecfile test failed  ", f, " is not sorted")
+			t.Fatal("sortvlbytesfile test failed  ", f, " is not sorted")
 		}
 		nss += int64(len(slns))
 	}
 	if nrs != nss {
-		t.Fatal("sortvlrecfile failed test wanted ", nrs, " got ", nss)
+		t.Fatal("sortvlbytesfile failed test wanted ", nrs, " got ", nss)
 	}
-	log.Print("sortvlrecfile test passed")
+	log.Print("sortvlbytesfile test passed")
 }

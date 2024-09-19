@@ -9,7 +9,7 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_rsort2a(t *testing.T) {
+func Test_rsort2ba(t *testing.T) {
 
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
@@ -23,21 +23,21 @@ func Test_rsort2a(t *testing.T) {
 			var l int = ll
 			var r bool = true
 			var e bool = false
-			//log.Print("testing rsort2a of ", nl, " random strings length ", l)
+			//log.Print("testing rsort2ba of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
-				log.Fatal("rsort2a test rsl: wanted len ", nl, " got ", len(rsl))
+				log.Fatal("rsort2ba test rsl: wanted len ", nl, " got ", len(rsl))
 			}
 			for _, s := range rsl {
 				bln := []byte(s)
 				lns = append(lns, bln)
 			}
 			if len(lns) != int(nl) {
-				log.Fatal("rsort2a test lns: before rsort2a wanted len ", nl, " got ", len(lns))
+				log.Fatal("rsort2ba test lns: before rsort2ba wanted len ", nl, " got ", len(lns))
 			}
-			rsort2a(lns)
+			rsort2ba(lns)
 			if len(lns) != int(nl) {
-				log.Fatal("rsort2a test ulns: after rsort2a wanted len ", nl, " got ", len(lns))
+				log.Fatal("rsort2ba test ulns: after rsort2ba wanted len ", nl, " got ", len(lns))
 			}
 			var ssl []string
 			for _, s := range lns {
@@ -45,15 +45,15 @@ func Test_rsort2a(t *testing.T) {
 			}
 
 			if !slices.IsSorted(ssl) {
-				t.Error("rsort2a test failed for size ", nl)
+				t.Error("rsort2ba test failed for size ", nl)
 			} else {
-				log.Print("rsort2a test passed for ", nl)
+				log.Print("rsort2ba test passed for ", nl)
 			}
 
-			//log.Print("testing rsort2a of ", nl, " random uints")
+			//log.Print("testing rsort2ba of ", nl, " random uints")
 			ulns := randomdata.Randomuints(nl, e)
 			if len(ulns) != int(nl) {
-				log.Fatal("rsort2a test rui: wanted len ", nl, " got ", len(lns))
+				log.Fatal("rsort2ba test rui: wanted len ", nl, " got ", len(lns))
 			}
 			lns = lns[:0]
 			ub := make([]byte, 8)
@@ -61,9 +61,9 @@ func Test_rsort2a(t *testing.T) {
 				binary.LittleEndian.PutUint64(ub, u)
 				lns = append(lns, ub)
 			}
-			rsort2a(lns)
+			rsort2ba(lns)
 			if len(lns) != int(nl) {
-				log.Fatal("rsort2a test ulns: after rsort2a wanted len ", nl, " got ", len(lns))
+				log.Fatal("rsort2ba test ulns: after rsort2ba wanted len ", nl, " got ", len(lns))
 			}
 			ulns = ulns[:0]
 			for _, s := range lns {
@@ -72,12 +72,12 @@ func Test_rsort2a(t *testing.T) {
 			}
 
 			if len(ulns) != int(nl) {
-				t.Fatal("rsort2a test ssl: wanted len ", nl, " got ", len(ulns))
+				t.Fatal("rsort2ba test ssl: wanted len ", nl, " got ", len(ulns))
 			}
 			if !slices.IsSorted(ulns) {
-				t.Fatal("rsort2a test failed for size ", nl)
+				t.Fatal("rsort2ba test failed for size ", nl)
 			} else {
-				log.Print("rsort2a test passed for ", nl)
+				log.Print("rsort2ba test passed for ", nl)
 			}
 
 		}
