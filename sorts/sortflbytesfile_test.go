@@ -55,7 +55,7 @@ func Test_sortflbytesfile(t *testing.T) {
 	fp.Close()
 	//log.Print("sortflbytesfile test file ", fn)
 
-	lns, fns, err := sortflbytesfile(fn, dn, "std", iomem)
+	lns, fns, err := sortflbytesfile(fn, dn, "std", rlen, 0, rlen, iomem)
 	if len(lns) != 0 {
 		log.Fatal("sortflbytesfile test lns ", len(lns))
 	}
@@ -69,7 +69,7 @@ func Test_sortflbytesfile(t *testing.T) {
 			log.Fatal("sortflbytesfile test open ", err)
 		}
 		finf, err := mfp.Stat()
-		lns, _, err = merge.Flreadbytes(mfp, 0, finf.Size())
+		lns, _, err = merge.Flreadbytes(mfp, 0, rlen, finf.Size())
 		//log.Println("sortflbytesfile test lns ", len(lns))
 
 		var slns = make([]string, 0)

@@ -37,9 +37,9 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 	if len(fns) == 0 {
 		log.Println("Sortstringsfiles stdin ", reclen)
 		if reclen != 0 {
-			_, mfiles, err = sortflstringfile("", "", stype, reclen, keyoff, keylen, iomem)
+			_, mfiles, err = sortflstringsfile("", "", stype, reclen, keyoff, keylen, iomem)
 		} else {
-			_, mfiles, err = sortvlstringfile("", "", stype, iomem)
+			_, mfiles, err = sortvlstringsfile("", "", stype, iomem)
 		}
 		if err != nil && err != io.EOF {
 			log.Fatal("Sortstringsfiles after sort ", err)
@@ -50,13 +50,13 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 	} else {
 
 		for _, fn := range fns {
-			var lns [][]byte
+			var lns []string
 			var mfns []string
 
 			if reclen != 0 {
-				lns, mfns, err = sortflstringfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
+				lns, mfns, err = sortflstringsfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 			} else {
-				lns, mfns, err = sortvlstringfile(fn, dn, stype, iomem)
+				lns, mfns, err = sortvlstringsfile(fn, dn, stype, iomem)
 			}
 			if err != nil && err != io.EOF {
 				log.Fatal("Sortstringsfiles after sort ", err)
@@ -71,14 +71,14 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 			mfn := fmt.Sprintf("%s", filepath.Base(fn))
 			mpath := filepath.Join(dn, mfn)
 			var mf string
-			mf = merge.Savemergefile(lns, mpath)
+			mf = merge.Savestringmergefile(lns, mpath)
 			if mf == "" {
-				log.Fatal("Sortstringsfiles Savemergefile failed ", mpath)
+				log.Fatal("Sortstringsfiles Savestringmergefile failed ", mpath)
 			}
 			mfiles = append(mfiles, mpath)
 		}
 	}
 	//log.Println("Sortstringsfiles merging", ofn)
 	//log.Println("Sortstringsfiles merging", reclen, " ", mfiles)
-	merge.Mergefiles(ofn, reclen, keyoff, keylen, mfiles)
+	merge.Mergestringfiles(ofn, reclen, keyoff, keylen, mfiles)
 }

@@ -36,8 +36,8 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 
 	var offset int64
 	for {
-		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
-		//log.Print("sortvlbytesfile vlreadn ", len(lns), " ", offset)
+		lns, offset, err = merge.Vlreadbytes(fp, offset, iomem)
+		//log.Print("sortvlbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -45,15 +45,15 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 
 		switch stype {
 		case "heap":
-			kvheapsort(lns, 0, 0, 0)
+			kvbheapsort(lns, 0, 0, 0)
 		case "insertion":
-			kvinsertionsort(lns, 0, 0, 0)
+			kvbinsertionsort(lns, 0, 0, 0)
 		case "merge":
 			kvmergesort(lns, 0, 0, 0)
 		case "radix":
-			rsort2a(lns)
+			kvrsort2a(lns, 0, 0, 0)
 		case "std":
-			kvslicessort(lns, 0, 0, 0)
+			kvslicesbsort(lns, 0, 0, 0)
 		default:
 			log.Fatal("sortvlbytesfile stype ", stype)
 		}
@@ -61,7 +61,7 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 		//log.Print("sortvlbytesfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		f := merge.Savemergefile(lns, mfn)
+		f := merge.Savebytemergefile(lns, mfn)
 		if f != mfn {
 			log.Fatal("sortvlbytesfile Savemergefile failed: ", mfn, " ", dn)
 		}

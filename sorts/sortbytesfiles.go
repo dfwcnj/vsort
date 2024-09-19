@@ -69,7 +69,7 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 			mfn := fmt.Sprintf("%s", filepath.Base(fn))
 			mpath := filepath.Join(dn, mfn)
 			var mf string
-			mf = merge.Savemergefile(lns, mpath)
+			mf = merge.Savebytemergefile(lns, mpath)
 			if mf == "" {
 				log.Fatal("Sortbytesfiles Savemergefile failed ", mpath)
 			}
@@ -78,5 +78,5 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 	}
 	//log.Println("Sortbytesfiles merging", ofn)
 	//log.Println("Sortbytesfiles merging", reclen, " ", mfiles)
-	merge.Mergefiles(ofn, reclen, keyoff, keylen, mfiles)
+	merge.Mergebytefiles(ofn, reclen, keyoff, keylen, mfiles)
 }

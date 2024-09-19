@@ -19,7 +19,6 @@ func Test_sortflstringsfile(t *testing.T) {
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 
-	var lns [][]byte
 	var err error
 	var nr int
 
@@ -51,7 +50,7 @@ func Test_sortflstringsfile(t *testing.T) {
 	fp.Close()
 	//log.Print("sortflstringsfile test file ", fn)
 
-	lns, fns, err := sortflstringsfile(fn, dn, "std", iomem)
+	lns, fns, err := sortflstringsfile(fn, dn, "std", rlen, 0, rlen, iomem)
 	if len(lns) != 0 {
 		log.Fatal("sortflstringsfile test lns ", len(lns))
 	}
@@ -65,7 +64,7 @@ func Test_sortflstringsfile(t *testing.T) {
 			log.Fatal("sortflstringsfile test open ", err)
 		}
 		finf, err := mfp.Stat()
-		lns, _, err = merge.Vlreadn(mfp, 0, finf.Size())
+		lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
 		//log.Println("sortflstringsfile test lns ", len(lns))
 
 		var slns = make([]string, 0)

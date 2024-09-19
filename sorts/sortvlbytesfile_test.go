@@ -65,7 +65,7 @@ func Test_sortvlbytesfile(t *testing.T) {
 			log.Fatal("sortvlbytesfile test open ", err)
 		}
 		finf, err := mfp.Stat()
-		lns, _, err = merge.Vlreadn(mfp, 0, finf.Size())
+		lns, _, err = merge.Vlreadbytes(mfp, 0, finf.Size())
 		//log.Println("sortvlbytesfile test lns ", len(lns))
 
 		var slns = make([]string, 0)

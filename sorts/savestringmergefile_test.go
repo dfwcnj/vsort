@@ -30,12 +30,12 @@ func Test_savestringmergefile(t *testing.T) {
 		//log.Print("savemergeگile test initmergedir ", dn)
 
 		for i := range 10 {
-			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+			lns := randomdata.Randomstrings(nrs, rlen, r, e)
 
-			rsort2sa(rsl)
+			rsort2sa(lns, 0, 0, 0)
 
-			if len(rsl) != int(nrs) {
-				log.Fatal("savestringmergefile test rsl: before sort wanted len ", nrs, " got ", len(rsl))
+			if len(lns) != int(nrs) {
+				log.Fatal("savestringmergefile test lns: before sort wanted len ", nrs, " got ", len(lns))
 			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))

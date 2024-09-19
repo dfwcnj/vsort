@@ -6,12 +6,13 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"slices"
 
 	"github.com/dfwcnj/govbinsort/merge"
 )
 
 // sort variable lengh records file
-func sortvlstringfile(fn string, dn string, stype string, iomem int64) ([][]byte, []string, error) {
+func sortvlstringsfile(fn string, dn string, stype string, iomem int64) ([]string, []string, error) {
 	var lns []string
 	var err error
 	var i int
@@ -36,8 +37,8 @@ func sortvlstringfile(fn string, dn string, stype string, iomem int64) ([][]byte
 
 	var offset int64
 	for {
-		lns, offset, err = merge.Vlreadstring(fp, offset, iomem)
-		//log.Print("sortvlstringfile vlreadstring ", len(lns), " ", offset)
+		lns, offset, err = merge.Vlreadstrings(fp, offset, iomem)
+		//log.Print("sortvlstringfile vlreadstrings ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -45,15 +46,15 @@ func sortvlstringfile(fn string, dn string, stype string, iomem int64) ([][]byte
 
 		switch stype {
 		case "heap":
-			gheapsort(lns, 0, 0, 0)
+			gheapsort(lns)
 		case "insertion":
-			ginsertionsort(lns, 0, 0, 0)
+			ginsertionsort(lns)
 		case "merge":
-			gmergesort(lns, 0, 0, 0)
+			gmergesort(lns)
 		case "radix":
-			rsort2a(lns)
+			rsort2sa(lns, 0, 0, 0)
 		case "std":
-			kvslicessort(lns, 0, 0, 0)
+			slices.Sort(lns)
 		default:
 			log.Fatal("sortvlstringfile stype ", stype)
 		}
@@ -61,7 +62,7 @@ func sortvlstringfile(fn string, dn string, stype string, iomem int64) ([][]byte
 		//log.Print("sortvlstringfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		f := merge.Savemergefilestring(lns, mfn)
+		f := merge.Savestringmergefile(lns, mfn)
 		if f != mfn {
 			log.Fatal("sortvlstringfile Savemergefilestring failed: ", mfn, " ", dn)
 		}

@@ -1,7 +1,6 @@
 package sorts
 
 import (
-	"encoding/binary"
 	"log"
 	"slices"
 	"testing"
@@ -19,32 +18,23 @@ func Test_rsort2sa(t *testing.T) {
 	for _, ll := range ls {
 		for _, nl := range ns {
 
-			var lns [][]byte
 			var l int = ll
 			var r bool = true
 			var e bool = false
 			//log.Print("testing rsort2sa of ", nl, " random strings length ", l)
-			rsl := randomdata.Randomstrings(nl, l, r, e)
-			if len(rsl) != int(nl) {
-				log.Fatal("rsort2sa test rsl: wanted len ", nl, " got ", len(rsl))
-			}
-			for _, s := range rsl {
-				bln := []byte(s)
-				lns = append(lns, bln)
+			lns := randomdata.Randomstrings(nl, l, r, e)
+			if len(lns) != int(nl) {
+				log.Fatal("rsort2sa test lns: wanted len ", nl, " got ", len(lns))
 			}
 			if len(lns) != int(nl) {
 				log.Fatal("rsort2sa test lns: before rsort2sa wanted len ", nl, " got ", len(lns))
 			}
-			rsort2sa(lns)
+			rsort2sa(lns, 0, 0, 0)
 			if len(lns) != int(nl) {
 				log.Fatal("rsort2sa test ulns: after rsort2sa wanted len ", nl, " got ", len(lns))
 			}
-			var ssl []string
-			for _, s := range lns {
-				ssl = append(ssl, string(s))
-			}
 
-			if !slices.IsSorted(ssl) {
+			if !slices.IsSorted(lns) {
 				t.Error("rsort2sa test failed for size ", nl)
 			} else {
 				log.Print("rsort2sa test passed for ", nl)

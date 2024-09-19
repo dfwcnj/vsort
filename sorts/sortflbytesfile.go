@@ -11,8 +11,7 @@ import (
 )
 
 // sort fixed lengh records file
-func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff,
-	keylen int, iomem int64) ([][]byte, []string, error) {
+func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64) ([][]byte, []string, error) {
 	var lns [][]byte
 	var err error
 	var i int
@@ -37,8 +36,8 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff,
 
 	var offset int64
 	for {
-		lns, offset, err = merge.Vlreadn(fp, offset, iomem)
-		//log.Print("sortflbytesfile vlreadn ", len(lns), " ", offset)
+		lns, offset, err = merge.Vlreadbytes(fp, offset, iomem)
+		//log.Print("sortflbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
 			return lns, mfiles, err
@@ -46,15 +45,15 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff,
 
 		switch stype {
 		case "heap":
-			kvheapsort(lns, reclen, keyoff, keylen)
+			kvbheapsort(lns, reclen, keyoff, keylen)
 		case "insertion":
-			kvinsertionsort(lns, reclen, keyoff, keylen)
+			kvbinsertionsort(lns, reclen, keyoff, keylen)
 		case "merge":
 			kvmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
 			kvrsort2a(lns, reclen, keyoff, keylen)
 		case "std":
-			kvslicessort(lns, reclen, keyoff, keylen)
+			kvslicesbsort(lns, reclen, keyoff, keylen)
 		default:
 			log.Fatal("sortflbytesfile stype ", stype)
 		}
@@ -62,7 +61,7 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff,
 		//log.Print("sortflbytesfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		f := merge.Savemergefile(lns, mfn)
+		f := merge.Savebytemergefile(lns, mfn)
 		if f != mfn {
 			log.Fatal("sortflbytesfile Savemergefile failed: ", mfn, " ", dn)
 		}

@@ -17,8 +17,8 @@ func Test_flreadstrings(t *testing.T) {
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 
-	var lns [][]byte
-	var tlns [][]byte
+	var lns []string
+	var tlns []string
 	var offset int64
 	var err error
 	var nr int

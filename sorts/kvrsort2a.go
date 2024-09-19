@@ -21,7 +21,7 @@ func kvrsort2a(lns [][]byte, reclen, keyoff, keylen int) {
 
 func kvrsort2array(lns, lns2 [][]byte, reclen, keyoff, keylen, ix int) {
 	if len(lns) < 16 {
-		kvinsertionsort(lns, reclen, keyoff, keylen) // insertion sort
+		kvbinsertionsort(lns, reclen, keyoff, keylen) // insertion sort
 		return
 	}
 

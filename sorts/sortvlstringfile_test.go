@@ -19,7 +19,6 @@ func Test_sortvlstringsfile(t *testing.T) {
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 
-	var lns [][]byte
 	var err error
 	var nr int
 
@@ -65,17 +64,13 @@ func Test_sortvlstringsfile(t *testing.T) {
 			log.Fatal("sortvlstringsfile test open ", err)
 		}
 		finf, err := mfp.Stat()
-		lns, _, err = merge.Vlreadn(mfp, 0, finf.Size())
+		lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
 		//log.Println("sortvlstringsfile test lns ", len(lns))
 
-		var slns = make([]string, 0)
-		for _, l := range lns {
-			slns = append(slns, string(l))
-		}
-		if slices.IsSorted(slns) == false {
+		if slices.IsSorted(lns) == false {
 			t.Fatal("sortvlstringsfile test failed  ", f, " is not sorted")
 		}
-		nss += int64(len(slns))
+		nss += int64(len(lns))
 	}
 	if nrs != nss {
 		t.Fatal("sortvlstringsfile failed test wanted ", nrs, " got ", nss)

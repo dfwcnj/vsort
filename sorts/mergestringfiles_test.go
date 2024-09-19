@@ -34,22 +34,13 @@ func Test_mergestringfiles(t *testing.T) {
 		//log.Print("mergestringfiles test initmergedir ", dn)
 
 		for i := range nmf {
-			var lns [][]byte
 
-			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+			lns := randomdata.Randomstrings(nrs, rlen, r, e)
 
-			for _, s := range rsl {
-				ln := []byte(s)
-				if r == true {
-					ln = append(ln, "\n"...)
-				}
-				lns = append(lns, ln)
-			}
-
-			rsort2a(lns)
+			rsort2sa(lns, 0, 0, 0)
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
-			merge.Savemergefile(lns, fn)
+			merge.Savestringmergefile(lns, fn)
 			fns = append(fns, fn)
 		}
 

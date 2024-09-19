@@ -37,16 +37,8 @@ func Test_sortstringsfiles(t *testing.T) {
 		//log.Print("Sortstringsfiles test making ", nmf, " files to sort")
 		var tns int64
 		for i := range nmf {
-			var lns [][]byte
 
-			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
-			for _, s := range rsl {
-				ln := []byte(s)
-				if r == true {
-					ln = append(ln, "\n"...)
-				}
-				lns = append(lns, ln)
-			}
+			lns := randomdata.Randomstrings(nrs, rlen, r, e)
 			if len(lns) != int(nrs) {
 				log.Fatal("Sortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
 			}

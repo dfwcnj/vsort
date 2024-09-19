@@ -8,7 +8,7 @@ import (
 	"github.com/dfwcnj/randomdata"
 )
 
-func Test_kvslicessort(t *testing.T) {
+func Test_kvslicesbsort(t *testing.T) {
 
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
@@ -24,24 +24,24 @@ func Test_kvslicessort(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			//log.Print("testing kvslicessort of ", nl, " random strings length ", l)
+			//log.Print("testing kvslicesbsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r, e)
 			if len(rsl) != int(nl) {
-				t.Fatal("kvslicessort test rsl: wanted len ", nl, " got ", len(rsl))
+				t.Fatal("kvslicesbsort test rsl: wanted len ", nl, " got ", len(rsl))
 			}
 			lns := make([][]byte, 0, nl)
 			for _, s := range rsl {
 				lns = append(lns, []byte(s))
 			}
-			kvslicessort(lns, reclen, keyoff, keylen)
+			kvslicesbsort(lns, reclen, keyoff, keylen)
 			ssl := make([]string, 0, nl)
 			for _, bs := range lns {
 				ssl = append(ssl, string(bs))
 			}
 			if !slices.IsSorted(ssl) {
-				t.Fatal("kvslicessort test failed not sorted")
+				t.Fatal("kvslicesbsort test failed not sorted")
 			} else {
-				log.Print("kvslicessort test passed for ", nl)
+				log.Print("kvslicesbsort test passed for ", nl)
 			}
 
 		}

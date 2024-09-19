@@ -10,7 +10,7 @@ import (
 	"github.com/dfwcnj/govbinsort/merge"
 )
 
-func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([][]byte, []string, error) {
+func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([]string, []string, error) {
 	var lns []string
 	var err error
 	var i int
@@ -46,22 +46,22 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 		//log.Print("sortflstringsfile ", stype, " ", len(lns))
 		switch stype {
 		case "heap":
-			gheapsort(lns, reclen, keyoff, keylen)
+			kvsheapsort(lns, reclen, keyoff, keylen)
 		case "insertion":
-			ginsertionsort(lns, reclen, keyoff, keylen)
+			kvsinsertionsort(lns, reclen, keyoff, keylen)
 		case "merge":
-			gmergesort(lns, reclen, keyoff, keylen)
+			kvsmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
-			grsort2a(lns, reclen, keyoff, keylen)
+			rsort2sa(lns, reclen, keyoff, keylen)
 		case "std":
-			kvslicessort(lns, reclen, keyoff, keylen)
+			kvslicesssort(lns, reclen, keyoff, keylen)
 		default:
 			log.Fatal("sortflstringsfile stype ", stype)
 		}
 		//log.Print("sortflstringsfile sorted ", len(lns))
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
-		f := merge.Savemergefilestring(lns, mfn)
+		f := merge.Savestringmergefile(lns, mfn)
 		if f != mfn {
 			log.Fatal("Savemergefilestring failed: ", f, " ", dn)
 		}
