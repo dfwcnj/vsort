@@ -62,21 +62,35 @@ func (pq *KVSPQ) update(ritem *kvsitem, value string) {
 
 func nextsitem(itm kvsitem) (string, error) {
 
-	l, err := itm.br.ReadString('\n')
-	if err != nil {
-		// log.Println("nextsitem readstring ", err)
-		if err == io.EOF {
-			return l, err
+	var ln string
+	var err error
+	if itm.rlen != 0 {
+		buf := make([]byte, itm.rlen)
+		n, err := io.ReadFull(itm.br, buf)
+		if err != nil {
+			if err == io.EOF {
+				return string(buf), err
+			}
+			log.Fatal("kvpqread readfull ", n, " ", err)
 		}
-		log.Fatal("kvpqread readstring ", err)
+		ln = string(buf)
+	} else {
+		ln, err = itm.br.ReadString('\n')
+		if err != nil {
+			// log.Println("nextsitem readstring ", err)
+			if err == io.EOF {
+				return ln, err
+			}
+			log.Fatal("kvpqread readstring ", err)
+		}
 	}
 
-	return l, nil
+	return ln, nil
 }
 
 func kvpqsreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {
 
-	// log.Print("kvpqsreademit merging ", fns)
+	log.Print("kvpqsreademit merging ", fns)
 	pq := make(KVSPQ, len(fns))
 
 	for i, fn := range fns {
