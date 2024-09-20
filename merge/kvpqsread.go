@@ -90,7 +90,7 @@ func nextsitem(itm kvsitem) (string, error) {
 
 func kvpqsreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {
 
-	log.Print("kvpqsreademit merging ", fns)
+	//log.Print("kvpqsreademit merging ", fns)
 	pq := make(KVSPQ, len(fns))
 
 	for i, fn := range fns {

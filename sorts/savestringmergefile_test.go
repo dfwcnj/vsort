@@ -31,6 +31,12 @@ func Test_savestringmergefile(t *testing.T) {
 
 		for i := range 10 {
 			lns := randomdata.Randomstrings(nrs, rlen, r, e)
+			// random length strings must be newline delimited
+			if r == true {
+				for i, _ := range lns {
+					lns[i] = lns[i] + "\n"
+				}
+			}
 
 			rsort2sa(lns, 0, 0, 0)
 
@@ -44,10 +50,14 @@ func Test_savestringmergefile(t *testing.T) {
 			//log.Print("savestringmergefile test ", fn)
 
 			var nl int64
-			nl = filelinecount(fn)
+			if r == true {
+				nl = filelinecount(fn)
+			} else {
+				nl = filereccount(fn, rlen)
+			}
 
 			if nl != nrs {
-				t.Fatal("savestringmergefile test failed rlns wanted ", nrs, " got ", nl)
+				t.Fatal("savestringmergefile test failed lns wanted ", nrs, " got ", nl)
 			}
 		}
 	}

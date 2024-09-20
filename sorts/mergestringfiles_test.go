@@ -36,6 +36,12 @@ func Test_mergestringfiles(t *testing.T) {
 		for i := range nmf {
 
 			lns := randomdata.Randomstrings(nrs, rlen, r, e)
+			// random length strings must be newline delimited
+			if r == true {
+				for i, _ := range lns {
+					lns[i] = lns[i] + "\n"
+				}
+			}
 
 			rsort2sa(lns, 0, 0, 0)
 

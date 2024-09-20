@@ -42,6 +42,11 @@ func Test_sortstringsfiles(t *testing.T) {
 			if len(lns) != int(nrs) {
 				log.Fatal("Sortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
 			}
+			if r == true {
+				for i, _ := range lns {
+					lns[i] = lns[i] + "\n"
+				}
+			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("sortstringsfilestest", i))
 			//log.Println("Sortstringsfiles test saving ", fn)

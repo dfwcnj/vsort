@@ -50,7 +50,7 @@ func Test_sortflstringsfile(t *testing.T) {
 	fp.Close()
 	//log.Print("sortflstringsfile test file ", fn)
 
-	lns, fns, err := sortflstringsfile(fn, dn, "std", rlen, 0, rlen, iomem)
+	lns, fns, err := sortflstringsfile(fn, dn, "std", rlen+1, 0, rlen, iomem)
 	if len(lns) != 0 {
 		log.Fatal("sortflstringsfile test lns ", len(lns))
 	}
@@ -65,7 +65,6 @@ func Test_sortflstringsfile(t *testing.T) {
 		}
 		finf, err := mfp.Stat()
 		lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
-		//log.Println("sortflstringsfile test lns ", len(lns))
 
 		var slns = make([]string, 0)
 		for _, l := range lns {
