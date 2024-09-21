@@ -2,12 +2,15 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/dfwcnj/govbinsort/sorts"
 )
 
+// parseiomem convert iomem string to an io memory size
 func parseiomem(iomem string) int64 {
 
 	ns := iomem[0 : len(iomem)-2]
@@ -29,14 +32,23 @@ func parseiomem(iomem string) int64 {
 	return 0
 }
 
+var CommandLine = flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+var usage = func() {
+	fmt.Fprintf(CommandLine.Output(), "Usage of %s:\n", os.Args[0])
+	flag.PrintDefaults()
+}
+
+// main - sort command
+// main args files
 func main() {
 	var fns []string
-	var ofn, iomem, md, stype string
+	var ofn, iomem, md, stype, form string
 	var reclen, keylen, keyoff int
 	flag.StringVar(&ofn, "ofn", "", "output file name")
 	flag.StringVar(&iomem, "iomem", "500mb", "max read memory size in kb, mb or gb")
 	flag.StringVar(&md, "md", "", "merge sirectory")
 	flag.StringVar(&stype, "stype", "std", "sort type: merge, radix, std")
+	flag.StringVar(&form, "form", "string", "data form bytes or string")
 	flag.IntVar(&reclen, "reclen", 0, "length of the fixed length record")
 	flag.IntVar(&keyoff, "keyoff", 0, "offset of the key")
 	flag.IntVar(&keylen, "keylen", 0, "length of the key if not whole line")
@@ -50,8 +62,13 @@ func main() {
 		"radix":     true,
 		"std":       true,
 	}
-	if _, ok := sortt[stype]; ok {
-		log.Fatal("bad sort type ", stype)
+	if _, ok := sortt[stype]; !ok {
+		log.Print("bad sort type ", stype)
+		usage()
+	}
+	if form != "string" && form != "bytes" {
+		log.Print("bad form type ", stype)
+		usage()
 	}
 	if keyoff != 0 || keylen != 0 {
 		if reclen == 0 {
@@ -69,5 +86,11 @@ func main() {
 	if iomem != "" {
 		iom = parseiomem(iomem)
 	}
-	sorts.Sortfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+	if form == "bytes" {
+		sorts.Sortbytesfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+
+	} else {
+		sorts.Sortstringsfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+	}
+
 }
