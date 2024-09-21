@@ -12,6 +12,8 @@ import (
 
 func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
+	//log.Printf("Sortstringsfiles %s %s %s %d %d %d %d", ofn, dn, stype, reclen, keyoff, keylen, iomem)
+
 	var err error
 	var mfiles []string
 	//log.Print("Sortstringsfiles ofn  ", ofn)

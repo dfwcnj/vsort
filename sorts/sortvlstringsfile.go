@@ -13,6 +13,9 @@ import (
 
 // sort variable lengh records file
 func sortvlstringsfile(fn string, dn string, stype string, iomem int64) ([]string, []string, error) {
+
+	//log.Printf("sortvlstringsfile %s %s %s %d", fn, dn, stype, iomem)
+
 	var lns []string
 	var err error
 	var i int
