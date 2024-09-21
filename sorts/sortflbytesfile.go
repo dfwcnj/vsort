@@ -36,7 +36,8 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 
 	var offset int64
 	for {
-		lns, offset, err = merge.Vlreadbytes(fp, offset, iomem)
+
+		lns, offset, err = merge.Flreadbytes(fp, offset, reclen, iomem)
 		//log.Print("sortflbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {

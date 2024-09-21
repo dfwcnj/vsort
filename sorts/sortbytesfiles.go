@@ -31,7 +31,7 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 		}
 		defer fp.Close()
 	} else {
-		fp = os.Stdin
+		fp = os.Stdout
 	}
 
 	if len(fns) == 0 {
@@ -64,6 +64,8 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 			if len(mfns) > 0 {
 				mfiles = append(mfiles, mfns...)
 				continue
+			} else {
+				log.Fatal("Sortbytesfiles no mergefiles")
 			}
 
 			mfn := fmt.Sprintf("%s", filepath.Base(fn))

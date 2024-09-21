@@ -70,7 +70,7 @@ func Test_sortbytesfiles(t *testing.T) {
 		if r == true {
 			Sortbytesfiles(fns, mpath, "", "std", 0, 0, 0, iomem)
 		} else {
-			Sortbytesfiles(fns, mpath, "", "std", rlen, 0, 0, iomem)
+			Sortbytesfiles(fns, mpath, "", "std", rlen, 0, rlen, iomem)
 		}
 
 		mfp, err := os.Open(mpath)
@@ -79,16 +79,19 @@ func Test_sortbytesfiles(t *testing.T) {
 		}
 		defer mfp.Close()
 
+		var nlns int64
 		var mlns []string
 		if r == true {
+			nlns = filelinecount(mpath)
 			scanner := bufio.NewScanner(mfp)
 			for scanner.Scan() {
 				l := scanner.Text()
 				mlns = append(mlns, l)
 			}
 		} else {
+			nlns = filereccount(mpath, rlen)
+			ln := make([]byte, rlen)
 			for {
-				ln := make([]byte, rlen)
 				_, err := io.ReadFull(mfp, ln)
 				if err != nil {
 					if err == io.EOF {
@@ -99,8 +102,8 @@ func Test_sortbytesfiles(t *testing.T) {
 				mlns = append(mlns, string(ln))
 			}
 		}
-		if len(mlns) != int(nrs)*nmf {
-			t.Fatal("sortbytesfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+		if nlns != nrs*int64(nmf) {
+			t.Fatal("sortbytesfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", nlns)
 		}
 		if !slices.IsSorted(mlns) {
 			t.Fatal("sortbytesfiles test lines in ", mpath, " not in sort order")

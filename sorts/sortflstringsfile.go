@@ -33,8 +33,8 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 		//log.Print("sortflstringsfile initmergedir ", dn)
 	}
 
+	var offset int64
 	for {
-		var offset int64
 
 		lns, offset, err = merge.Flreadstrings(fp, offset, reclen, iomem)
 		//log.Print("sortflstringsfile Flreadstrings ", len(lns), " ", offset)

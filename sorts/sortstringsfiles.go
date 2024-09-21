@@ -31,7 +31,7 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 		}
 		defer fp.Close()
 	} else {
-		fp = os.Stdin
+		fp = os.Stdout
 	}
 
 	if len(fns) == 0 {
