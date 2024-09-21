@@ -37,7 +37,7 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 	}
 
 	if len(fns) == 0 {
-		log.Println("Sortstringsfiles stdin ", reclen)
+		// log.Println("Sortstringsfiles stdin ", reclen)
 		if reclen != 0 {
 			_, mfiles, err = sortflstringsfile("", "", stype, reclen, keyoff, keylen, iomem)
 		} else {

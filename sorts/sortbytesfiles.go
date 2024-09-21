@@ -35,7 +35,7 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 	}
 
 	if len(fns) == 0 {
-		log.Println("Sortbytesfiles stdin ", reclen)
+		//log.Print("Sortbytesfiles stdin ", reclen)
 		if reclen != 0 {
 			_, mfiles, err = sortflbytesfile("", "", stype, reclen, keyoff, keylen, iomem)
 		} else {
