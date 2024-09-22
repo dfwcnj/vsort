@@ -91,10 +91,10 @@ func nextbitem(itm kvbitem) ([]byte, error) {
 
 func kvpqbreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {
 
-	finf, err := ofp.Stat()
-	if err != nil {
-		log.Fatal(err)
-	}
+	//finf, err := ofp.Stat()
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	// log.Printf("kvpqbreademit merging fn %s, reclen %d keyoff %d, keylen %d", finf.Name(), reclen, keyoff, keylen)
 	// log.Print("kvpqbreademit merging ", fns)
 	pq := make(KVBPQ, len(fns))
@@ -152,7 +152,7 @@ func kvpqbreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []strin
 		pq.update(ritem, ritem.ln)
 		ne++
 	}
-	err = nw.Flush()
+	err := nw.Flush()
 	if err != nil {
 		log.Fatal("kvpqbreademit flush ", err)
 	}
