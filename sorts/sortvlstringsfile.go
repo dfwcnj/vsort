@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"slices"
 
-	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 // sort variable lengh records file

@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 // sort fixed lengh records file

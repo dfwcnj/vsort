@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/dfwcnj/govbinsort/sorts"
+	"github.com/dfwcnj/vsort/sorts"
 )
 
 // parseiomem convert iomem string to an io memory size

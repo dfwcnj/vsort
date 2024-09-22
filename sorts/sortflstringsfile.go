@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([]string, []string, error) {

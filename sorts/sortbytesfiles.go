@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {

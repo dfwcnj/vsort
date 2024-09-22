@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/dfwcnj/govbinsort/merge"
+	"github.com/dfwcnj/vsort/merge"
 	"github.com/dfwcnj/randomdata"
 )
 
