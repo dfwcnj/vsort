@@ -44,9 +44,9 @@ func main() {
 	var fns []string
 	var ofn, iomem, md, stype, form string
 	var reclen, keylen, keyoff int
-	flag.StringVar(&ofn, "ofn", "", "output file name")
+	flag.StringVar(&ofn, "ofn", "", "output file name otherwise stdout")
 	flag.StringVar(&iomem, "iomem", "500mb", "max read memory size in kb, mb or gb")
-	flag.StringVar(&md, "md", "", "merge sirectory")
+	flag.StringVar(&md, "md", "", "merge sirectory defaults to a directory under /tmp")
 	flag.StringVar(&stype, "stype", "std", "sort type: merge, radix, std")
 	flag.StringVar(&form, "form", "string", "data form bytes or string")
 	flag.IntVar(&reclen, "reclen", 0, "length of the fixed length record")
