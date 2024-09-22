@@ -87,11 +87,11 @@ func main() {
 		iom = parseiomem(iomem)
 	}
 	if form == "bytes" {
-		log.Printf("sortbytesfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+		// log.Printf("sortbytesfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 		sorts.Sortbytesfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 
 	} else {
-		log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+		// log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 		sorts.Sortstringsfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 	}
 

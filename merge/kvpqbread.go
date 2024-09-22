@@ -95,8 +95,8 @@ func kvpqbreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []strin
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("kvpqbreademit merging fn %s, reclen %d keyoff %d, keylen %d", finf.Name(), reclen, keyoff, keylen)
-	log.Print("kvpqbreademit merging ", fns)
+	// log.Printf("kvpqbreademit merging fn %s, reclen %d keyoff %d, keylen %d", finf.Name(), reclen, keyoff, keylen)
+	// log.Print("kvpqbreademit merging ", fns)
 	pq := make(KVBPQ, len(fns))
 
 	for i, fn := range fns {

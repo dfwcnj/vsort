@@ -47,7 +47,8 @@ set -ex
 #     	sort type: merge, radix, std (default "std")
 
 # remove any previous intermediate data
-rm -r /tmp/[fmSs]*
+# rm -r /tmp/[fmSs]*
+# rm /tmp/[br]data[01]
 
 # generate file based data
 goranddatagen -n 16777216  >/tmp/bdata0
@@ -69,6 +70,7 @@ goranddatagen -n 33554432 -rlen >/tmp/rdata1
 
 # random length data sort
 ./vsort /tmp/rdata0 /tmp/rdata1 |sort -c
+
 rm /tmp/[br]data[01]
 
 # fixed length standard input
@@ -79,3 +81,4 @@ goranddatagen -n 16777216 | ./vsort -reclen 32 -form bytes | flcat -rlen 32 | so
 goranddatagen -n 33554432 -rlen | ./vsort | sort -c
 
 
+rm -r /tmp/[fmSs]*

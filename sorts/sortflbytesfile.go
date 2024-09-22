@@ -17,7 +17,7 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 	var i int
 	var mfiles []string
 
-	log.Printf("sortflbytesfile fn %v dn %v, stype %v reclen %v keyoff %v keylen %v, iomem %v ", fn, dn, stype, reclen, keyoff, keylen, iomem)
+	// log.Printf("sortflbytesfile fn %v dn %v, stype %v reclen %v keyoff %v keylen %v, iomem %v ", fn, dn, stype, reclen, keyoff, keylen, iomem)
 
 	fp := os.Stdin
 	if fn != "" {
