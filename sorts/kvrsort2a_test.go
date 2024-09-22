@@ -20,12 +20,11 @@ func Test_kvrsort2a(t *testing.T) {
 
 			var l int = ll
 			var r bool = false
-			var e bool = false
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
 			//log.Print("testing kvrsort2a of ", nl, " random strings length ", l)
-			rsl := randomdata.Randomstrings(nl, l, r, e)
+			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvrsort2a test rsl: wanted len ", nl, " got ", len(rsl))
 			}

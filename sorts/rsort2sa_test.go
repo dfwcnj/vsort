@@ -20,9 +20,8 @@ func Test_rsort2sa(t *testing.T) {
 
 			var l int = ll
 			var r bool = true
-			var e bool = false
 			//log.Print("testing rsort2sa of ", nl, " random strings length ", l)
-			lns := randomdata.Randomstrings(nl, l, r, e)
+			lns := randomdata.Randomstrings(nl, l, r)
 			if len(lns) != int(nl) {
 				log.Fatal("rsort2sa test lns: wanted len ", nl, " got ", len(lns))
 			}

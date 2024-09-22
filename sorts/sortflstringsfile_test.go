@@ -15,7 +15,6 @@ import (
 func Test_sortflstringsfile(t *testing.T) {
 	var rlen int = 32
 	var r bool = false
-	var e bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 
@@ -30,7 +29,7 @@ func Test_sortflstringsfile(t *testing.T) {
 
 	//log.Println("sortflstringsfile test")
 
-	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+	rsl := randomdata.Randomstrings(nrs, rlen, r)
 
 	fn := path.Join(dn, "sortflstringsfiletest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)

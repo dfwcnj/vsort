@@ -14,7 +14,7 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 
 	var err error
 	var mfiles []string
-	log.Printf("Sortbytesfiles ofn %s dn %s, stype %ѕ reclen %d keyoff %d keylen %d, iomem %d ", ofn, dn, stype, reclen, keyoff, keylen, iomem)
+	log.Printf("Sortbytesfiles ofn %v dn %v stype %v reclen %v keyoff %v keylen %v, iomem %v ", ofn, dn, stype, reclen, keyoff, keylen, iomem)
 	if len(dn) == 0 {
 		dn, err = initmergedir("/tmp", "sortbytesfiles")
 		if err != nil {

@@ -21,9 +21,8 @@ func Test_rsortsl(t *testing.T) {
 			var lns [][]byte
 			var l int = ll
 			var r bool = true
-			var e bool = false
 			//log.Print("testing rsortsl of ", nl, " random strings length ", l)
-			rsl := randomdata.Randomstrings(nl, l, r, e)
+			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				log.Fatal("rsortsl test rsl: wanted len ", nl, " got ", len(rsl))
 			}

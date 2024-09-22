@@ -19,7 +19,6 @@ func Test_sortstringsfiles(t *testing.T) {
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
 	bools[1] = false
-	var e bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 	var nmf = 10
@@ -38,7 +37,7 @@ func Test_sortstringsfiles(t *testing.T) {
 		var tns int64
 		for i := range nmf {
 
-			lns := randomdata.Randomstrings(nrs, rlen, r, e)
+			lns := randomdata.Randomstrings(nrs, rlen, r)
 			if len(lns) != int(nrs) {
 				log.Fatal("Sortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
 			}

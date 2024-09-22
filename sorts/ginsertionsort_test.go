@@ -19,9 +19,8 @@ func Test_ginsertionsort(t *testing.T) {
 
 			var l int = ll
 			var r bool = true
-			var e bool = false
 			//log.Print("testing ginsertionsort of ", nl, " random strings length ", l)
-			rsl := randomdata.Randomstrings(nl, l, r, e)
+			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("ginsertionsort test rsl: wanted len ", nl, " got ", len(rsl))
 			}

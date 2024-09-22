@@ -19,7 +19,6 @@ func Test_mergestringfiles(t *testing.T) {
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
 	bools[1] = false
-	var e bool = false
 	var nrs int64 = 1 << 20
 
 	var nmf = 10
@@ -35,7 +34,7 @@ func Test_mergestringfiles(t *testing.T) {
 
 		for i := range nmf {
 
-			lns := randomdata.Randomstrings(nrs, rlen, r, e)
+			lns := randomdata.Randomstrings(nrs, rlen, r)
 			// random length strings must be newline delimited
 			if r == true {
 				for i, _ := range lns {

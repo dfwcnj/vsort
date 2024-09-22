@@ -22,9 +22,8 @@ func Test_rsort2ba(t *testing.T) {
 			var lns [][]byte
 			var l int = ll
 			var r bool = true
-			var e bool = false
 			//log.Print("testing rsort2ba of ", nl, " random strings length ", l)
-			rsl := randomdata.Randomstrings(nl, l, r, e)
+			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				log.Fatal("rsort2ba test rsl: wanted len ", nl, " got ", len(rsl))
 			}
@@ -51,7 +50,7 @@ func Test_rsort2ba(t *testing.T) {
 			}
 
 			//log.Print("testing rsort2ba of ", nl, " random uints")
-			ulns := randomdata.Randomuints(nl, e)
+			ulns := randomdata.Randomuints(nl)
 			if len(ulns) != int(nl) {
 				log.Fatal("rsort2ba test rui: wanted len ", nl, " got ", len(lns))
 			}

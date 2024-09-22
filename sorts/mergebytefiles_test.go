@@ -19,7 +19,6 @@ func Test_mergebytefiles(t *testing.T) {
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
 	bools[1] = false
-	var e bool = false
 	var nrs int64 = 1 << 20
 
 	var nmf = 10
@@ -36,7 +35,7 @@ func Test_mergebytefiles(t *testing.T) {
 		for i := range nmf {
 			var lns [][]byte
 
-			rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+			rsl := randomdata.Randomstrings(nrs, rlen, r)
 
 			for _, s := range rsl {
 				ln := []byte(s)

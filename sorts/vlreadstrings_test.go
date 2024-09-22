@@ -13,7 +13,6 @@ import (
 func Test_vlreadstrings(t *testing.T) {
 	var rlen int = 32
 	var r bool = true
-	var e bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen)
 	var nr int
@@ -29,7 +28,7 @@ func Test_vlreadstrings(t *testing.T) {
 	log.Print("vlreadstrings test initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
-	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+	rsl := randomdata.Randomstrings(nrs, rlen, r)
 
 	fn := path.Join(dn, "vlreadstrings")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0644)

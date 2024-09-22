@@ -16,7 +16,6 @@ func Test_savestringmergefile(t *testing.T) {
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
 	bools[1] = false
-	var e bool = false
 	var nrs int64 = 1 << 20
 
 	for _, r := range bools {
@@ -30,7 +29,7 @@ func Test_savestringmergefile(t *testing.T) {
 		//log.Print("savemergeگile test initmergedir ", dn)
 
 		for i := range 10 {
-			lns := randomdata.Randomstrings(nrs, rlen, r, e)
+			lns := randomdata.Randomstrings(nrs, rlen, r)
 			// random length strings must be newline delimited
 			if r == true {
 				for i, _ := range lns {

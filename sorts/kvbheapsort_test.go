@@ -19,12 +19,11 @@ func Test_kvbheapsort(t *testing.T) {
 		for _, nl := range ns {
 
 			var r bool = false
-			var e bool = false
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
 			log.Print("testing kvbheapsort of ", nl, " strings length ", ll)
-			rsl := randomdata.Randomstrings(nl, ll, r, e)
+			rsl := randomdata.Randomstrings(nl, ll, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvbheapsort test rsl: wanted len ", nl, " got ", len(rsl))
 			}

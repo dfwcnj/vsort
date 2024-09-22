@@ -13,7 +13,6 @@ import (
 func Test_flreadbytes(t *testing.T) {
 	var rlen int = 32
 	var r bool = false
-	var e bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 
@@ -25,7 +24,7 @@ func Test_flreadbytes(t *testing.T) {
 
 	// log.Print("flreadbytes test")
 
-	rsl := randomdata.Randomstrings(nrs, rlen, r, e)
+	rsl := randomdata.Randomstrings(nrs, rlen, r)
 	// log.Print("flreadbytes test rsl ", len(rsl))
 
 	dn, err := initmergedir("/tmp", "flreadbytestest")

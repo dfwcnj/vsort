@@ -10,7 +10,6 @@ import (
 func Test_gmergesort(t *testing.T) {
 
 	var r bool = true
-	var e bool = false
 	//ls := []int64{1, 2, 1 << 4, 1 << 8, 1 << 16, 1 << 20}
 	ls := []int64{1 << 20}
 
@@ -18,7 +17,7 @@ func Test_gmergesort(t *testing.T) {
 
 		//log.Print("testing mergesort of ", nl, " random strings")
 		var l int = 32
-		lns := randomdata.Randomstrings(nl, l, r, e)
+		lns := randomdata.Randomstrings(nl, l, r)
 		if len(lns) != int(nl) {
 			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
@@ -40,7 +39,7 @@ func Test_gmergesort(t *testing.T) {
 	for _, nl := range ls {
 
 		//log.Print("testing mergesort of ", nl, " random uints")
-		lns := randomdata.Randomuints(nl, e)
+		lns := randomdata.Randomuints(nl)
 		if len(lns) != int(nl) {
 			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
