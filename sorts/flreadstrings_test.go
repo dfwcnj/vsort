@@ -31,7 +31,7 @@ func Test_flreadstrings(t *testing.T) {
 	if err != nil {
 		log.Fatal("flreadstrings test initmergedir ", err)
 	}
-	log.Print("flreadstrings initmergedir ", dn)
+	// log.Print("flreadstrings initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
 	fn := path.Join(dn, "flreadstringstest")

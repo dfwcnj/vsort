@@ -25,7 +25,7 @@ func Test_vlreadbytes(t *testing.T) {
 	if err != nil {
 		log.Fatal("vlreadbytes test initmergedir ", err)
 	}
-	log.Print("vlreadbytes test initmergedir ", dn)
+	// log.Print("vlreadbytes test initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r)

@@ -31,7 +31,7 @@ func Test_flreadbytes(t *testing.T) {
 	if err != nil {
 		log.Fatal("flreadbytes test initmergedir ", err)
 	}
-	log.Print("flreadbytes initmergedir ", dn)
+	// log.Print("flreadbytes initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
 	fn := path.Join(dn, "flreadbytestest")

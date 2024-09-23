@@ -25,7 +25,7 @@ func Test_vlreadstrings(t *testing.T) {
 	if err != nil {
 		log.Fatal("vlreadstrings test initmergedir ", err)
 	}
-	log.Print("vlreadstrings test initmergedir ", dn)
+	// log.Print("vlreadstrings test initmergedir ", dn)
 	defer os.RemoveAll(dn)
 
 	rsl := randomdata.Randomstrings(nrs, rlen, r)
