@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/dfwcnj/vsort/merge"
 	"github.com/dfwcnj/randomdata"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 func Test_savestringmergefile(t *testing.T) {

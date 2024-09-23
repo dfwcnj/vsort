@@ -8,8 +8,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/dfwcnj/vsort/merge"
 	"github.com/dfwcnj/randomdata"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 func Test_sortvlbytesfile(t *testing.T) {

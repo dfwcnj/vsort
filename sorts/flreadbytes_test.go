@@ -2,8 +2,8 @@ package sorts
 
 import (
 	"fmt"
-	"github.com/dfwcnj/vsort/merge"
 	"github.com/dfwcnj/randomdata"
+	"github.com/dfwcnj/vsort/merge"
 	"log"
 	"os"
 	"path"

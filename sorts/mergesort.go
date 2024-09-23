@@ -54,6 +54,7 @@ func kvmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
 }
 
 func kvmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
+	log.Printf("kvmergesort data %v, reclen %v, keyoff %v, keylen %v", len(data), reclen, keyoff, keylen)
 	if len(data) == 1 {
 		return data
 	}
@@ -97,6 +98,7 @@ func gmerge[E cmp.Ordered](ldata, rdata []E) []E {
 }
 
 func gmergesort[E cmp.Ordered](data []E) []E {
+	log.Printf("gmergesort data %v", len(data))
 	if len(data) == 1 {
 		return data
 	}
@@ -134,6 +136,7 @@ func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) int) []E {
 }
 
 func gmergesortfunc[E any](data []E, cmp func(a, b E) int) []E {
+	log.Printf("gmergesortfunc data %v", len(data))
 	if len(data) == 1 {
 		return data
 	}
