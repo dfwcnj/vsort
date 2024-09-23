@@ -86,7 +86,7 @@ func gmerge[E cmp.Ordered](ldata, rdata []E) []E {
 			result[i] = ldata[lidx]
 			lidx++
 		//case ldata[lidx] < rdata[ridx]:
-		case cmp.Compare(ldata[lidx], rdata[ridx]) < 0:
+		case cmp.Less(ldata[lidx], rdata[ridx]):
 			result[i] = ldata[lidx]
 			lidx++
 		default:
