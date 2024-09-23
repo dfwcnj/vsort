@@ -112,6 +112,45 @@ func gmergesort[E cmp.Ordered](data []E) []E {
 	return gmerge(ldata, rdata)
 }
 
+// https://gist.github.com/julianshen/3940045
+func smerge(ldata, rdata []string) []string {
+	var lidx, ridx int
+	result := make([]string, len(ldata)+len(rdata))
+
+	for i := 0; i < cap(result); i++ {
+		switch {
+		case lidx >= len(ldata):
+			result[i] = rdata[ridx]
+			ridx++
+		case ridx >= len(rdata):
+			result[i] = ldata[lidx]
+			lidx++
+		case strings.Compare(ldata[lidx], rdata[ridx]) < 0:
+			result[i] = ldata[lidx]
+			lidx++
+		default:
+			result[i] = rdata[ridx]
+			ridx++
+		}
+	}
+
+	return result
+}
+
+func smergesort(data []string) []string {
+	// log.Printf("smergesort data %v", len(data))
+	if len(data) == 1 {
+		return data
+	}
+
+	middle := len(data) / 2
+
+	ldata := smergesort(data[:middle])
+	rdata := smergesort(data[middle:])
+
+	return smerge(ldata, rdata)
+}
+
 func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) int) []E {
 	var lidx, ridx int
 	result := make([]E, len(ldata)+len(rdata))

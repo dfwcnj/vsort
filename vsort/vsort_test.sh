@@ -46,6 +46,11 @@ set -ex
 #   -stype string
 #     	sort type: merge, radix, std (default "std")
 
+if ! test -f vsort; do
+    go mod tidy
+    go build
+done
+
 # remove any previous intermediate data
 # rm -r /tmp/[fmSs]*
 # rm /tmp/[br]data[01]

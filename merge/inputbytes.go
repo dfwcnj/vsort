@@ -32,6 +32,11 @@ func flreadallbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byt
 	}
 }
 
+// Flreadbytes
+// fp - file pointer
+// offset - offset into file
+// reclen - length of each fixed length record
+// iomem  - amount of memory to use for each invocation
 func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int64, error) {
 
 	var lns [][]byte
@@ -97,6 +102,11 @@ func vlreadallbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, er
 	return lns, offset, nil
 }
 
+// vlreadbytes
+// fp file pointer
+// offset - offset into file
+// iomem - amount of memory to spend for each invocation
+// XXX for now, the delimiter is assumed to be \n
 func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 
 	var lns [][]byte
