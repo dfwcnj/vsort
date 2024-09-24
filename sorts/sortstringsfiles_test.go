@@ -70,9 +70,9 @@ func Test_sortstringsfiles(t *testing.T) {
 			mpath := filepath.Join(dn, mfn)
 
 			if r == true {
-				Sortstringsfiles(fns, mpath, "", "std", 0, 0, 0, iomem)
+				Sortstringsfiles(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
-				Sortstringsfiles(fns, mpath, "", "std", rlen, 0, 0, iomem)
+				Sortstringsfiles(fns, mpath, "", st, rlen, 0, 0, iomem)
 			}
 
 			mfp, err := os.Open(mpath)

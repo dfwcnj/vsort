@@ -73,9 +73,9 @@ func Test_sortbytesfiles(t *testing.T) {
 			mpath := filepath.Join(dn, mfn)
 
 			if r == true {
-				Sortbytesfiles(fns, mpath, "", "std", 0, 0, 0, iomem)
+				Sortbytesfiles(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
-				Sortbytesfiles(fns, mpath, "", "std", rlen, 0, rlen, iomem)
+				Sortbytesfiles(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
 
 			mfp, err := os.Open(mpath)
