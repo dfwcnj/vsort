@@ -50,7 +50,7 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 		case "insertion":
 			kvbinsertionsort(lns, reclen, keyoff, keylen)
 		case "merge":
-			kvmergesort(lns, reclen, keyoff, keylen)
+			kvbmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
 			kvrsort2a(lns, reclen, keyoff, keylen)
 		case "std":

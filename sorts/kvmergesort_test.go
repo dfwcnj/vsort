@@ -32,7 +32,7 @@ func Test_kvmergesort(t *testing.T) {
 			for _, s := range rsl {
 				lns = append(lns, []byte(s))
 			}
-			slns := kvmergesort(lns, reclen, keyoff, keylen)
+			slns := kvbmergesort(lns, reclen, keyoff, keylen)
 			ssl := make([]string, 0, nl)
 			for _, bs := range slns {
 				ssl = append(ssl, string(bs))

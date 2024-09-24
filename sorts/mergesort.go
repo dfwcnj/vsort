@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func kvmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
+func kvbmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
 	var lidx, ridx int
 	result := make([][]byte, len(ldata)+len(rdata))
 
@@ -53,7 +53,7 @@ func kvmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
 	return result
 }
 
-func kvmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
+func kvbmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
 	// log.Printf("kvmergesort data %v, reclen %v, keyoff %v, keylen %v", len(data), reclen, keyoff, keylen)
 	if len(data) == 1 {
 		return data
@@ -66,10 +66,10 @@ func kvmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
 
 	middle := len(data) / 2
 
-	ldata := kvmergesort(data[:middle], reclen, keyoff, keylen)
-	rdata := kvmergesort(data[middle:], reclen, keyoff, keylen)
+	ldata := kvbmergesort(data[:middle], reclen, keyoff, keylen)
+	rdata := kvbmergesort(data[middle:], reclen, keyoff, keylen)
 
-	return kvmerge(ldata, rdata, reclen, keyoff, keylen)
+	return kvbmerge(ldata, rdata, reclen, keyoff, keylen)
 }
 
 // https://gist.github.com/julianshen/3940045

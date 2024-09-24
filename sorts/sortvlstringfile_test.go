@@ -14,16 +14,19 @@ import (
 
 func Test_sortvlstringsfile(t *testing.T) {
 	var rlen int = 32
-	var bools []bool = make([]bool, 2, 2)
-	bools[0] = true
-	bools[1] = false
+	var r bool = true
+	var stypes []string = make([]string, 4, 4)
+	stypes[0] = "heap"
+	stypes[1] = "merge"
+	stypes[2] = "radix"
+	stypes[3] = "std"
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
 
 	var nr int
 
-	for _, r := range bools {
-		log.Print("sortvfstringsfile test ", r)
+	for _, st := range stypes {
+		log.Print("sortvlstringsfile test ", st)
 		dn, err := initmergedir("/tmp", "sortvlstringsfiletest")
 		if err != nil {
 			log.Fatal("sortvlstringsfile test initmergedir ", err)
