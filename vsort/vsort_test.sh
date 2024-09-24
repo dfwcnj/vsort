@@ -106,4 +106,5 @@ goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge -form bytes | flcat
 goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge | flcat -rlen 32 | sort -c
 
 
-rm -r /tmp/[fmSs]*
+rm -r /tmp/[Ss]*
+
