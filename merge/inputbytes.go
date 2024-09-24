@@ -133,7 +133,7 @@ func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error
 	nw := bufio.NewReader(r)
 
 	for {
-		if memused >= iomem {
+		if fp != os.Stdin && memused >= iomem {
 			//log.Println("vlreadbytes memused >= iomem")
 			return lns, offset, nil
 		}
