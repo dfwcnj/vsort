@@ -12,6 +12,7 @@ import (
 
 // sort variable lengh records file
 func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte, []string, error) {
+	// log.Printf("sortvlbytesfile fn %v dn %v, stype %v iomem %v ", fn, dn, stype, iomem)
 	var lns [][]byte
 	var err error
 	var i int
@@ -52,7 +53,8 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 		case "insertion":
 			kvbinsertionsort(lns, 0, 0, 0)
 		case "merge":
-			kvbmergesort(lns, 0, 0, 0)
+			// log.Printf("sortvlbytesfile kvsmergesort lns %v", len(lns))
+			lns = kvbmergesort(lns, 0, 0, 0)
 		case "radix":
 			kvrsort2a(lns, 0, 0, 0)
 		case "std":

@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"cmp"
 	"log"
-	"strings"
 )
 
 func kvbmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
@@ -54,7 +53,7 @@ func kvbmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
 }
 
 func kvbmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
-	// log.Printf("kvmergesort data %v, reclen %v, keyoff %v, keylen %v", len(data), reclen, keyoff, keylen)
+	//log.Printf("kvmergesort data %v, reclen %v, keyoff %v, keylen %v", len(data), reclen, keyoff, keylen)
 	if len(data) == 1 {
 		return data
 	}
@@ -99,7 +98,7 @@ func gmerge[E cmp.Ordered](ldata, rdata []E) []E {
 }
 
 func gmergesort[E cmp.Ordered](data []E) []E {
-	// log.Printf("gmergesort data %v", len(data))
+	//log.Printf("gmergesort data %v", len(data))
 	if len(data) == 1 {
 		return data
 	}
@@ -112,46 +111,7 @@ func gmergesort[E cmp.Ordered](data []E) []E {
 	return gmerge(ldata, rdata)
 }
 
-// https://gist.github.com/julianshen/3940045
-func smerge(ldata, rdata []string) []string {
-	var lidx, ridx int
-	result := make([]string, len(ldata)+len(rdata))
-
-	for i := 0; i < cap(result); i++ {
-		switch {
-		case lidx >= len(ldata):
-			result[i] = rdata[ridx]
-			ridx++
-		case ridx >= len(rdata):
-			result[i] = ldata[lidx]
-			lidx++
-		case strings.Compare(ldata[lidx], rdata[ridx]) < 0:
-			result[i] = ldata[lidx]
-			lidx++
-		default:
-			result[i] = rdata[ridx]
-			ridx++
-		}
-	}
-
-	return result
-}
-
-func smergesort(data []string) []string {
-	// log.Printf("smergesort data %v", len(data))
-	if len(data) == 1 {
-		return data
-	}
-
-	middle := len(data) / 2
-
-	ldata := smergesort(data[:middle])
-	rdata := smergesort(data[middle:])
-
-	return smerge(ldata, rdata)
-}
-
-func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) int) []E {
+func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) bool) []E {
 	var lidx, ridx int
 	result := make([]E, len(ldata)+len(rdata))
 
@@ -163,7 +123,7 @@ func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) int) []E {
 		case ridx >= len(rdata):
 			result[i] = ldata[lidx]
 			lidx++
-		case cmp(ldata[lidx], rdata[ridx]) < 0:
+		case cmp(ldata[lidx], rdata[ridx]):
 			result[i] = ldata[lidx]
 			lidx++
 		default:
@@ -175,7 +135,7 @@ func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) int) []E {
 	return result
 }
 
-func gmergesortfunc[E any](data []E, cmp func(a, b E) int) []E {
+func gmergesortfunc[E any](data []E, cmp func(a, b E) bool) []E {
 	// log.Printf("gmergesortfunc data %v", len(data))
 	if len(data) == 1 {
 		return data
@@ -189,9 +149,10 @@ func gmergesortfunc[E any](data []E, cmp func(a, b E) int) []E {
 	return gmergefunc(ldata, rdata, cmp)
 }
 
-func kvsmergesort(lns []string, reclen, keyoff, keylen int) {
+func kvsmergesort(lns []string, reclen, keyoff, keylen int) []string {
+	// log.Printf("kvsmergesort lns %v, reclen %v keyoff %v keylen %v", len(lns), reclen, keyoff, keylen)
 	if reclen == 0 {
-		gmergesort(lns)
+		return gmergesort(lns)
 	} else {
 		if keyoff+keylen > reclen {
 			log.Fatal("key must fall withing record boundaries")
@@ -199,10 +160,10 @@ func kvsmergesort(lns []string, reclen, keyoff, keylen int) {
 		if keylen == 0 {
 			keylen = reclen
 		}
-		gmergesortfunc(lns, func(a, b string) int {
+		return gmergesortfunc(lns, func(a, b string) bool {
 			ak := a[keyoff : keyoff+keylen]
 			bk := b[keyoff : keyoff+keylen]
-			return strings.Compare(ak, bk)
+			return cmp.Less(ak, bk)
 		})
 	}
 }

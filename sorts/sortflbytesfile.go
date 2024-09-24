@@ -41,9 +41,6 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 		//log.Print("sortflbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
-			if offset == 0 {
-				log.Fatal("sortflbytesfile offset 0 no lines ", fn)
-			}
 			return lns, mfiles, err
 		}
 
@@ -53,7 +50,7 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 		case "insertion":
 			kvbinsertionsort(lns, reclen, keyoff, keylen)
 		case "merge":
-			kvbmergesort(lns, reclen, keyoff, keylen)
+			lns = kvbmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
 			kvrsort2a(lns, reclen, keyoff, keylen)
 		case "std":
@@ -70,6 +67,7 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 			log.Fatal("sortflbytesfile Savemergefile failed: ", mfn, " ", dn)
 		}
 		mfiles = append(mfiles, mfn)
+		// log.Print("sortflbytesfile mfn ", mfn)
 		if err == io.EOF {
 			//log.Print("sortflbytesfile return on EOF")
 			return lns[:0], mfiles, err

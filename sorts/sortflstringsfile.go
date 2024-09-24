@@ -16,7 +16,7 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 	var i int
 	var mfiles []string
 
-	//log.Print("sortflstringsfile ", fn, " ", dn)
+	// log.Printf("sortflstringsfile fn %v dn %v, stype %v reclen %v keyoff %v keylen %v, iomem %v ", fn, dn, stype, reclen, keyoff, keylen, iomem)
 
 	fp := os.Stdin
 	if fn != "" {
@@ -40,9 +40,6 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 		//log.Print("sortflstringsfile Flreadstrings ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
-			if offset == 0 {
-				log.Fatal("sortflstringsfile offset 0 no lines ", fn)
-			}
 			return lns, mfiles, err
 		}
 
@@ -53,7 +50,8 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 		case "insertion":
 			kvsinsertionsort(lns, reclen, keyoff, keylen)
 		case "merge":
-			kvsmergesort(lns, reclen, keyoff, keylen)
+			// log.Printf("sortflstringsfile kvsmergesort lns %v, reclen %v, keyoff %v keylen %v", len(lns), reclen, keyoff, keylen)
+			lns = kvsmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
 			rsort2sa(lns, reclen, keyoff, keylen)
 		case "std":

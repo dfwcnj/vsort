@@ -14,7 +14,7 @@ import (
 // sort variable lengh records file
 func sortvlstringsfile(fn string, dn string, stype string, iomem int64) ([]string, []string, error) {
 
-	//log.Printf("sortvlstringsfile %s %s %s %d", fn, dn, stype, iomem)
+	// log.Printf("sortvlstringsfile fn %v dn %v stype %v iomem %v", fn, dn, stype, iomem)
 
 	var lns []string
 	var err error
@@ -53,7 +53,8 @@ func sortvlstringsfile(fn string, dn string, stype string, iomem int64) ([]strin
 		case "insertion":
 			ginsertionsort(lns)
 		case "merge":
-			gmergesort(lns)
+			// log.Printf("sortvlstringsfile gmergesort lns %v", len(lns))
+			lns = gmergesort(lns)
 		case "radix":
 			rsort2sa(lns, 0, 0, 0)
 		case "std":
