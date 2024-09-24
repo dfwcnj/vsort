@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func flreadallstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string, int64, error) {
+func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, error) {
 
 	var lns []string
 
@@ -46,7 +46,7 @@ func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string
 			log.Fatal("flreadn stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return flreadallstrings(fp, offset, reclen, finf.Size())
+			return flreadallstrings(fp, reclen, finf.Size())
 		}
 
 		if offset != 0 {

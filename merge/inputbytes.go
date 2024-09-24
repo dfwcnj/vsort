@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func flreadallbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int64, error) {
+func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, error) {
 
 	var lns [][]byte
 
@@ -51,7 +51,7 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 			log.Fatal("flreadn stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return flreadallbytes(fp, offset, reclen, finf.Size())
+			return flreadallbytes(fp, reclen, finf.Size())
 		}
 
 		if offset != 0 {
@@ -85,7 +85,7 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 
 }
 
-func vlreadallbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
+func vlreadallbytes(fp *os.File, iomem int64) ([][]byte, int64, error) {
 	var lns [][]byte
 	buf, err := io.ReadAll(fp)
 	if err != nil && err != io.EOF {
@@ -99,7 +99,7 @@ func vlreadallbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, er
 		bln := []byte(l)
 		lns = append(lns, bln)
 	}
-	return lns, offset, nil
+	return lns, 0, nil
 }
 
 // vlreadbytes
@@ -118,7 +118,7 @@ func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error
 			log.Fatal("vlreadbytes stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return vlreadallbytes(fp, offset, finf.Size())
+			return vlreadallbytes(fp, finf.Size())
 		}
 
 		if offset != 0 {
