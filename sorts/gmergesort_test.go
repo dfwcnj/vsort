@@ -23,19 +23,19 @@ func Test_gmergesort(t *testing.T) {
 			var l int = 32
 			lns := randomdata.Randomstrings(nl, l, r)
 			if len(lns) != int(nl) {
-				log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
+				log.Fatal("gmergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 			}
 
 			slns := gmergesort(lns)
 
 			if len(slns) != int(nl) {
-				log.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
+				log.Fatal("gmergesort test slns: wanted len ", nl, " got ", len(slns))
 			}
 
 			if !slices.IsSorted(slns) {
-				t.Error("mergesort failed for size ", nl)
+				t.Error("gmergesort failed for size ", nl)
 			} else {
-				log.Print("mergesort test passed for ", nl)
+				log.Print("gmergesort test passed for ", nl)
 			}
 		}
 
@@ -46,19 +46,19 @@ func Test_gmergesort(t *testing.T) {
 
 		lns := randomdata.Randomuints(nl)
 		if len(lns) != int(nl) {
-			log.Fatal("mergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
+			log.Fatal("gmergesort test randomdata lns: wanted len ", nl, " got ", len(lns))
 		}
 
 		slns := gmergesort(lns)
 
 		if len(slns) != int(nl) {
-			t.Fatal("mergesort test slns: wanted len ", nl, " got ", len(slns))
+			t.Fatal("gmergesort test slns: wanted len ", nl, " got ", len(slns))
 		}
 
 		if !slices.IsSorted(slns) {
-			t.Fatal("mergesort failed for size ", nl)
+			t.Fatal("gmergesort failed for size ", nl)
 		} else {
-			log.Print("mergesort test passed for ", nl)
+			log.Print("gmergesort test passed for ", nl)
 		}
 
 	}
