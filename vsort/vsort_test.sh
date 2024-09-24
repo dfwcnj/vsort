@@ -46,10 +46,10 @@ set -ex
 #   -stype string
 #     	sort type: merge, radix, std (default "std")
 
-if ! test -f vsort; do
+if ! test -f vsort; then
     go mod tidy
     go build
-done
+fi
 
 # remove any previous intermediate data
 # rm -r /tmp/[fmSs]*
@@ -88,18 +88,22 @@ goranddatagen -n 16777216 | ./vsort -reclen 32 -stype heap -form bytes | flcat -
 goranddatagen -n 65536 | ./vsort -reclen 32 -stype insertion | flcat -rlen 32 | sort -c
 goranddatagen -n 65536 | ./vsort -reclen 32 -stype insertion -form bytes | flcat -rlen 32 | sort -c
 
-goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge | flcat -rlen 32 | sort -c
-goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge -form bytes | flcat -rlen 32 | sort -c
+# goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge | flcat -rlen 32 | sort -c
+# goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge -form bytes | flcat -rlen 32 | sort -c
 
 goranddatagen -n 16777216 | ./vsort -reclen 32  -stype radix | flcat -rlen 32 | sort -c
 goranddatagen -n 16777216 | ./vsort -reclen 32  -stype radix -form bytes | flcat -rlen 32 | sort -c
 
 # random length standard input
 goranddatagen -n 33554432 -rlen | ./vsort | sort -c
-goranddatagen -n 33554432 -rlen | ./vsort -vtype heap | sort -c
-goranddatagen -n 65536 -rlen | ./vsort -vtype insertion | sort -c
-goranddatagen -n 33554432 -rlen | ./vsort -vtype merge | sort -c
-goranddatagen -n 33554432 -rlen | ./vsort -vtype radix | sort -c
+goranddatagen -n 33554432 -rlen | ./vsort -stype heap | sort -c
+goranddatagen -n 65536 -rlen | ./vsort -stype insertion | sort -c
+goranddatagen -n 33554432 -rlen | ./vsort -stype merge | sort -c
+goranddatagen -n 33554432 -rlen | ./vsort -stype radix | sort -c
+
+# failing
+goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge -form bytes | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge | flcat -rlen 32 | sort -c
 
 
 rm -r /tmp/[fmSs]*
