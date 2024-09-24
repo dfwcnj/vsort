@@ -60,20 +60,20 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 				log.Fatal("flreadn seek", err)
 			}
 		}
-		log.Printf("Flreadbytes fn %v offset %v reclen %v", finf.Name(), offset, reclen)
+		// log.Printf("Flreadbytes fn %v offset %v reclen %v", finf.Name(), offset, reclen)
 	}
 
 	for {
 
 		if fp != os.Stdin && memused >= iomem {
-			log.Print("Flreadbytes ", len(lns), " ", offset)
+			// log.Print("Flreadbytes ", len(lns), " ", offset)
 			return lns, offset, err
 		}
 
 		buf := make([]byte, reclen)
 		if bl, err = io.ReadFull(fp, buf); err != nil {
 			if err == io.EOF && bl == 0 {
-				log.Print("Flreadbytes ", len(lns))
+				// log.Print("Flreadbytes ", len(lns))
 				return lns, offset, err
 			}
 		}
