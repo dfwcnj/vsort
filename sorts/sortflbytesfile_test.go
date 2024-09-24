@@ -59,7 +59,7 @@ func Test_sortflbytesfile(t *testing.T) {
 		fp.Close()
 		//log.Print("sortflbytesfile test file ", fn)
 
-		lns, fns, err := sortflbytesfile(fn, dn, "std", rlen, 0, rlen, iomem)
+		lns, fns, err := sortflbytesfile(fn, dn, st, rlen, 0, rlen, iomem)
 		if len(lns) != 0 {
 			log.Fatal("sortflbytesfile test lns ", len(lns))
 		}

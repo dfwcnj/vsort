@@ -40,6 +40,9 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 		//log.Print("sortflstringsfile Flreadstrings ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
+			if offset == 0 {
+				log.Fatal("sortflstringsfile offset 0 no lines ", fn)
+			}
 			return lns, mfiles, err
 		}
 

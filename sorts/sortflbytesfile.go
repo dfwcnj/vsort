@@ -38,12 +38,12 @@ func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen 
 	for {
 
 		lns, offset, err = merge.Flreadbytes(fp, offset, reclen, iomem)
-		if len(lns) == 0 {
-			log.Fatal("sortflreadbytes Flreadbytes returned no lines")
-		}
 		//log.Print("sortflbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
+			if offset == 0 {
+				log.Fatal("sortflbytesfile offset 0 no lines ", fn)
+			}
 			return lns, mfiles, err
 		}
 

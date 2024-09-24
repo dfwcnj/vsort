@@ -55,7 +55,7 @@ func Test_sortvlstringsfile(t *testing.T) {
 		fp.Close()
 		//log.Print("sortvlstringsfile test file ", fn)
 
-		lns, fns, err := sortvlstringsfile(fn, dn, "std", iomem)
+		lns, fns, err := sortvlstringsfile(fn, dn, st, iomem)
 		if len(lns) != 0 {
 			log.Fatal("sortvlstringsfile test lns ", len(lns))
 		}
