@@ -66,7 +66,7 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 	for {
 
 		if fp != os.Stdin && memused >= iomem {
-			log.Print("Flreadbytes ", len(lns), " ", memused)
+			log.Print("Flreadbytes ", len(lns), " ", offset)
 			return lns, offset, err
 		}
 
@@ -74,7 +74,7 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 		if bl, err = io.ReadFull(fp, buf); err != nil {
 			if err == io.EOF && bl == 0 {
 				log.Print("Flreadbytes ", len(lns))
-				return lns, int64(0), err
+				return lns, offset, err
 			}
 		}
 
