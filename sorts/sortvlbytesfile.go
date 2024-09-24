@@ -37,6 +37,9 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 	var offset int64
 	for {
 		lns, offset, err = merge.Vlreadbytes(fp, offset, iomem)
+		if len(lns) == 0 {
+			log.Fatal("sortvlreadbytes Vlreadbytes returned no lines")
+		}
 		//log.Print("sortvlbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
