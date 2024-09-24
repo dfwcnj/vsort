@@ -122,7 +122,7 @@ func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, err
 	nw := bufio.NewReader(r)
 
 	for {
-		if memused >= iomem {
+		if fp != os.Stdin && memused >= iomem {
 			//log.Println("vlreadstrings memused >= iomem")
 			return lns, offset, nil
 		}

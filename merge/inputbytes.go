@@ -64,7 +64,7 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 
 	for {
 
-		if memused >= iomem {
+		if fp != os.Stdin && memused >= iomem {
 			return lns, offset, err
 		}
 
