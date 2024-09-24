@@ -17,13 +17,6 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 	var err error
 	var mfiles []string
 	//log.Print("Sortstringsfiles ofn  ", ofn)
-	if len(dn) == 0 {
-		dn, err = initmergedir("/tmp", "Sortstringsfiles")
-		if err != nil {
-			log.Fatal("Sortstringsfiles initmergedir ", err)
-		}
-		//log.Print("Sortstringsfiles initmergedir ", dn)
-	}
 
 	var fp *os.File
 	if ofn != "" {
@@ -50,6 +43,13 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 			log.Fatal("Sortstringsfiles stdin no mergefile")
 		}
 	} else {
+		if len(dn) == 0 {
+			dn, err = initmergedir("/tmp", "Sortstringsfiles")
+			if err != nil {
+				log.Fatal("Sortstringsfiles initmergedir ", err)
+			}
+			//log.Print("Sortstringsfiles initmergedir ", dn)
+		}
 
 		for _, fn := range fns {
 			var lns []string

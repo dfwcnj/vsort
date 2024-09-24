@@ -15,13 +15,6 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 	var err error
 	var mfiles []string
 	// log.Printf("Sortbytesfiles ofn %v dn %v stype %v reclen %v keyoff %v keylen %v, iomem %v ", ofn, dn, stype, reclen, keyoff, keylen, iomem)
-	if len(dn) == 0 {
-		dn, err = initmergedir("/tmp", "sortbytesfiles")
-		if err != nil {
-			log.Fatal("Sortbytesfiles initmergedir ", err)
-		}
-		//log.Print("Sortbytesfiles initmergedir ", dn)
-	}
 
 	var fp *os.File
 	if ofn != "" {
@@ -48,6 +41,13 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 			log.Fatal("Sortbytesfiles stdin no mergefile")
 		}
 	} else {
+		if len(dn) == 0 {
+			dn, err = initmergedir("/tmp", "sortbytesfiles")
+			if err != nil {
+				log.Fatal("Sortbytesfiles initmergedir ", err)
+			}
+			//log.Print("Sortbytesfiles initmergedir ", dn)
+		}
 
 		for _, fn := range fns {
 			var lns [][]byte
