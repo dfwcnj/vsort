@@ -137,7 +137,7 @@ func kvsheapsort(lns []string, reclen, keyoff, keylen int) {
 			log.Fatal("key must fall withing record boundaries")
 		}
 		if keylen == 0 {
-			keylen = reclen
+			log.Fatal("kvsheapsort zero length key")
 		}
 		gheapsortfunc(lns, func(a, b string) int {
 			ak := a[keyoff : keyoff+keylen]

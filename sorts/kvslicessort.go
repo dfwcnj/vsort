@@ -17,7 +17,7 @@ func kvslicesbsort(lns [][]byte, reclen int, keyoff int, keylen int) {
 			log.Fatal("key must fall withing record boundaries")
 		}
 		if keylen == 0 {
-			keylen = reclen
+			log.Fatal("kvslicesbsort zero length key")
 		}
 		slices.SortFunc(lns, func(a, b []byte) int {
 			ak := a[keyoff : keyoff+keylen]
@@ -35,7 +35,7 @@ func kvslicesssort(lns []string, reclen int, keyoff int, keylen int) {
 			log.Fatal("key must fall withing record boundaries")
 		}
 		if keylen == 0 {
-			keylen = reclen
+			log.Fatal("kvslicesssort zero length key")
 		}
 		slices.SortFunc(lns, func(a, b string) int {
 			ak := a[keyoff : keyoff+keylen]
