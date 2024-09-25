@@ -38,9 +38,6 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 	var offset int64
 	for {
 		lns, offset, err = merge.Vlreadbytes(fp, offset, iomem)
-		if len(lns) == 0 {
-			log.Fatal("sortvlreadbytes Vlreadbytes returned no lines")
-		}
 		//log.Print("sortvlbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
@@ -56,7 +53,8 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 			// log.Printf("sortvlbytesfile kvsmergesort lns %v", len(lns))
 			lns = kvbmergesort(lns, 0, 0, 0)
 		case "radix":
-			kvrsort2a(lns, 0, 0, 0)
+			log.Printf("sortvlbytesfile rsort2ba lns %v", len(lns))
+			rsort2ba(lns)
 		case "std":
 			kvslicesbsort(lns, 0, 0, 0)
 		default:
