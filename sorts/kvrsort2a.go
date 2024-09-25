@@ -16,6 +16,12 @@ import (
 )
 
 func kvrsort2a(lns [][]byte, reclen, keyoff, keylen int) {
+	if keylen == 0 {
+		log.Fatal("kvrsort2a zero length key")
+	}
+	if keyoff+keylen > reclen {
+		log.Fatal("kvrsort2a key must fall withing key bounds")
+	}
 	kvrsort2array(lns, make([][]byte, len(lns)), reclen, keyoff, keylen, 0)
 }
 
