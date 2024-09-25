@@ -56,13 +56,15 @@ fi
 # rm /tmp/[br]data[01]
 
 # generate file based data
-goranddatagen -n 16777216  >/tmp/bdata0
-goranddatagen -n 16777216  >/tmp/bdata1
-goranddatagen -n 33554432 -rlen >/tmp/rdata0
-goranddatagen -n 33554432 -rlen >/tmp/rdata1
+if ! test -f /tmp/bdata0; then
+    goranddatagen -n 16777216  >/tmp/bdata0
+    goranddatagen -n 16777216  >/tmp/bdata1
+    goranddatagen -n 33554432 -rlen >/tmp/rdata0
+    goranddatagen -n 33554432 -rlen >/tmp/rdata1
+fi
 
 # fixed length bytes sort
-./vsort -reclen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
+./vsort -reclen 32 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 ./vsort -form bytes -reclen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 
 # fixed length bytes sort easiest key
@@ -79,20 +81,20 @@ goranddatagen -n 33554432 -rlen >/tmp/rdata1
 rm /tmp/[br]data[01]
 
 # fixed length standard input
-goranddatagen -n 16777216 | ./vsort -reclen 32 | flcat -rlen 32 | sort -c
-goranddatagen -n 16777216 | ./vsort -reclen 32 -form bytes | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 -form bytes | flcat -rlen 32 | sort -c
 
-goranddatagen -n 16777216 | ./vsort -reclen 32 -stype heap | flcat -rlen 32 | sort -c
-goranddatagen -n 16777216 | ./vsort -reclen 32 -stype heap -form bytes | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 -stype heap | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 -stype heap -form bytes | flcat -rlen 32 | sort -c
 
-goranddatagen -n 65536 | ./vsort -reclen 32 -stype insertion | flcat -rlen 32 | sort -c
-goranddatagen -n 65536 | ./vsort -reclen 32 -stype insertion -form bytes | flcat -rlen 32 | sort -c
+goranddatagen -n 65536 | ./vsort -reclen 32 -keylen 32 -stype insertion | flcat -rlen 32 | sort -c
+goranddatagen -n 65536 | ./vsort -reclen 32 -keylen 32 -stype insertion -form bytes | flcat -rlen 32 | sort -c
 
-# goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge | flcat -rlen 32 | sort -c
-# goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge -form bytes | flcat -rlen 32 | sort -c
+# goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype merge | flcat -rlen 32 | sort -c
+# goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype merge -form bytes | flcat -rlen 32 | sort -c
 
-goranddatagen -n 16777216 | ./vsort -reclen 32  -stype radix | flcat -rlen 32 | sort -c
-goranddatagen -n 16777216 | ./vsort -reclen 32  -stype radix -form bytes | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype radix | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype radix -form bytes | flcat -rlen 32 | sort -c
 
 # random length standard input
 goranddatagen -n 33554432 -rlen | ./vsort | sort -c
@@ -102,9 +104,9 @@ goranddatagen -n 33554432 -rlen | ./vsort -stype merge | sort -c
 goranddatagen -n 33554432 -rlen | ./vsort -stype radix | sort -c
 
 # failing
-goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge -form bytes | flcat -rlen 32 | sort -c
-goranddatagen -n 16777216 | ./vsort -reclen 32  -stype merge | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype merge -form bytes | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype merge | flcat -rlen 32 | sort -c
 
 
 rm -r /tmp/[Ss]*
-
+# rm /tmp/[br]data[01]
