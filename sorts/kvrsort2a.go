@@ -19,6 +19,9 @@ import (
 )
 
 func kvrsort2a(lns [][]byte, reclen, keyoff, keylen int) {
+	if len(lns) == 0 {
+		return
+	}
 	if keylen == 0 {
 		log.Fatal("kvrsort2a zero length key")
 	}

@@ -72,7 +72,7 @@ func Test_sortstringsfiles(t *testing.T) {
 			if r == true {
 				Sortstringsfiles(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
-				Sortstringsfiles(fns, mpath, "", st, rlen, 0, 0, iomem)
+				Sortstringsfiles(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
 
 			mfp, err := os.Open(mpath)

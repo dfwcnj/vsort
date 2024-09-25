@@ -41,6 +41,10 @@ func kvbsiftdown(data [][]byte, reclen, keyoff, keylen, lo, hi, first int) {
 }
 
 func kvbheapsort(data [][]byte, reclen, keyoff, keylen int) {
+	if len(data) == 0 {
+		return
+	}
+
 	if reclen != 0 {
 		if keyoff+keylen > reclen {
 			log.Fatal("kvbheapsort key must fall in record bounds")
@@ -81,6 +85,9 @@ func gsiftdown[E cmp.Ordered](data []E, lo, hi, first int) {
 }
 
 func gheapsort[E cmp.Ordered](data []E) {
+	if len(data) == 0 {
+		return
+	}
 	first := 0
 	lo := 0
 	hi := len(data)
@@ -134,6 +141,9 @@ func gheapsortfunc[E any](data []E, cmp func(a, b E) int) {
 }
 
 func kvsheapsort(lns []string, reclen, keyoff, keylen int) {
+	if len(lns) == 0 {
+		return
+	}
 	if reclen == 0 {
 		gheapsort(lns)
 	} else {

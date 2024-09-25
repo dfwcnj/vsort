@@ -13,6 +13,9 @@ import (
 
 // https://cs.opensource.google/go/go/+/refs/tags/go1.23.1:src/slices/zsortordered.go
 func kvbinsertionsort(lns [][]byte, reclen, keyoff, keylen int) {
+	if len(lns) == 0 {
+		return
+	}
 	var lo, hi int
 	hi = len(lns)
 	if keyoff > 0 || keylen > 0 {
@@ -31,6 +34,9 @@ func kvbinsertionsort(lns [][]byte, reclen, keyoff, keylen int) {
 }
 
 func ginsertionsort[E cmp.Ordered](data []E) {
+	if len(data) == 0 {
+		return
+	}
 	var a, b int
 	b = len(data)
 	for i := a + 1; i < b; i++ {
@@ -42,6 +48,9 @@ func ginsertionsort[E cmp.Ordered](data []E) {
 
 // https://cs.opensource.google/go/go/+/refs/tags/go1.23.1:src/slices/zsortanyfunc.go
 func ginsertionsortfunc[E any](data []E, cmp func(a, b E) int) {
+	if len(data) == 0 {
+		return
+	}
 	a := 0
 	b := len(data)
 	for i := a + 1; i < b; i++ {

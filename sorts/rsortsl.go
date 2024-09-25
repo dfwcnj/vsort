@@ -8,6 +8,9 @@ import (
 // lns - [][]byte each []byte represents a line
 // recix - index into the line
 func rsortsl(lns [][]byte, recix int) [][]byte {
+	if len(lns) == 0 {
+		return lns
+	}
 	const THRESHOLD int = 1 << 5
 	var sizes = make([]int, 256)
 	var piles = make([][][]byte, 256)

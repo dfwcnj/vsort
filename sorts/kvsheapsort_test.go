@@ -19,15 +19,12 @@ func Test_kvsheapsort(t *testing.T) {
 		for _, nl := range ns {
 
 			var r bool = false
-			var keyoff = 0
-			var reclen = ll
-			var keylen = ll
 			log.Print("testing kvsheapsort of ", nl, " strings length ", ll)
 			lns := randomdata.Randomstrings(nl, ll, r)
 			if len(lns) != int(nl) {
 				t.Fatal("kvsheapsort test rsl: wanted len ", nl, " got ", len(lns))
 			}
-			kvsheapsort(lns, reclen, keyoff, keylen)
+			kvsheapsort(lns, ll, 0, ll)
 			if !slices.IsSorted(lns) {
 				t.Fatal("kvsheapsort test failed not sorted")
 			} else {

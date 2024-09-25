@@ -14,6 +14,9 @@ package sorts
 // same license as rsc code - BSD
 
 func rsort2ba(lns [][]byte) {
+	if len(lns) == 0 {
+		return
+	}
 	rsort2bytesarray(lns, make([][]byte, len(lns)), 0)
 }
 

@@ -136,6 +136,9 @@ func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) bool) []E {
 }
 
 func gmergesortfunc[E any](data []E, cmp func(a, b E) bool) []E {
+	if len(data) == 0 {
+		return data
+	}
 	// log.Printf("gmergesortfunc data %v", len(data))
 	if len(data) == 1 {
 		return data

@@ -11,6 +11,9 @@ import (
 const debug = false
 
 func rsort2sa(x []string, reclen, keyoff, keylen int) {
+	if len(x) == 0 {
+		return
+	}
 	rsort2stringsarray(x, make([]string, len(x)), reclen, keyoff, keylen, 0)
 }
 

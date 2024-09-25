@@ -10,6 +10,9 @@ import (
 // recix - index into the line
 
 func kvrsortsl(lns [][]byte, reclen, keyoff, keylen, recix int) [][]byte {
+	if len(lns) == 0 {
+		return lns
+	}
 	if keyoff+keylen > reclen {
 		log.Fatal("key must fall within record bounds")
 	}
