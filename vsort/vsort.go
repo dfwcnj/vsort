@@ -47,7 +47,7 @@ func main() {
 	flag.StringVar(&ofn, "ofn", "", "output file name otherwise stdout")
 	flag.StringVar(&iomem, "iomem", "500mb", "max read memory size in kb, mb or gb")
 	flag.StringVar(&md, "md", "", "merge sirectory defaults to a directory under /tmp")
-	flag.StringVar(&stype, "stype", "std", "sort type: merge, radix, std")
+	flag.StringVar(&stype, "stype", "std", "sort type: heap, merge, radix, std")
 	flag.StringVar(&form, "form", "string", "data form bytes or string")
 	flag.IntVar(&reclen, "reclen", 0, "length of the fixed length record")
 	flag.IntVar(&keyoff, "keyoff", 0, "offset of the key")
@@ -69,6 +69,10 @@ func main() {
 	if form != "string" && form != "bytes" {
 		log.Print("bad form type ", stype)
 		usage()
+	}
+	if reclen != 0 && keylen == 0 {
+		keyoff = 0
+		keylen = reclen
 	}
 	if keyoff != 0 || keylen != 0 {
 		if reclen == 0 {
