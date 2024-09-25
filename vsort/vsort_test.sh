@@ -78,7 +78,7 @@ fi
 # random length data sort
 ./vsort /tmp/rdata0 /tmp/rdata1 |sort -c
 
-rm /tmp/[br]data[01]
+# rm /tmp/[br]data[01]
 
 # fixed length standard input
 goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 | flcat -rlen 32 | sort -c
