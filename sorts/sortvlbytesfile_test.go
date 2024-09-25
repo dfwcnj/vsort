@@ -53,7 +53,7 @@ func Test_sortvlbytesfile(t *testing.T) {
 		}
 		nw.Flush()
 		fp.Close()
-		log.Print("sortvlbytesfile test file ", fn)
+		// log.Print("sortvlbytesfile test file ", fn)
 
 		lns, fns, err := sortvlbytesfile(fn, dn, st, iomem)
 		if len(lns) != 0 {

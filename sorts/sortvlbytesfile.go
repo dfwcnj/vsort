@@ -50,10 +50,8 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 		case "insertion":
 			kvbinsertionsort(lns, 0, 0, 0)
 		case "merge":
-			// log.Printf("sortvlbytesfile kvsmergesort lns %v", len(lns))
 			lns = kvbmergesort(lns, 0, 0, 0)
 		case "radix":
-			log.Printf("sortvlbytesfile rsort2ba lns %v", len(lns))
 			rsort2ba(lns)
 		case "std":
 			kvslicesbsort(lns, 0, 0, 0)
