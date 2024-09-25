@@ -23,7 +23,7 @@ func Test_vlreadstrings(t *testing.T) {
 	var lns []string
 
 	for _, r := range bools {
-		log.Print("vlreadstrings test", r)
+		log.Print("vlreadstrings test ", r)
 
 		dn, err := initmergedir("/tmp", "vlreadreadstringstest")
 		if err != nil {
