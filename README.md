@@ -20,5 +20,5 @@ Usage of vsort/vsort:<br/>
   -reclen int<br/>
     	length of the fixed length record<br/>
   -stype string<br/>
-    	sort type: merge, radix, std (default "std")<br/>
+    	sort type: heap, merge, radix, std (default "std")<br/>
 
