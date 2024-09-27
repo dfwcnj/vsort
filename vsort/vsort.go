@@ -71,8 +71,7 @@ func main() {
 		usage()
 	}
 	if reclen != 0 && keylen == 0 {
-		keyoff = 0
-		keylen = reclen
+		keylen = reclen - keyoff
 	}
 	if keyoff != 0 || keylen != 0 {
 		if reclen == 0 {

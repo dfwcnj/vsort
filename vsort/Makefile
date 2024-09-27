@@ -2,7 +2,10 @@
 
 .PHONY:fmt vet build
 
-fmt:
+tidy:
+	go mod tidy
+
+fmt: tidy
 	go fmt
 
 vet: fmt
