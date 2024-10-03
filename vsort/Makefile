@@ -17,3 +17,7 @@ build: vet
 clean: vsort
 	go clean
 
+clobber: clean
+	go clean -modcache
+
+
