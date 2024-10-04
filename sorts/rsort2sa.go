@@ -10,6 +10,12 @@ import (
 
 const debug = false
 
+// rsort2sa
+// sort a slice of fixed length strings with radix sort
+// x - slice of fixed length strings
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
 func rsort2sa(x []string, reclen, keyoff, keylen int) {
 	if len(x) == 0 {
 		return

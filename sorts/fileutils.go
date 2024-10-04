@@ -11,6 +11,10 @@ import (
 	"strings"
 )
 
+// filelinecount
+// like wc -l count all newline delimited records in a file
+// fn - name of file
+// returns number of lines
 func filelinecount(fn string) int64 {
 	cmd := exec.Command("wc", "-l", fn)
 	defer cmd.Wait()
@@ -34,6 +38,13 @@ func filelinecount(fn string) int64 {
 	return i
 }
 
+// filereccount
+// count number of fixed length records in a file
+// records need not be delimited but if they are
+// the record length must include the delimiter
+// fn - name of file
+// rlen ¯ record length
+// returns the number of fixed length records in the file
 func filereccount(fn string, rlen int) int64 {
 	fp, err := os.Open(fn)
 	if err != nil {
@@ -46,6 +57,11 @@ func filereccount(fn string, rlen int) int64 {
 	return finf.Size() / int64(rlen)
 }
 
+// Flfileemit
+// for a fixed length record file without delimiters
+// print each record on a separate line
+// fn - name of file
+// rlen - record length
 func Flfileemit(fn string, rlen int) {
 	fp, err := os.Open(fn)
 	if err != nil {

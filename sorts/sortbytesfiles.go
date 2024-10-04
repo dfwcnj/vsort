@@ -10,6 +10,15 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
+// Sortbytesfiles
+// top level sort function called by main using byte string representation
+// fnѕ - files to sort
+// ofn - output file name
+// dn - directory name for work files
+// stype - sort algorithm
+// reclen - record length for fixed length records
+// keyoff - offset of key in record
+// keylen - key length
 func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
 	var err error

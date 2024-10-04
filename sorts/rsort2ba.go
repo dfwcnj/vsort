@@ -13,6 +13,9 @@ package sorts
 // are highly instructive.
 // same license as rsc code - BSD
 
+// rsort2ba
+// sort a slice of byte slices
+// lns - slice of byte slices
 func rsort2ba(lns [][]byte) {
 	if len(lns) == 0 {
 		return

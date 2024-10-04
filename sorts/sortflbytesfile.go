@@ -10,7 +10,15 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-// sort fixed lengh records file
+// sortflbytesfile
+// sort fixed lengh records file using byte slice representation
+// fn - file to sort
+// dn - work directory
+// stype - sort algorithm heap insertion merge radix std(slices.sort)
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
+// returns slice of byte slices, merge file list, error
 func sortflbytesfile(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64) ([][]byte, []string, error) {
 	var lns [][]byte
 	var err error

@@ -10,6 +10,15 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
+// Sortstringsfiles
+// top level sort function called by main using string representation
+// fnѕ - files to sort
+// ofn - output file name
+// dn - directory name for work files
+// stype - sort algorithm
+// reclen - record length for fixed length records
+// keyoff - offset of key in record
+// keylen - key length
 func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
 	//log.Printf("Sortstringsfiles %s %s %s %d %d %d %d", ofn, dn, stype, reclen, keyoff, keylen, iomem)

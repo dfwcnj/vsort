@@ -4,6 +4,9 @@ import (
 	"bytes"
 )
 
+// inssort
+// insertion sort for slice of byte slices used by other sorts
+// undoubtedly redundant
 func inssort(lns [][]byte) [][]byte {
 	n := len(lns)
 	if n == 1 {

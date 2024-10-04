@@ -89,6 +89,13 @@ func nextbitem(itm kvbitem) ([]byte, error) {
 	return ln, nil
 }
 
+// kvpqbreademit
+// merge files using priority queue with records represented as byte slices
+// ofp - file pointer to destination file
+// reclen - record length for fixed length records
+// keyoff - offset of key for fixed length record
+// keylen - length of key for fixed length record
+// fns - files to merge
 func kvpqbreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {
 
 	//finf, err := ofp.Stat()

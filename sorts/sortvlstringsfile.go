@@ -11,7 +11,13 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-// sort variable lengh records file
+// sortvlstringsfile
+// sort file containing variable length strings
+// fn - name of file to sort
+// dn - work directory
+// stype - sort algorithm heap insertion merge radix std(slices.sort)
+// iomem - approximate amount of memory to use for operations
+// returns slice of strings, merge file list, error
 func sortvlstringsfile(fn string, dn string, stype string, iomem int64) ([]string, []string, error) {
 
 	// log.Printf("sortvlstringsfile fn %v dn %v stype %v iomem %v", fn, dn, stype, iomem)

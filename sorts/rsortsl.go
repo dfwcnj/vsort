@@ -5,6 +5,7 @@ import (
 )
 
 // rsortsl(lns lines, recix int)
+// not a very good radix sort
 // lns - [][]byte each []byte represents a line
 // recix - index into the line
 func rsortsl(lns [][]byte, recix int) [][]byte {

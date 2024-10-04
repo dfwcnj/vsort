@@ -18,6 +18,12 @@ import (
 	"log"
 )
 
+// kvrsort2a
+// radix sort for fixed length data represented as byte slices
+// lns - slice of byte slices
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
 func kvrsort2a(lns [][]byte, reclen, keyoff, keylen int) {
 	if len(lns) == 0 {
 		return

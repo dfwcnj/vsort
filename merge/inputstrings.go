@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+// flreadallstrings 
+// read all fixed length strings from a 'small' file
+// return a slice of strings, 0, and error
 func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, error) {
 
 	var lns []string
@@ -32,6 +35,13 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 	}
 }
 
+// Flreadstrings
+// read fixed length strings with or without delimiters
+// fp - file pointer
+// offset - offset into file
+// reclen = record length
+// iomem - amount of memory to comsume for this invocation
+// return slice of strings, offset, error
 func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string, int64, error) {
 
 	var lns []string
@@ -80,6 +90,9 @@ func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string
 
 }
 
+// vlreadallstrings
+// read all variable length records from a  'small' file
+// return slice of strings, 0, error
 func vlreadallstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, error) {
 	var lns []string
 	buf, err := io.ReadAll(fp)
@@ -96,6 +109,11 @@ func vlreadallstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, 
 	return lns, offset, nil
 }
 
+// Vlreadstrings
+// read variable length strings from a file
+// fp - file pointer
+// offset - offset into file
+// iomem - amount of memory to consume reading the records
 func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, error) {
 
 	var lns []string

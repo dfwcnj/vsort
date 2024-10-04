@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// various versions of heapsort from golang slices.sort
+
 package sorts
 
 import (
@@ -40,6 +42,12 @@ func kvbsiftdown(data [][]byte, reclen, keyoff, keylen, lo, hi, first int) {
 	}
 }
 
+// kvbheapsort
+// sort fixed length data by the specified key
+// data - slice of byte slices
+// reclen - record length
+// keyoff - offset of key in the record
+// keylen - key length
 func kvbheapsort(data [][]byte, reclen, keyoff, keylen int) {
 	if len(data) == 0 {
 		return
@@ -84,6 +92,9 @@ func gsiftdown[E cmp.Ordered](data []E, lo, hi, first int) {
 	}
 }
 
+// gheapsort
+// generic heapsort based on cmp.Ordered
+// data - slice of cmp.Ordered compatible data elements
 func gheapsort[E cmp.Ordered](data []E) {
 	if len(data) == 0 {
 		return
@@ -140,6 +151,13 @@ func gheapsortfunc[E any](data []E, cmp func(a, b E) int) {
 	}
 }
 
+// kvsheapsort
+// sort fixed length records with heapsort
+// only works for strings
+// lns - slice of strings
+// reclen - record length
+// keyoff - offset of key in the record
+// keylen - key length
 func kvsheapsort(lns []string, reclen, keyoff, keylen int) {
 	if len(lns) == 0 {
 		return

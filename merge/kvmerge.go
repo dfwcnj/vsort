@@ -5,6 +5,13 @@ import (
 	"os"
 )
 
+// KVmergebytefiles
+// merge sorted files with records represented as byte slices
+// ofn - name of destination file
+// reclen - reclen if fixed length
+// keyoff - offset of key in fixed length record if any
+// keylen = length of key in fixed length record if any
+// fns - sorted files to merge
 func KVmergebytefiles(ofn string, reclen int, keyoff int, keylen int, fns []string) {
 	var err error
 
@@ -20,6 +27,13 @@ func KVmergebytefiles(ofn string, reclen int, keyoff int, keylen int, fns []stri
 	kvpqbreademit(ofp, reclen, keyoff, keylen, fns)
 }
 
+// KVmergestringfiles
+// merge sorted files with records represented as strings
+// ofn - name of destination file
+// reclen - reclen if fixed length
+// keyoff - offset of key in fixed length record if any
+// keylen = length of key in fixed length record if any
+// fns - sorted files to merge
 func KVmergestringfiles(ofn string, reclen int, keyoff int, keylen int, fns []string) {
 	var err error
 

@@ -5,10 +5,10 @@ import (
 )
 
 // kvrsortsl(lns lines, keylen, keyoff, recix int)
+// not a very good radix sort
 // lns - [][]byte each []byte represents a line
 // reclen, keyoff, keylen - record length and key geometry
 // recix - index into the line
-
 func kvrsortsl(lns [][]byte, reclen, keyoff, keylen, recix int) [][]byte {
 	if len(lns) == 0 {
 		return lns

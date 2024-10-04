@@ -7,6 +7,12 @@ import (
 	"strings"
 )
 
+// kvslicesbsort
+// sort fixed length byte slices using slices.Sort
+// lns - slice of byte slices
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
 func kvslicesbsort(lns [][]byte, reclen int, keyoff int, keylen int) {
 	if reclen == 0 {
 		slices.SortFunc(lns, func(a, b []byte) int {
@@ -27,6 +33,12 @@ func kvslicesbsort(lns [][]byte, reclen int, keyoff int, keylen int) {
 	}
 }
 
+// kvslicesssort
+// sort fixed length strings using slices.Sort
+// lns - slice of strings
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
 func kvslicesssort(lns []string, reclen int, keyoff int, keylen int) {
 	if reclen == 0 {
 		slices.Sort(lns)

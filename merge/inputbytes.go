@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+// flreadallbytes 
+// read fixed length lines from a 'small' file
+// return slice of byte slices, 0, error
 func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, error) {
 
 	var lns [][]byte
@@ -37,6 +40,7 @@ func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, erro
 // offset - offset into file
 // reclen - length of each fixed length record
 // iomem  - amount of memory to use for each invocation
+// return slice of byte slices, offset, error
 func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, int64, error) {
 
 	var lns [][]byte
@@ -88,6 +92,9 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 
 }
 
+// vlreadallbytes
+// read all variable length newline delimited records from a 'small' file
+// return a slice of byte slices, 0, and error
 func vlreadallbytes(fp *os.File, iomem int64) ([][]byte, int64, error) {
 	var lns [][]byte
 	buf, err := io.ReadAll(fp)
@@ -110,6 +117,7 @@ func vlreadallbytes(fp *os.File, iomem int64) ([][]byte, int64, error) {
 // offset - offset into file
 // iomem - amount of memory to spend for each invocation
 // XXX for now, the delimiter is assumed to be \n
+// return a slice of byte slices, offset, anr error
 func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error) {
 
 	var lns [][]byte

@@ -10,6 +10,15 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
+// sortflstringsfile
+// sort fixed lengh records file using string representation
+// fn - file to sort
+// dn - work directory
+// stype - sort algorithm heap insertion merge radix std(slices.sort)
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
+// returns slice of strings, merge file list, error
 func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) ([]string, []string, error) {
 	var lns []string
 	var err error

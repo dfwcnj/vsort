@@ -10,7 +10,12 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
+// sortvlbytesfile
 // sort variable lengh records file
+// dn - directory for work files
+// stype - sort algorithm heap insertion merge radix std(slices,sort
+// iomem - approximate amount of memory to use for operations
+// returns slice of byte slices, merge file list, error
 func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte, []string, error) {
 	// log.Printf("sortvlbytesfile fn %v dn %v, stype %v iomem %v ", fn, dn, stype, iomem)
 	var lns [][]byte

@@ -52,6 +52,13 @@ func kvbmerge(ldata, rdata [][]byte, reclen, keyoff, keylen int) [][]byte {
 	return result
 }
 
+// kvbmergesort
+// sort fixed length records represented as byte slices with merge sort
+// data - slice of byte slices
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
+// returns a slice of sorted byte slices
 func kvbmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
 	//log.Printf("kvmergesort data %v, reclen %v, keyoff %v, keylen %v", len(data), reclen, keyoff, keylen)
 	if len(data) == 1 {
@@ -97,6 +104,10 @@ func gmerge[E cmp.Ordered](ldata, rdata []E) []E {
 	return result
 }
 
+// gmergesort
+// sort cmp.Ordered compatible data with merge sort
+// data - slice of cmp.Ordered compatible data
+// returns - sorted slice of cmp.Ordered compatible data
 func gmergesort[E cmp.Ordered](data []E) []E {
 	//log.Printf("gmergesort data %v", len(data))
 	if len(data) == 1 {
@@ -135,6 +146,11 @@ func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) bool) []E {
 	return result
 }
 
+// gmergesortfunc
+// supposedly generic mergesort but only works with strings
+// data - slice of data
+// func - comparison function
+// returns slice of sorted data
 func gmergesortfunc[E any](data []E, cmp func(a, b E) bool) []E {
 	if len(data) == 0 {
 		return data
@@ -152,6 +168,13 @@ func gmergesortfunc[E any](data []E, cmp func(a, b E) bool) []E {
 	return gmergefunc(ldata, rdata, cmp)
 }
 
+// kvsmergesort
+// sort fixed length strings with mergesort
+// lns - slice of strings
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
+// returns sorted slice of strings
 func kvsmergesort(lns []string, reclen, keyoff, keylen int) []string {
 	// log.Printf("kvsmergesort lns %v, reclen %v keyoff %v keylen %v", len(lns), reclen, keyoff, keylen)
 	if reclen == 0 {

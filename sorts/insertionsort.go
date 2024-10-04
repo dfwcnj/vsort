@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// various versions of insertion sort from slices.sort
+
 package sorts
 
 import (
@@ -12,6 +14,12 @@ import (
 )
 
 // https://cs.opensource.google/go/go/+/refs/tags/go1.23.1:src/slices/zsortordered.go
+// kvbinsertionsort
+// sort fixed length records represented as byte slices
+// lns - slice of byte slices
+// reclen - record length
+// keyoff - offset of key in the record
+// keylen - key length
 func kvbinsertionsort(lns [][]byte, reclen, keyoff, keylen int) {
 	if len(lns) == 0 {
 		return
@@ -33,6 +41,9 @@ func kvbinsertionsort(lns [][]byte, reclen, keyoff, keylen int) {
 	}
 }
 
+// ginsertionsort
+// generic insertion sort for cmp.Ordered compatible data
+// data - slice of cmp.Ordered compatible data
 func ginsertionsort[E cmp.Ordered](data []E) {
 	if len(data) == 0 {
 		return
@@ -47,6 +58,11 @@ func ginsertionsort[E cmp.Ordered](data []E) {
 }
 
 // https://cs.opensource.google/go/go/+/refs/tags/go1.23.1:src/slices/zsortanyfunc.go
+// ginsertionsortfunc
+// generic insertion sort for cmp.Ordered compatible data
+// only workѕ with strings
+// data - slice of cmp.Ordered compatible data
+// cmp - comparison function
 func ginsertionsortfunc[E any](data []E, cmp func(a, b E) int) {
 	if len(data) == 0 {
 		return
@@ -60,6 +76,12 @@ func ginsertionsortfunc[E any](data []E, cmp func(a, b E) int) {
 	}
 }
 
+// kvsinsertionsort
+// sort a slice of fixed length strings with insertion sort
+// lns - slice of strings
+// reclen - record length
+// keyoff - offset of key in record
+// keylen - key length
 func kvsinsertionsort(lns []string, reclen, keyoff, keylen int) {
 	if reclen == 0 {
 		ginsertionsort(lns)
