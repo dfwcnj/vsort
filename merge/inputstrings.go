@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// flreadallstrings 
+// flreadallstrings
 // read all fixed length strings from a 'small' file
 // return a slice of strings, 0, and error
 func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, error) {

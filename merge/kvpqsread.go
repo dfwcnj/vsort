@@ -92,7 +92,7 @@ func nextsitem(itm kvsitem) (string, error) {
 // merge sorted string files using a priority queue
 // ofp - output file pointer
 // reclen - key lengths for fixed length records
-// keyoff - offset of key in fixed length record 
+// keyoff - offset of key in fixed length record
 // keylen - length of key in fixed length record
 // fns - sorted filed to merge
 func kvpqsreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []string) {

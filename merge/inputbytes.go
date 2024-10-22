@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// flreadallbytes 
+// flreadallbytes
 // read fixed length lines from a 'small' file
 // return slice of byte slices, 0, error
 func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, error) {
