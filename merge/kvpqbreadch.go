@@ -67,7 +67,7 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 	if e != nil {
 		log.Fatal(e)
 	}
-	fp.Close()
+	defer fp.Close()
 	defer close(out)
 	rdr := io.Reader(fp)
 	br := bufio.NewReader(rdr)
@@ -82,7 +82,7 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 					out <- ln
 					return
 				}
-				log.Fatal("kvpqread readstring ", err)
+				log.Fatal("klchan readstring ", err)
 			}
 			// log.Print("nextbitem readstring ", l)
 		} else {
@@ -93,7 +93,7 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 					out <- ln
 					return
 				}
-				log.Fatal("kvpqread readfull ", n, " ", err)
+				log.Fatal("klchan readfull ", n, " ", err)
 			}
 		}
 	}
