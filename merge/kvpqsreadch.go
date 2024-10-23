@@ -67,7 +67,7 @@ func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
 	if e != nil {
 		log.Fatal(e)
 	}
-	fp.Close()
+	defer fp.Close()
 	defer close(out)
 	rdr := io.Reader(fp)
 	br := bufio.NewReader(rdr)
