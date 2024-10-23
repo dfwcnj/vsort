@@ -76,14 +76,14 @@ func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
 		if reclen == 0 {
 			ln, err := br.ReadString('\n')
 			if err != nil {
-				// log.Println("nextbitem readstring ", err)
+				// log.Println("klschan readstring ", err)
 				if err == io.EOF {
 					out <- ln
 					return
 				}
-				log.Fatal("kvpqsread readstring ", err)
+				log.Fatal("klschan readstring ", err)
 			}
-			// log.Print("nextbitem readstring ", l)
+			// log.Print("klschan readstring ", l)
 		} else {
 			ln := make([]byte, reclen)
 			n, err := io.ReadFull(br, ln)
@@ -92,7 +92,7 @@ func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
 					out <- string(ln)
 					return
 				}
-				log.Fatal("kvpqsread readfull ", n, " ", err)
+				log.Fatal("klschan readfull ", n, " ", err)
 			}
 		}
 	}
