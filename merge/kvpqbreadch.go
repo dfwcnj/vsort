@@ -85,6 +85,9 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 				}
 				log.Fatal("klchan readstring ", err)
 			}
+			if string(ln) == "\n" {
+				return
+			}
 			out <- ln
 			// log.Print("nextbitem readstring ", l)
 		} else {

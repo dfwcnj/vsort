@@ -83,6 +83,9 @@ func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
 				}
 				log.Fatal("klschan readstring ", err)
 			}
+			if ln == "\n" {
+				return
+			}
 			out <- ln
 			// log.Print("klschan readstring ", l)
 		} else {
