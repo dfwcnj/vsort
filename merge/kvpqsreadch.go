@@ -83,17 +83,19 @@ func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
 				}
 				log.Fatal("klschan readstring ", err)
 			}
+			out <- ln
 			// log.Print("klschan readstring ", l)
 		} else {
-			ln := make([]byte, reclen)
-			n, err := io.ReadFull(br, ln)
+			l := make([]byte, reclen)
+			n, err := io.ReadFull(br, l)
 			if err != nil {
 				if err == io.EOF {
-					out <- string(ln)
+					out <- string(l)
 					return
 				}
 				log.Fatal("klschan readfull ", n, " ", err)
 			}
+			out <- string(l)
 		}
 	}
 
