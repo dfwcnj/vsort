@@ -14,7 +14,7 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-func Test_chsortstringsfiles(t *testing.T) {
+func Test_sortstringsfilesch(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2, 2)
 	bools[0] = true
@@ -30,22 +30,22 @@ func Test_chsortstringsfiles(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Print("chSortstringsfiles test ", st, " ", r)
+			log.Print("sortstringsfilesch test ", st, " ", r)
 
-			dn, err := initmergedir("/tmp", "chsortstringsfilestest")
+			dn, err := initmergedir("/tmp", "sortstringsfileschtest")
 			if err != nil {
-				log.Fatal("chSortstringsfiles test initmergedir ", err)
+				log.Fatal("sortstringsfilesch test initmergedir ", err)
 			}
-			//log.Print("chSortstringsfiles test initmergedir ", dn)
+			//log.Print("sortstringsfilesch test initmergedir ", dn)
 
 			var fns []string
-			//log.Print("chSortstringsfiles test making ", nmf, " files to sort")
+			//log.Print("sortstringsfilesch test making ", nmf, " files to sort")
 			var tns int64
 			for i := range nmf {
 
 				lns := randomdata.Randomstrings(nrs, rlen, r)
 				if len(lns) != int(nrs) {
-					log.Fatal("chSortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
+					log.Fatal("sortstringsfilesch test before sort wanted len ", nrs, " got ", len(lns))
 				}
 				if r == true {
 					for i, _ := range lns {
@@ -53,8 +53,8 @@ func Test_chsortstringsfiles(t *testing.T) {
 					}
 				}
 
-				var fn = filepath.Join(dn, fmt.Sprint("chsortstringsfilestest", i))
-				//log.Println("chSortstringsfiles test saving ", fn)
+				var fn = filepath.Join(dn, fmt.Sprint("sortstringsfileschtest", i))
+				//log.Println("sortstringsfilesch test saving ", fn)
 				merge.Savestringmergefile(lns, fn)
 				fns = append(fns, fn)
 				if r == true {
@@ -64,7 +64,7 @@ func Test_chsortstringsfiles(t *testing.T) {
 				}
 			}
 
-			// log.Print("chSortstringsfiles test test files record count ", tns)
+			// log.Print("sortstringsfilesch test test files record count ", tns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
@@ -77,7 +77,7 @@ func Test_chsortstringsfiles(t *testing.T) {
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
-				log.Fatal("chSortstringsfiles test ", err)
+				log.Fatal("sortstringsfilesch test ", err)
 			}
 			defer mfp.Close()
 
@@ -96,19 +96,19 @@ func Test_chsortstringsfiles(t *testing.T) {
 						if err == io.EOF {
 							break
 						}
-						log.Fatal("chSortstringsfiles test  readfull ", err)
+						log.Fatal("sortstringsfilesch test  readfull ", err)
 					}
 					mlns = append(mlns, string(ln))
 				}
 			}
 			if len(mlns) != int(nrs)*nmf {
-				t.Fatal("chSortstringsfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+				t.Fatal("sortstringsfilesch test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 			}
 			if !slices.IsSorted(mlns) {
-				t.Fatal("chSortstringsfiles test lines in ", mpath, " not in sort order")
+				t.Fatal("sortstringsfilesch test lines in ", mpath, " not in sort order")
 			}
 		}
 	}
-	log.Print("chSortstringsfiles test passed")
+	log.Print("sortstringsfilesch test passed")
 
 }
