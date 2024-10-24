@@ -17,7 +17,7 @@ var rchan chan mflst
 // sortbytesfilechan
 // go routine to sort fixed length bytes records files
 // func sortflbytesfilechan(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst, wg *sync.WaitGroup) {
-func sortflbytesfilechan(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
+func sortflbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
 
 	var r mflst
 
@@ -34,7 +34,7 @@ func sortflbytesfilechan(fn string, dn string, stype string, reclen, keyoff, key
 // sortvlbytesfilechan
 // go routine to sort variable length bytes records files
 // func sortvlbytesfilechan(fn string, dn string, stype string, iomem int64, res chan mflst, wg *sync.WaitGroup) {
-func sortvlbytesfilechan(fn string, dn string, stype string, iomem int64, res chan mflst) {
+func sortvlbytesfilech(fn string, dn string, stype string, iomem int64, res chan mflst) {
 
 	var r mflst
 
@@ -51,7 +51,7 @@ func sortvlbytesfilechan(fn string, dn string, stype string, iomem int64, res ch
 // sortflstringsfilechan
 // go routine to sort fixed length string records files
 // func sortflstringsfilechan(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst, wg *sync.WaitGroup) {
-func sortflstringsfilechan(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
+func sortflstringsfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
 
 	var r mflst
 
@@ -68,7 +68,7 @@ func sortflstringsfilechan(fn string, dn string, stype string, reclen, keyoff, k
 // sortvlstringsfilechan
 // go routine to sort variable length string records files
 // func sortvlstringsfilechan(fn string, dn string, stype string, iomem int64, res chan mflst, wg *sync.WaitGroup) {
-func sortvlstringsfilechan(fn string, dn string, stype string, iomem int64, res chan mflst) {
+func sortvlstringsfilech(fn string, dn string, stype string, iomem int64, res chan mflst) {
 
 	var r mflst
 
@@ -84,7 +84,7 @@ func sortvlstringsfilechan(fn string, dn string, stype string, iomem int64, res 
 
 // chSortbytesfiles
 // sort bytes files using go routines and channels
-func chSortbytesfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
+func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
 	var mfiles []string
 
@@ -95,9 +95,9 @@ func chSortbytesfiles(fns []string, ofn string, dn string, stype string, reclen 
 
 		// log.Printf("chSortbytesfiles sorting %s", fn)
 		if reclen != 0 {
-			go sortflbytesfilechan(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
+			go sortflbytesfilech(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
 		} else {
-			go sortvlbytesfilechan(fn, dn, stype, iomem, rchan)
+			go sortvlbytesfilech(fn, dn, stype, iomem, rchan)
 		}
 
 	}
@@ -122,7 +122,7 @@ func chSortbytesfiles(fns []string, ofn string, dn string, stype string, reclen 
 
 // chSortstringsfiles
 // sort strings files using go routines and channels
-func chSortstringsfiles(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
+func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
 	var mfiles []string
 
@@ -133,9 +133,9 @@ func chSortstringsfiles(fns []string, ofn string, dn string, stype string, recle
 
 		// log.Printf("chSortstringsfiles sorting %s", fn)
 		if reclen != 0 {
-			go sortflstringsfilechan(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
+			go sortflstringsfilech(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
 		} else {
-			go sortvlstringsfilechan(fn, dn, stype, iomem, rchan)
+			go sortvlstringsfilech(fn, dn, stype, iomem, rchan)
 		}
 	}
 

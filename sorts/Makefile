@@ -15,4 +15,6 @@ test: vet
 	go test
 
 clean:
-	/bin/rm -r /tmp/[mSsv]*[0-9]
+	go clean -modcache
+	/bin/rm -rf /tmp/[mSsv]*[0-9] 
+	/bin/rm -rf /tmp/chsort*

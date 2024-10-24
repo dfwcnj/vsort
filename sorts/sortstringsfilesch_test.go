@@ -70,9 +70,9 @@ func Test_chsortstringsfiles(t *testing.T) {
 			mpath := filepath.Join(dn, mfn)
 
 			if r == true {
-				chSortstringsfiles(fns, mpath, "", st, 0, 0, 0, iomem)
+				Sortstringsfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
-				chSortstringsfiles(fns, mpath, "", st, rlen, 0, rlen, iomem)
+				Sortstringsfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
 
 			mfp, err := os.Open(mpath)
