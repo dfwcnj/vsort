@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"container/heap"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -107,15 +106,15 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 	pq := make(KBBCHQ, len(fns))
 
 	for i, fn := range fns {
-		var itm kvbchitem
+		var ritem kvbchitem
 
 		inch := make(chan []byte, reclen)
 		go klchan(fn, reclen, keyoff, keylen, inch)
 
-		itm.ln = <-inch
-		itm.inch = inch
-		itm.index = i
-		pq[i] = &itm
+		ritem.ln = <-inch
+		ritem.inch = inch
+		ritem.index = i
+		pq[i] = &ritem
 	}
 
 	heap.Init(&pq)
@@ -123,20 +122,26 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 	nw := bufio.NewWriter(ofp)
 
 	for pq.Len() > 0 {
-		itm := heap.Pop(&pq).(*kvbchitem)
-		s := fmt.Sprintf("%s", string(itm.ln))
-		_, err := nw.WriteString(s)
+		ritem := heap.Pop(&pq).(*kvbchitem)
+		if string(ritem.ln) == "\n" {
+			log.Fatal("kvpqbreademit pop line ", string(ritem.ln))
+		}
+		_, err := nw.WriteString(string(ritem.ln))
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("kvpqbreademit writestring ", err)
 		}
 
-		ln, ok := <-itm.inch
+		ln, ok := <-ritem.inch
 		if !ok {
 			continue
 		}
-		itm.ln = ln
-		heap.Push(&pq, itm)
-		pq.update(itm, itm.ln, itm.ln)
+		ritem.ln = ln
+		//ritem.rlen = reclen
+		//ritem.keyoff = keyoff
+		//ritem.keylen = keylen
+
+		heap.Push(&pq, ritem)
+		pq.update(ritem, ritem.ln, ritem.ln)
 	}
 	err := nw.Flush()
 	if err != nil {
