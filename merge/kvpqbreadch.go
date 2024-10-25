@@ -81,12 +81,10 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 				ln := []byte(l)
 				if err == io.EOF {
 					out <- ln
+					close(out)
 					return
 				}
 				log.Fatal("klchan readstring ", err)
-			}
-			if string(ln) == "\n" {
-				return
 			}
 			out <- ln
 			// log.Print("nextbitem readstring ", l)
@@ -96,6 +94,7 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 			if err != nil {
 				if err == io.EOF {
 					out <- ln
+					close(out)
 					return
 				}
 				log.Fatal("klchan readfull ", n, " ", err)
@@ -112,7 +111,7 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 	for i, fn := range fns {
 		var itm kvbchitem
 
-		inch := make(chan []byte)
+		inch := make(chan []byte, reclen)
 		go klchan(fn, reclen, keyoff, keylen, inch)
 
 		itm.ln = <-inch
