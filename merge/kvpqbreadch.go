@@ -124,7 +124,7 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 
 	for pq.Len() > 0 {
 		itm := heap.Pop(&pq).(*kvbchitem)
-		s := fmt.Sprintf("%s\n", string(itm.ln))
+		s := fmt.Sprintf("%s", string(itm.ln))
 		_, err := nw.WriteString(s)
 		if err != nil {
 			log.Fatal(err)
