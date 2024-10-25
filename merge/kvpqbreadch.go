@@ -81,7 +81,6 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 				ln := []byte(l)
 				if err == io.EOF {
 					out <- ln
-					close(out)
 					return
 				}
 				log.Fatal("klchan readstring ", err)
@@ -94,7 +93,6 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 			if err != nil {
 				if err == io.EOF {
 					out <- ln
-					close(out)
 					return
 				}
 				log.Fatal("klchan readfull ", n, " ", err)
