@@ -78,7 +78,7 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 			l, err := br.ReadString('\n')
 			if err != nil {
 				// log.Println("nextbitem readstring ", err)
-				ln := []byte(l)
+				ln = []byte(l)
 				if err == io.EOF {
 					out <- ln
 					return
@@ -127,7 +127,7 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		var bre string = "[0-9A-Za-z]+"
 		brm, err := regexp.Match(bre, ritem.ln)
 		if err != nil {
-			log.Fatalf("kvpqbchanemit regexp %v: %v", bre, err)
+			log.Fatalf("kvpqbchanemit regexp \"%v\": %v", bre, err)
 		}
 		if brm == false {
 			log.Fatalf("kvpqbchanemit %v failed for %v", bre, ritem.ln)
