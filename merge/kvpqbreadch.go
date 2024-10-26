@@ -73,30 +73,28 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 
 	for {
 		if reclen == 0 {
-			var ln []byte
 			l, err := br.ReadString('\n')
 			if err != nil {
 				// log.Println("nextbitem readstring ", err)
-				ln = []byte(l)
 				if err == io.EOF {
-					ouch <- ln
+					ouch <- []byte(l)
 					return
 				}
 				log.Fatal("klchan readstring ", err)
 			}
-			ouch <- ln
+			ouch <- []byte(l)
 			// log.Print("nextbitem readstring ", l)
 		} else {
-			ln := make([]byte, reclen)
-			n, err := io.ReadFull(br, ln)
+			l := make([]byte, reclen)
+			n, err := io.ReadFull(br, l)
 			if err != nil {
 				if err == io.EOF {
-					ouch <- ln
+					ouch <- l
 					return
 				}
 				log.Fatal("klchan readfull ", n, " ", err)
 			}
-			ouch <- ln
+			ouch <- l
 		}
 	}
 
