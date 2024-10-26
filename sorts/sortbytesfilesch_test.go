@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 	"github.com/dfwcnj/vsort/merge"
@@ -73,11 +74,14 @@ func Test_sortbytesfilesch(t *testing.T) {
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
 
+			t0 := time.Now()
 			if r == true {
 				Sortbytesfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
 				Sortbytesfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
+			t1 := time.Now()
+			log.Printf("sortbytesfilesch test sort duration %v", t1.Sub(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
