@@ -68,6 +68,7 @@ func klschan(fn string, reclen, keyoff, keylen int, ouch chan string) {
 		log.Fatal(e)
 	}
 	defer fp.Close()
+	defer close(ouch)
 	rdr := io.Reader(fp)
 	br := bufio.NewReader(rdr)
 
@@ -113,7 +114,6 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		var itm kvschitem
 
 		inch := make(chan string)
-		defer close(inch)
 		go klschan(fn, reclen, keyoff, keylen, inch)
 
 		itm.ln = <-inch
@@ -133,10 +133,6 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 			log.Fatalf("kvpqsreadch %v failed for %v", bre, ritem.ln)
 		}
 
-		if string(ritem.ln) == "\n" {
-			log.Fatal("kvpqsreademit pop line ", string(ritem.ln))
-		}
-		_, err = nw.WriteString(string(ritem.ln))
 		if err != nil {
 			log.Fatal("kvpqsreademit writestring ", err)
 		}

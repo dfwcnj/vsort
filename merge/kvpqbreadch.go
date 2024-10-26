@@ -68,6 +68,7 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 		log.Fatal(e)
 	}
 	defer fp.Close()
+	defer close(ouch)
 	rdr := io.Reader(fp)
 	br := bufio.NewReader(rdr)
 
@@ -113,7 +114,6 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		var ritem kvbchitem
 
 		inch := make(chan []byte, reclen)
-		defer close(inch)
 		go klchan(fn, reclen, keyoff, keylen, inch)
 
 		ritem.ln = <-inch
@@ -133,9 +133,6 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 			log.Fatalf("kvpqbreadch %v failed for %v", bre, ritem.ln)
 		}
 
-		if string(ritem.ln) == "\n" {
-			log.Fatal("kvpqbreademit pop line ", string(ritem.ln))
-		}
 		_, err = nw.WriteString(string(ritem.ln))
 		if err != nil {
 			log.Fatal("kvpqbreademit writestring ", err)
