@@ -103,6 +103,12 @@ func klschan(fn string, reclen, keyoff, keylen int, ouch chan string) {
 func kvpqschanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 	pq := make(KVSCHQ, len(fns))
 
+	var bre string = "[0-9A-Za-z]+"
+	cre, err := regexp.Compile(bre)
+	if err != nil {
+		log.Fatalf("kvpqbchanemit regexp \"%v\": %v", bre, err)
+	}
+
 	for i, fn := range fns {
 		var itm kvschitem
 
@@ -122,14 +128,11 @@ func kvpqschanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvschitem)
-		var bre string = "[0-9A-Za-z]+"
-		brm, err := regexp.Match(bre, []byte(ritem.ln))
-		if err != nil {
-			log.Fatalf("kvpqbchanemit regexp %v: %v", bre, err)
-		}
-		if brm == false {
+
+		if cre.Match([]byte(ritem.ln)) == false {
 			log.Fatalf("kvpqbchanemit %v failed for %v", bre, ritem.ln)
 		}
+
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqsreademit pop line ", string(ritem.ln))
 		}
@@ -150,7 +153,7 @@ func kvpqschanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln, ritem.ln)
 	}
-	err := nw.Flush()
+	err = nw.Flush()
 	if err != nil {
 		log.Fatal("kvpqbchanemit flush ", err)
 	}
