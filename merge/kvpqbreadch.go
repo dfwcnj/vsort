@@ -100,13 +100,13 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 
 }
 
-func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
+func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 	pq := make(KBBCHQ, len(fns))
 
 	var bre string = "[0-9A-Za-z]+"
 	cre, err := regexp.Compile(bre)
 	if err != nil {
-		log.Fatalf("kvpqbchanemit regexp \"%v\": %v", bre, err)
+		log.Fatalf("kvpqbreadch regexp \"%v\": %v", bre, err)
 	}
 
 	for i, fn := range fns {
@@ -130,7 +130,7 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		ritem := heap.Pop(&pq).(*kvbchitem)
 
 		if cre.Match(ritem.ln) == false {
-			log.Fatalf("kvpqbchanemit %v failed for %v", bre, ritem.ln)
+			log.Fatalf("kvpqbreadch %v failed for %v", bre, ritem.ln)
 		}
 
 		if string(ritem.ln) == "\n" {
@@ -155,7 +155,7 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 	}
 	err = nw.Flush()
 	if err != nil {
-		log.Fatal("kvpqbchanemit flush ", err)
+		log.Fatal("kvpqbreadch flush ", err)
 	}
-	//log.Print("kvpqbchanemit lines written ", ne)
+	//log.Print("kvpqbreadch lines written ", ne)
 }

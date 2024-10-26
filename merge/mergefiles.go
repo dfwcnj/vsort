@@ -74,7 +74,7 @@ func Mergebytefilesch(ofn string, reclen int, keyoff int, keylen int, fns []stri
 	}
 
 	// log.Print("mergefiles pqreademit ", reclen)
-	kvpqbchanemit(ofp, reclen, keyoff, keylen, fns)
+	kvpqbreadch(ofp, reclen, keyoff, keylen, fns)
 }
 
 // Mergestringfilesch concurrent
@@ -98,5 +98,5 @@ func Mergestringfilesch(ofn string, reclen int, keyoff int, keylen int, fns []st
 	}
 
 	// log.Print("mergefiles pqreademit ", reclen)
-	kvpqschanemit(ofp, reclen, keyoff, keylen, fns)
+	kvpqsreadch(ofp, reclen, keyoff, keylen, fns)
 }
