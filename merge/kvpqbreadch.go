@@ -62,13 +62,12 @@ func (pq *KBBCHQ) update(ritem *kvbchitem, value []byte, priority []byte) {
 	heap.Fix(pq, ritem.index)
 }
 
-func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
+func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 	fp, e := os.Open(fn)
 	if e != nil {
 		log.Fatal(e)
 	}
 	defer fp.Close()
-	defer close(out)
 	rdr := io.Reader(fp)
 	br := bufio.NewReader(rdr)
 
@@ -80,24 +79,24 @@ func klchan(fn string, reclen, keyoff, keylen int, out chan []byte) {
 				// log.Println("nextbitem readstring ", err)
 				ln = []byte(l)
 				if err == io.EOF {
-					out <- ln
+					ouch <- ln
 					return
 				}
 				log.Fatal("klchan readstring ", err)
 			}
-			out <- ln
+			ouch <- ln
 			// log.Print("nextbitem readstring ", l)
 		} else {
 			ln := make([]byte, reclen)
 			n, err := io.ReadFull(br, ln)
 			if err != nil {
 				if err == io.EOF {
-					out <- ln
+					ouch <- ln
 					return
 				}
 				log.Fatal("klchan readfull ", n, " ", err)
 			}
-			out <- ln
+			ouch <- ln
 		}
 	}
 
@@ -110,6 +109,7 @@ func kvpqbchanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		var ritem kvbchitem
 
 		inch := make(chan []byte, reclen)
+		defer close(inch)
 		go klchan(fn, reclen, keyoff, keylen, inch)
 
 		ritem.ln = <-inch

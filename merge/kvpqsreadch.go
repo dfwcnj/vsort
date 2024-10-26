@@ -62,13 +62,12 @@ func (pq *KVSCHQ) update(ritem *kvschitem, value string, priority string) {
 	heap.Fix(pq, ritem.index)
 }
 
-func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
+func klschan(fn string, reclen, keyoff, keylen int, ouch chan string) {
 	fp, e := os.Open(fn)
 	if e != nil {
 		log.Fatal(e)
 	}
 	defer fp.Close()
-	defer close(out)
 	rdr := io.Reader(fp)
 	br := bufio.NewReader(rdr)
 
@@ -78,24 +77,24 @@ func klschan(fn string, reclen, keyoff, keylen int, out chan string) {
 			if err != nil {
 				// log.Println("klschan readstring ", err)
 				if err == io.EOF {
-					out <- ln
+					ouch <- ln
 					return
 				}
 				log.Fatal("klschan readstring ", err)
 			}
-			out <- ln
+			ouch <- ln
 			// log.Print("klschan readstring ", l)
 		} else {
 			l := make([]byte, reclen)
 			n, err := io.ReadFull(br, l)
 			if err != nil {
 				if err == io.EOF {
-					out <- string(l)
+					ouch <- string(l)
 					return
 				}
 				log.Fatal("klschan readfull ", n, " ", err)
 			}
-			out <- string(l)
+			ouch <- string(l)
 		}
 	}
 
@@ -108,6 +107,7 @@ func kvpqschanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		var itm kvschitem
 
 		inch := make(chan string)
+		defer close(inch)
 		go klschan(fn, reclen, keyoff, keylen, inch)
 
 		itm.ln = <-inch
