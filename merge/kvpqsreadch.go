@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -121,10 +122,18 @@ func kvpqschanemit(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvschitem)
+		var bre string = "[0-9A-Za-z]+"
+		brm, err := regexp.Match(bre, []byte(ritem.ln))
+		if err != nil {
+			log.Fatalf("kvpqbchanemit regexp %v: %v", bre, err)
+		}
+		if brm == false {
+			log.Fatalf("kvpqbchanemit %v failed for %v", bre, ritem.ln)
+		}
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqsreademit pop line ", string(ritem.ln))
 		}
-		_, err := nw.WriteString(string(ritem.ln))
+		_, err = nw.WriteString(string(ritem.ln))
 		if err != nil {
 			log.Fatal("kvpqsreademit writestring ", err)
 		}
