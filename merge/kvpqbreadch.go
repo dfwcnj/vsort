@@ -119,8 +119,11 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		go klchan(fn, reclen, keyoff, keylen, inch)
 		log.Printf("kvpqbreadch klchan %v", fn)
 
-		ritem.ln = <-inch
 		ritem.fn = fn
+		ritem.ln = <-inch
+		if cre.Match(ritem.ln) == false {
+			log.Fatalf("kvpqbreadch %v init failed for %v:%v", bre, ritem.fn, ritem.ln)
+		}
 		ritem.inch = inch
 		ritem.index = i
 		pq[i] = &ritem
