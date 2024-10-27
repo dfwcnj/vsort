@@ -96,6 +96,7 @@ func klschan(fn string, reclen, keyoff, keylen int, ouch chan string) {
 				log.Fatal("klschan readfull ", n, " ", err)
 			}
 			ouch <- string(l)
+			// log.Print("klschan readstring ", l)
 		}
 	}
 
