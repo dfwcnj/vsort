@@ -30,7 +30,7 @@ func Test_mergebytefilesch(t *testing.T) {
 		if err != nil {
 			log.Fatal("mergebytefilesch test initmergedir ", err)
 		}
-		log.Print("mergebytefilesch test initmergedir ", dn)
+		// log.Print("mergebytefilesch test initmergedir ", dn)
 
 		for i := range nmf {
 			var lns [][]byte

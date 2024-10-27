@@ -30,7 +30,7 @@ func Test_mergestringfilesch(t *testing.T) {
 		if err != nil {
 			log.Fatal("mergestringfilesch test initmergedir ", err)
 		}
-		log.Print("mergestringfilesch test initmergedir ", dn)
+		// log.Print("mergestringfilesch test initmergedir ", dn)
 
 		for i := range nmf {
 
