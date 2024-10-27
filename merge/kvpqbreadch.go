@@ -83,6 +83,7 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 				}
 				log.Fatal("klchan readstring ", err)
 			}
+			log.Printf("klchan string %v:%v", fn, l)
 			ouch <- []byte(l)
 			// log.Print("nextbitem readstring ", l)
 		} else {
@@ -95,6 +96,7 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 				}
 				log.Fatal("klchan readfull ", n, " ", err)
 			}
+			log.Printf("klchan []byte %v:%v", fn, string(l))
 			ouch <- l
 		}
 	}
