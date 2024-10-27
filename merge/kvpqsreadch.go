@@ -135,7 +135,8 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		ritem := heap.Pop(&pq).(*kvschitem)
 
 		if cre.Match([]byte(ritem.ln)) == false {
-			log.Fatalf("kvpqsreadch %v failed for %v:%v", bre, ritem.fn, ritem.ln)
+			log.Printf("kvpqsreadch %v %v:%v", bre, ritem.fn, ritem.ln)
+			continue
 		}
 
 		if err != nil {

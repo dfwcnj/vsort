@@ -83,7 +83,7 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 				}
 				log.Fatal("klchan readstring ", err)
 			}
-			log.Printf("klchan string %v:%v", fn, l)
+			// log.Printf("klchan string %v:%v", fn, l)
 			ouch <- []byte(l)
 			// log.Print("nextbitem readstring ", l)
 		} else {
@@ -96,7 +96,7 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 				}
 				log.Fatal("klchan readfull ", n, " ", err)
 			}
-			log.Printf("klchan []byte %v:%v", fn, string(l))
+			// log.Printf("klchan []byte %v:%v", fn, string(l))
 			ouch <- l
 		}
 	}
@@ -137,7 +137,8 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		ritem := heap.Pop(&pq).(*kvbchitem)
 
 		if cre.Match(ritem.ln) == false {
-			log.Fatalf("kvpqbreadch %v failed for %v:%v", bre, ritem.fn, ritem.ln)
+			log.Printf("kvpqbreadch %v %v:%v", bre, ritem.fn, ritem.ln)
+			continue
 		}
 
 		_, err = nw.WriteString(string(ritem.ln))
