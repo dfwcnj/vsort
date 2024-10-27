@@ -115,8 +115,10 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 
 		inch := make(chan []byte, reclen)
 		go klchan(fn, reclen, keyoff, keylen, inch)
+		log.Printf("kvpqbreadch klchan %v", fn)
 
 		ritem.ln = <-inch
+		ritem.fn = fn
 		ritem.inch = inch
 		ritem.index = i
 		pq[i] = &ritem
@@ -130,7 +132,7 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		ritem := heap.Pop(&pq).(*kvbchitem)
 
 		if cre.Match(ritem.ln) == false {
-			log.Fatalf("kvpqbreadch %v failed for %v", bre, ritem.ln)
+			log.Fatalf("kvpqbreadch %v failed for %v:%v", bre, ritem.fn, ritem.ln)
 		}
 
 		_, err = nw.WriteString(string(ritem.ln))

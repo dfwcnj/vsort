@@ -115,8 +115,10 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 
 		inch := make(chan string)
 		go klschan(fn, reclen, keyoff, keylen, inch)
+		log.Printf("kvpwsreadch klchan %v", fn)
 
 		itm.ln = <-inch
+		itm.fn = fn
 		itm.inch = inch
 		itm.index = i
 		pq[i] = &itm
@@ -130,7 +132,7 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		ritem := heap.Pop(&pq).(*kvschitem)
 
 		if cre.Match([]byte(ritem.ln)) == false {
-			log.Fatalf("kvpqsreadch %v failed for %v", bre, ritem.ln)
+			log.Fatalf("kvpqsreadch %v failed for %v:%v", bre, ritem.fn, ritem.ln)
 		}
 
 		if err != nil {
