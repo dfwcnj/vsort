@@ -62,7 +62,7 @@ func (pq *KBBCHQ) update(ritem *kvbchitem, value []byte, priority []byte) {
 	heap.Fix(pq, ritem.index)
 }
 
-func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
+func klbchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 	fp, e := os.Open(fn)
 	if e != nil {
 		log.Fatal(e)
@@ -81,9 +81,9 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 					ouch <- []byte(l)
 					return
 				}
-				log.Fatal("klchan readstring ", err)
+				log.Fatal("klbchan readstring ", err)
 			}
-			// log.Printf("klchan string %v:%v", fn, l)
+			// log.Printf("klbchan string %v:%v", fn, l)
 			ouch <- []byte(l)
 			// log.Print("nextbitem readstring ", l)
 		} else {
@@ -94,9 +94,9 @@ func klchan(fn string, reclen, keyoff, keylen int, ouch chan []byte) {
 					ouch <- l
 					return
 				}
-				log.Fatal("klchan readfull ", n, " ", err)
+				log.Fatal("klbchan readfull ", n, " ", err)
 			}
-			// log.Printf("klchan []byte %v:%v", fn, string(l))
+			// log.Printf("klbchan []byte %v:%v", fn, string(l))
 			ouch <- l
 		}
 	}
@@ -116,8 +116,8 @@ func kvpqbreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 		var ritem kvbchitem
 
 		inch := make(chan []byte, reclen)
-		go klchan(fn, reclen, keyoff, keylen, inch)
-		// log.Printf("kvpqbreadch klchan %v", fn)
+		go klbchan(fn, reclen, keyoff, keylen, inch)
+		// log.Printf("kvpqbreadch klbchan %v", fn)
 
 		ritem.fn = fn
 		ritem.ln = <-inch

@@ -116,7 +116,7 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 
 		inch := make(chan string)
 		go klschan(fn, reclen, keyoff, keylen, inch)
-		// log.Printf("kvpwsreadch klchan %v", fn)
+		// log.Printf("kvpwsreadch klschan %v", fn)
 
 		ritem.fn = fn
 		ritem.ln = <-inch
@@ -140,6 +140,7 @@ func kvpqsreadch(ofp *os.File, reclen, keyoff, keylen int, fns []string) {
 			continue
 		}
 
+		_, err = nw.WriteString(string(ritem.ln))
 		if err != nil {
 			log.Fatal("kvpqsreademit writestring ", err)
 		}
