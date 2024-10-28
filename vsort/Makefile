@@ -14,10 +14,9 @@ vet: fmt
 build: vet
 	go build
 
-clean: vsort
-	go clean
-
-clobber: clean
+clean:
 	go clean -modcache
+	git restore go.mod go.sum
+	/bin/rm -rf /tmp/[mSsv]*[0-9] 
 
 

@@ -31,22 +31,22 @@ func Test_sortstringsfiles(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Print("Sortstringsfiles test ", st, " ", r)
+			log.Print("sortstringsfiles test ", st, " ", r)
 
 			dn, err := initmergedir("/tmp", "sortstringsfilestest")
 			if err != nil {
-				log.Fatal("Sortstringsfiles test initmergedir ", err)
+				log.Fatal("sortstringsfiles test initmergedir ", err)
 			}
-			//log.Print("Sortstringsfiles test initmergedir ", dn)
+			//log.Print("sortstringsfiles test initmergedir ", dn)
 
 			var fns []string
-			//log.Print("Sortstringsfiles test making ", nmf, " files to sort")
+			//log.Print("sortstringsfiles test making ", nmf, " files to sort")
 			var tns int64
 			for i := range nmf {
 
 				lns := randomdata.Randomstrings(nrs, rlen, r)
 				if len(lns) != int(nrs) {
-					log.Fatal("Sortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
+					log.Fatal("sortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
 				}
 				if r == true {
 					for i, _ := range lns {
@@ -55,7 +55,7 @@ func Test_sortstringsfiles(t *testing.T) {
 				}
 
 				var fn = filepath.Join(dn, fmt.Sprint("sortstringsfilestest", i))
-				//log.Println("Sortstringsfiles test saving ", fn)
+				//log.Println("sortstringsfiles test saving ", fn)
 				merge.Savestringmergefile(lns, fn)
 				fns = append(fns, fn)
 				if r == true {
@@ -65,7 +65,7 @@ func Test_sortstringsfiles(t *testing.T) {
 				}
 			}
 
-			// log.Print("Sortstringsfiles test test files record count ", tns)
+			// log.Print("sortstringsfiles test test files record count ", tns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
@@ -77,11 +77,11 @@ func Test_sortstringsfiles(t *testing.T) {
 				Sortstringsfiles(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
 			t1 := time.Now()
-			log.Printf("sortstringsfiles test dort duration %v", t1.Sub(t0))
+			log.Printf("sortstringsfiles test sort duration %v", t1.Sub(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
-				log.Fatal("Sortstringsfiles test ", err)
+				log.Fatal("sortstringsfiles test ", err)
 			}
 			defer mfp.Close()
 
@@ -100,19 +100,19 @@ func Test_sortstringsfiles(t *testing.T) {
 						if err == io.EOF {
 							break
 						}
-						log.Fatal("Sortstringsfiles test  readfull ", err)
+						log.Fatal("sortstringsfiles test  readfull ", err)
 					}
 					mlns = append(mlns, string(ln))
 				}
 			}
 			if len(mlns) != int(nrs)*nmf {
-				t.Fatal("Sortstringsfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+				t.Fatal("sortstringsfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 			}
 			if !slices.IsSorted(mlns) {
-				t.Fatal("Sortstringsfiles test lines in ", mpath, " not in sort order")
+				t.Fatal("sortstringsfiles test lines in ", mpath, " not in sort order")
 			}
 		}
 	}
-	log.Print("Sortstringsfiles test passed")
+	log.Print("sortstringsfiles test passed")
 
 }
