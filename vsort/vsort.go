@@ -95,20 +95,15 @@ func main() {
 	}
 	if form == "bytes" {
 		if cncnt == false {
-			log.Printf("sortbytesfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 			sorts.Sortbytesfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 		} else {
-			log.Printf("sortbytesfiles concurrent ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 			sorts.Sortbytesfilesch(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 		}
 
 	} else {
-		log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 		if cncnt == false {
-			log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 			sorts.Sortstringsfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 		} else {
-			log.Printf("sortstringsfiles concurrent ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
 			sorts.Sortstringsfilesch(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
 		}
 	}
