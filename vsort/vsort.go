@@ -44,6 +44,8 @@ func main() {
 	var fns []string
 	var ofn, iomem, md, stype, form string
 	var reclen, keylen, keyoff int
+	var cncnt bool
+
 	flag.StringVar(&ofn, "ofn", "", "output file name otherwise stdout")
 	flag.StringVar(&iomem, "iomem", "500mb", "max read memory size in kb, mb or gb")
 	flag.StringVar(&md, "md", "", "merge sirectory defaults to a directory under /tmp")
@@ -52,6 +54,8 @@ func main() {
 	flag.IntVar(&reclen, "reclen", 0, "length of the fixed length record")
 	flag.IntVar(&keyoff, "keyoff", 0, "offset of the key")
 	flag.IntVar(&keylen, "keylen", 0, "length of the key if not whole line")
+	flag.BoolVar(&cncnt, "cncnt", false, "sort concurrently")
+
 	flag.Parse()
 	fns = flag.Args()
 
@@ -90,12 +94,23 @@ func main() {
 		iom = parseiomem(iomem)
 	}
 	if form == "bytes" {
-		// log.Printf("sortbytesfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
-		sorts.Sortbytesfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+		if cncnt == false {
+			log.Printf("sortbytesfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+			sorts.Sortbytesfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+		} else {
+			log.Printf("sortbytesfiles concurrent ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+			sorts.Sortbytesfilesch(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+		}
 
 	} else {
-		// log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
-		sorts.Sortstringsfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+		log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+		if cncnt == false {
+			log.Printf("sortstringsfiles ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+			sorts.Sortstringsfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+		} else {
+			log.Printf("sortstringsfiles concurrent ofn %s md %s stype %s reclen %d keyoff %d keylen %d iom %d", ofn, md, stype, reclen, keyoff, keylen, iom)
+			sorts.Sortstringsfilesch(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
+		}
 	}
 
 }
