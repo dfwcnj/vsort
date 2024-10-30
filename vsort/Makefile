@@ -15,6 +15,7 @@ build: vet
 	go build
 
 clean:
+	go clean
 	go clean -modcache
 	git restore go.mod go.sum
 	/bin/rm -rf /tmp/[mSsv]*[0-9] 
