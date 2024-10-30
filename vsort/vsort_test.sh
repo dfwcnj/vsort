@@ -109,7 +109,7 @@ goranddatagen -n 65536 -rlen | ./vsort -stype insertion | sort -c
 goranddatagen -n 33554432 -rlen | ./vsort -stype merge | sort -c
 goranddatagen -n 33554432 -rlen | ./vsort -stype radix | sort -c
 
-# failing
+# mergesort
 goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype merge -form bytes | flcat -rlen 32 | sort -c
 goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype merge | flcat -rlen 32 | sort -c
 
