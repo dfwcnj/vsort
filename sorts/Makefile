@@ -18,4 +18,3 @@ clean:
 	go clean -modcache
 	git restore go.mod go.sum
 	/bin/rm -rf /tmp/[mSsv]*[0-9] 
-	/bin/rm -rf /tmp/chsort*
