@@ -2,7 +2,7 @@ package sorts
 
 import (
 	"log"
-	//"sync"
+	"sync"
 
 	"github.com/dfwcnj/vsort/merge"
 )
@@ -88,19 +88,29 @@ func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen 
 
 	var mfiles []string
 
-	rchan = make(chan mflst)
+	rchan = make(chan mflst, len(fns))
 	defer close(rchan)
+
+	var wg sync.WaitGroup
+	wg.Add(len(fns))
 
 	for _, fn := range fns {
 
 		// log.Printf("chSortbytesfiles sorting %s", fn)
 		if reclen != 0 {
-			go sortflbytesfilech(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
+			go func() {
+				defer wg.Done()
+				sortflbytesfilech(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
+			}()
 		} else {
-			go sortvlbytesfilech(fn, dn, stype, iomem, rchan)
+			go func() {
+				defer wg.Done()
+				sortvlbytesfilech(fn, dn, stype, iomem, rchan)
+			}()
 		}
 
 	}
+	wg.Wait()
 
 	i := 0
 	for {
@@ -126,18 +136,28 @@ func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, recle
 
 	var mfiles []string
 
-	var rchan = make(chan mflst)
+	var rchan = make(chan mflst, len(fns))
 	defer close(rchan)
+
+	var wg sync.WaitGroup
+	wg.Add(len(fns))
 
 	for _, fn := range fns {
 
 		// log.Printf("chSortstringsfiles sorting %s", fn)
 		if reclen != 0 {
-			go sortflstringsfilech(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
+			go func() {
+				defer wg.Done()
+				sortflstringsfilech(fn, dn, stype, reclen, keyoff, keylen, iomem, rchan)
+			}()
 		} else {
-			go sortvlstringsfilech(fn, dn, stype, iomem, rchan)
+			go func() {
+				defer wg.Done()
+				sortvlstringsfilech(fn, dn, stype, iomem, rchan)
+			}()
 		}
 	}
+	wg.Wait()
 
 	i := 0
 	for {
