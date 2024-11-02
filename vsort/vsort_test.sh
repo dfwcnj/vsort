@@ -65,28 +65,37 @@ fi
 
 # fixed length bytes sort
 ./vsort -reclen 32 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
+./vsort -cncnt -reclen 32 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat
+-rlen 32 |wc -l
 ./vsort -cncnt -reclen 32 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 ./vsort -form bytes -reclen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 ./vsort -form bytes -reclen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 
 # fixed length bytes sort easiest key
 ./vsort -reclen 32 -keyoff 0 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
+./vsort -cncnt -reclen 32 -keyoff 0 -keylen 32 /tmp/bdata0 /tmp/bdata1 |
+flcat -rlen 32 |wc -l
 ./vsort -cncnt -reclen 32 -keyoff 0 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 ./vsort -form bytes -reclen 32 -keyoff 0 -keylen 32 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 |sort -c
 
 # fixed length bytes sort subrecord key
 ./vsort -reclen 32 -keyoff 8 -keylen 16 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 -koff 8 -klen 16 |sort -c
+./vsort -cncnt -reclen 32 -keyoff 8 -keylen 16 /tmp/bdata0 /tmp/bdata1 |
+flcat -rlen 32 -koff 8 -klen 16 |wc -l
 ./vsort -cncnt -reclen 32 -keyoff 8 -keylen 16 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 -koff 8 -klen 16 |sort -c
 ./vsort -form bytes -reclen 32 -keyoff 8 -keylen 16 /tmp/bdata0 /tmp/bdata1 | flcat -rlen 32 -koff 8 -klen 16 |sort -c
 
 # random length data sort
 ./vsort /tmp/rdata0 /tmp/rdata1 |sort -c
+./vsort -cncnt /tmp/rdata0 /tmp/rdata1 |wc -l
 ./vsort -cncnt /tmp/rdata0 /tmp/rdata1 |sort -c
 
 # rm /tmp/[br]data[01]
 
 # fixed length standard input
 goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 | flcat -rlen 32 | sort -c
+goranddatagen -n 16777216 | ./vsort -cncnt -reclen 32 -keylen 32 | flcat
+-rlen 32 | wc -l
 goranddatagen -n 16777216 | ./vsort -cncnt -reclen 32 -keylen 32 | flcat -rlen 32 | sort -c
 goranddatagen -n 16777216 | ./vsort -reclen 32 -keylen 32 -form bytes | flcat -rlen 32 | sort -c
 
@@ -103,6 +112,7 @@ goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype radix | flcat 
 goranddatagen -n 16777216 | ./vsort -reclen 32  -keylen 32 -stype radix -form bytes | flcat -rlen 32 | sort -c
 
 # random length standard input
+goranddatagen -n 33554432 -rlen | ./vsort -cncnt  | wc -l
 goranddatagen -n 33554432 -rlen | ./vsort -cncnt  | sort -c
 goranddatagen -n 33554432 -rlen | ./vsort -stype heap | sort -c
 goranddatagen -n 65536 -rlen | ./vsort -stype insertion | sort -c
