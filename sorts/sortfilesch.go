@@ -126,7 +126,7 @@ func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen 
 		i++
 	}
 
-	// log.Printf("Sortbytesfilesch merging %d files", len(mfiles))
+	log.Printf("Sortbytesfilesch ofn %s merging %d files", ofn, len(mfiles))
 	merge.Mergebytefiles(ofn, reclen, keyoff, keylen, mfiles)
 }
 
@@ -173,7 +173,7 @@ func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, recle
 		i++
 	}
 
-	// log.Printf("Sortbytesfilesch merging %d files", len(mfiles))
+	log.Printf("Sortbytesfilesch ofn %s merging %d files", ofn, len(mfiles))
 	merge.Mergestringfiles(ofn, reclen, keyoff, keylen, mfiles)
 
 }
