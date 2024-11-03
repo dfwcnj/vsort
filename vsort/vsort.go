@@ -96,8 +96,8 @@ func main() {
 	if iomem != "" {
 		iom = parseiomem(iomem)
 	}
-	log.Printf("flags: ofn %v, md %v, stype %v, reclen %v, keyoff %v, keylen %v, iom %v", ofn, md, stype, reclen, keyoff, keylen, iom)
-	log.Printf("args %v", fns)
+	// log.Printf("flags: ofn %v, md %v, stype %v, reclen %v, keyoff %v, keylen %v, iom %v", ofn, md, stype, reclen, keyoff, keylen, iom)
+	// log.Printf("args %v", fns)
 	if form == "bytes" {
 		if cncnt == false {
 			sorts.Sortbytesfiles(fns, ofn, md, stype, reclen, keyoff, keylen, iom)
