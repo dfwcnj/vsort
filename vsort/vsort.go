@@ -58,6 +58,9 @@ func main() {
 
 	flag.Parse()
 	fns = flag.Args()
+	if len(fns) == 0 {
+		cncnt = false
+	}
 
 	sortt := map[string]bool{
 		"heap":      true,
