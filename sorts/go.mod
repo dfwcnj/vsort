@@ -1,4 +1,7 @@
 module github.com/dfwcnj/vsort/sorts
 
-go 1.23.1
+go 1.20.0
 
+toolchain go1.20.0
+
+)
