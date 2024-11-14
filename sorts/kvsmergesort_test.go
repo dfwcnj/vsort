@@ -23,21 +23,21 @@ func Test_kvsmergesort(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			log.Print("testing kvsmergesort of ", nl, " random strings length ", l)
+			log.Printf("kvsmergesort test %v %v %v", r, l, reclen)
 			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvsmergesort test rsl: wanted len ", nl, " got ", len(rsl))
 			}
+			log.Print("kvsmergesort sorting")
 			slns := kvsmergesort(rsl, reclen, keyoff, keylen)
 			if len(slns) != int(nl) {
 				t.Fatal("kvsmergesort test rsl: wanted len ", nl, " got ", len(slns))
 			}
+			log.Print("kvsmergesort sorted")
 			if !slices.IsSorted(slns) {
 				t.Fatal("kvsmergesort test failed not sorted")
-			} else {
-				log.Print("kvsmergesort test passed for ", nl)
 			}
-
 		}
 	}
+	log.Print("kvsmergesort test passed")
 }
