@@ -96,7 +96,7 @@ func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen 
 
 	for _, fn := range fns {
 
-		// log.Printf("Sortbytesfilesch sorting %s", fn)
+		log.Printf("Sortbytesfilesch sorting %s", fn)
 		if reclen != 0 {
 			go func() {
 				defer wg.Done()
@@ -122,11 +122,11 @@ func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen 
 			break
 		}
 		mfiles = append(mfiles, mc.mfls...)
-		// log.Printf("Sortbytesfilesch appending %d files", len(mc.mfls))
+		log.Printf("Sortbytesfilesch appending %d files", len(mc.mfls))
 		i++
 	}
 
-	//log.Printf("sortbytesfilesch ofn %s merging %d files", ofn, len(mfiles))
+	log.Printf("sortbytesfilesch ofn %v merging %v", ofn, mfiles)
 	merge.Mergebytefiles(ofn, reclen, keyoff, keylen, mfiles)
 }
 
@@ -144,7 +144,7 @@ func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, recle
 
 	for _, fn := range fns {
 
-		// log.Printf("Sortbytesfilesch sorting %s", fn)
+		log.Printf("Sortbytesfilesch sorting %s", fn)
 		if reclen != 0 {
 			go func() {
 				defer wg.Done()
@@ -169,11 +169,11 @@ func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, recle
 			break
 		}
 		mfiles = append(mfiles, mc.mfls...)
-		// log.Printf("Sortbytesfilesch appending %d files", len(mc.mfls))
+		log.Printf("Sortbytesfilesch appending %d files", len(mc.mfls))
 		i++
 	}
 
-	// log.Printf("sortbytesfilesch ofn %s merging %d files", ofn, len(mfiles))
+	log.Printf("sortbytesfilesch ofn %v merging %v", ofn, mfiles)
 	merge.Mergestringfiles(ofn, reclen, keyoff, keylen, mfiles)
 
 }
