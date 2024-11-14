@@ -26,7 +26,7 @@ func Test_sortbytesfilesch(t *testing.T) {
 	stypes[2] = "radix"
 	stypes[3] = "std"
 	var nrs int64 = 1 << 20
-	var iomem int64 = nrs * int64(rlen/2)
+	var iomem int64 = 1 << 20 * 8
 	var nmf = 10
 
 	for _, st := range stypes {
@@ -57,9 +57,8 @@ func Test_sortbytesfilesch(t *testing.T) {
 					log.Fatal("sortbytesfilesch test before sort wanted len ", nrs, " got ", len(lns))
 				}
 
-				var fn = filepath.Join(dn,
-					fmt.Sprint("sortbytesfilesch", i))
-				//log.Println("sortbytesfilesch test saving ", fn)
+				var fn = filepath.Join(dn, fmt.Sprint("sortbytesfileschtest", i))
+				//log.Print("sortbytesfilesch test saving ", fn)
 				merge.Savebytemergefile(lns, fn)
 				fns = append(fns, fn)
 				if r == true {
@@ -69,7 +68,7 @@ func Test_sortbytesfilesch(t *testing.T) {
 				}
 			}
 
-			// log.Print("sortbytesfilesch test test files record count ", tns)
+			log.Print("sortbytesfilesch test test files to sort ", fns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
