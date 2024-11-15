@@ -14,6 +14,9 @@ vet: fmt
 test: vet
 	go test
 
+check: vet
+	staticcheck .
+
 clean:
 	go clean -modcache
 	git restore go.mod go.sum
