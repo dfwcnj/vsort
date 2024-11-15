@@ -68,7 +68,7 @@ func Test_sortbytesfilesch(t *testing.T) {
 				}
 			}
 
-			log.Print("sortbytesfilesch test test files to sort ", fns)
+			// log.Print("sortbytesfilesch test test files to sort ", fns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
