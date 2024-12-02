@@ -43,7 +43,7 @@ func splitstringsslice(lns []string, ns int) [][]string {
 
 // sortbytesslicech
 func sortbytesslicech(lns [][]byte, stype string, reclen, keyoff, keylen int, ouch chan [][]byte) {
-	log.Print("sortbytesslicech")
+	// log.Printf("sortbytesslicech %v", stype)
 	switch stype {
 	case "heap":
 		kvbheapsort(lns, reclen, keyoff, keylen)
@@ -63,7 +63,7 @@ func sortbytesslicech(lns [][]byte, stype string, reclen, keyoff, keylen int, ou
 
 // sortstringsslicech
 func sortstringsslicech(lns []string, stype string, reclen, keyoff, keylen int, ouch chan []string) {
-	log.Print("sortstringsslicech")
+	// log.Printf("sortstringsslicech %v", stype)
 	switch stype {
 	case "heap":
 		kvsheapsort(lns, reclen, keyoff, keylen)
@@ -94,6 +94,7 @@ func sortbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen 
 
 	// exceeds our iomem limit
 	if fsz > iomem {
+		log.Print("sortbytesfilech file size greater than iomem")
 		if reclen > 0 {
 			sortflbytesfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		} else {
@@ -109,19 +110,20 @@ func sortbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen 
 		log.Fatalf("sortbytesfilech read %v: %v", fn, err)
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(nc)
-	// create a byte slice channel size nc
-	inch := make(chan [][]byte, nc)
-
 	parts := splitbytesslice(lns, nc)
-	for i := range parts {
+	// create a byte slice channel with n parts capacity
+	inch := make(chan [][]byte, len(parts))
+	var wg sync.WaitGroup
+	wg.Add(len(parts))
 
+	for i := range parts {
 		go func() {
 			defer wg.Done()
+			log.Printf("sortbytesfilech %v", i)
 			sortbytesslicech(parts[i], stype, reclen, keyoff, keylen, inch)
 		}()
 	}
+
 	wg.Wait()
 }
 
@@ -138,6 +140,7 @@ func sortstringsfilech(fn string, dn string, stype string, reclen, keyoff, keyle
 
 	// exceeds our iomem limits
 	if fsz > iomem {
+		log.Print("sortstringsfilech file size greater than iomem")
 		if reclen > 0 {
 			sortflstringsfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
 		} else {
@@ -153,18 +156,19 @@ func sortstringsfilech(fn string, dn string, stype string, reclen, keyoff, keyle
 		log.Fatalf("sortstringsfilech read %v: %v", fn, err)
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(nc)
-	// create a string slice channel size nc
-	inch := make(chan []string, nc)
-
 	parts := splitstringsslice(lns, nc)
-	for i := range parts {
+	// create a string slice channel with capacity n parts
+	inch := make(chan []string, len(parts))
+	var wg sync.WaitGroup
+	wg.Add(len(parts))
 
+	for i := range parts {
 		go func() {
 			defer wg.Done()
+			log.Printf("sortstringsfilech %v", i)
 			sortstringsslicech(parts[i], stype, reclen, keyoff, keylen, inch)
 		}()
 	}
+
 	wg.Wait()
 }

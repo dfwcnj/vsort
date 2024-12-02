@@ -31,10 +31,8 @@ func Test_kvslicesssort(t *testing.T) {
 			kvslicesssort(lns, reclen, keyoff, keylen)
 			if !slices.IsSorted(lns) {
 				t.Fatal("kvslicesssort test failed not sorted")
-			} else {
-				log.Print("kvslicesssort test passed for ", nl)
 			}
-
 		}
 	}
+	log.Print("kvslicesssort test passed")
 }

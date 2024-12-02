@@ -39,10 +39,8 @@ func Test_kvslicesbsort(t *testing.T) {
 			}
 			if !slices.IsSorted(ssl) {
 				t.Fatal("kvslicesbsort test failed not sorted")
-			} else {
-				log.Print("kvslicesbsort test passed for ", nl)
 			}
-
 		}
 	}
+	log.Print("kvslicesbsort test passed")
 }

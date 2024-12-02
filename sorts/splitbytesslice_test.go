@@ -23,10 +23,11 @@ func Test_splitbytesslice(t *testing.T) {
 		}
 
 		parts := splitbytesslice(bsl, 10)
-		log.Printf("splitbytesslice %v parts", len(parts))
+		var np = len(parts)
+		log.Printf("splitbytesslice %v parts", np)
 
 		var nlns int64
-		for i := range len(parts) {
+		for i := range np {
 			pl := len(parts[i])
 			nlns += int64(pl)
 		}

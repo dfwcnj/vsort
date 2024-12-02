@@ -14,9 +14,16 @@ type mflst struct {
 
 var rchan chan mflst
 
-// sortbytesfilech
+// sortflbytesfilech
 // go routine to sort fixed length bytes records files
-// func sortflbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst, wg *sync.WaitGroup) {
+// fn - name of file to sort
+// dn - directory to store the output
+// stype - sort type
+// reclen - record length including any separator
+// keyoff - offset of sort key
+// keylen - length of sort key
+// iomem  - size limit for each sort chunk
+// res    - channel to return the list of sorted chunks
 func sortflbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
 
 	var r mflst
@@ -33,7 +40,11 @@ func sortflbytesfilech(fn string, dn string, stype string, reclen, keyoff, keyle
 
 // sortvlbytesfilech
 // go routine to sort variable length bytes records files
-// func sortvlbytesfilech(fn string, dn string, stype string, iomem int64, res chan mflst, wg *sync.WaitGroup) {
+// fn - name of file to sort
+// dn - directory to store the output
+// stype - sort type
+// iomem  - size limit for each sort chunk
+// res    - channel to return the list of sorted chunks
 func sortvlbytesfilech(fn string, dn string, stype string, iomem int64, res chan mflst) {
 
 	var r mflst
@@ -50,7 +61,14 @@ func sortvlbytesfilech(fn string, dn string, stype string, iomem int64, res chan
 
 // sortflstringsfilech
 // go routine to sort fixed length string records files
-// func sortflstringsfilechan(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst, wg *sync.WaitGroup) {
+// fn - name of file to sort
+// dn - directory to store the output
+// stype - sort type
+// reclen - record length including any separator
+// keyoff - offset of sort key
+// keylen - length of sort key
+// iomem  - size limit for each sort chunk
+// res    - channel to return the list of sorted chunks
 func sortflstringsfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
 
 	var r mflst
@@ -67,7 +85,11 @@ func sortflstringsfilech(fn string, dn string, stype string, reclen, keyoff, key
 
 // sortvlstringsfilech
 // go routine to sort variable length string records files
-// func sortvlstringsfilechan(fn string, dn string, stype string, iomem int64, res chan mflst, wg *sync.WaitGroup) {
+// fn - name of file to sort
+// dn - directory to store the output
+// stype - sort type
+// iomem  - size limit for each sort chunk
+// res    - channel to return the list of sorted chunks
 func sortvlstringsfilech(fn string, dn string, stype string, iomem int64, res chan mflst) {
 
 	var r mflst
@@ -84,6 +106,14 @@ func sortvlstringsfilech(fn string, dn string, stype string, iomem int64, res ch
 
 // Sortbytesfilesch
 // sort bytes files using go routines and channels
+// fns - names of files to sort
+// ofn - output filename
+// dn  - output directろry
+// stype - sort tyoe
+// reclen - record length including any separator
+// keyoff - offset of sort key
+// keylen - length of sort key
+// iomem  - size limit for each sort chunk
 func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
 	var mfiles []string
@@ -132,6 +162,14 @@ func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen 
 
 // Sortstringsfilesch
 // sort strings files using go routines and channels
+// fns - names of files to sort
+// ofn - output filename
+// dn  - output directろry
+// stype - sort tyoe
+// reclen - record length including any separator
+// keyoff - offset of sort key
+// keylen - length of sort key
+// iomem  - size limit for each sort chunk
 func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
 	var mfiles []string
