@@ -23,7 +23,7 @@ func sortflstringsslice(lns []string, stype string, reclen int, keyoff int, keyl
 	case "insertion":
 		kvsinsertionsort(lns, reclen, keyoff, keylen)
 	case "merge":
-		lns = kvsmergesort(lns, reclen, keyoff, keylen)
+		kvsmergesort(lns, reclen, keyoff, keylen)
 	case "radix":
 		rsort2sa(lns, reclen, keyoff, keylen)
 	case "std":
@@ -49,7 +49,7 @@ func sortvlstringsslice(lns []string, stype string) {
 	case "insertion":
 		ginsertionsort(lns)
 	case "merge":
-		lns = gmergesort(lns)
+		gmergesort(lns)
 	case "radix":
 		rsort2sa(lns, 0, 0, 0)
 	case "std":

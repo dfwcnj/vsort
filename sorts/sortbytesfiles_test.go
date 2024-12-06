@@ -17,10 +17,11 @@ import (
 
 func Test_sortbytesfiles(t *testing.T) {
 	var rlen int = 32
-	var bools []bool = make([]bool, 2, 2)
+	var bools []bool = make([]bool, 2)
 	bools[0] = true
 	bools[1] = false
-	var stypes []string = make([]string, 4, 4)
+	var stypes []string = make([]string, 4)
+
 	stypes[0] = "heap"
 	stypes[1] = "merge"
 	stypes[2] = "radix"

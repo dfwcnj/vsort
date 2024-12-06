@@ -59,8 +59,7 @@ func sortvlstringsfile(fn string, dn string, stype string, iomem int64) ([]strin
 		case "insertion":
 			ginsertionsort(lns)
 		case "merge":
-			// log.Printf("sortvlstringsfile gmergesort lns %v", len(lns))
-			lns = gmergesort(lns)
+			gmergesort(lns)
 		case "radix":
 			rsort2sa(lns, 0, 0, 0)
 		case "std":

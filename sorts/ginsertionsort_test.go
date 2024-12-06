@@ -13,9 +13,9 @@ func Test_ginsertionsort(t *testing.T) {
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
 	ns := []int64{1 << 16}
-	var bools []bool = make([]bool, 2, 2)
-	bools[0] = true
-	bools[1] = false
+	var bools []bool = make([]bool, 2)
+	bools[0] = false
+	bools[1] = true
 
 	for _, ll := range ls {
 		for _, nl := range ns {

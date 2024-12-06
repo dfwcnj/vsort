@@ -59,8 +59,7 @@ func sortflstringsfile(fn string, dn string, stype string, reclen int, keyoff in
 		case "insertion":
 			kvsinsertionsort(lns, reclen, keyoff, keylen)
 		case "merge":
-			// log.Printf("sortflstringsfile kvsmergesort lns %v, reclen %v, keyoff %v keylen %v", len(lns), reclen, keyoff, keylen)
-			lns = kvsmergesort(lns, reclen, keyoff, keylen)
+			kvsmergesort(lns, reclen, keyoff, keylen)
 		case "radix":
 			rsort2sa(lns, reclen, keyoff, keylen)
 		case "std":

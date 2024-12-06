@@ -1,8 +1,5 @@
 package sorts
 
-// slightly modified version of
-// https://gist.github.com/julianshen/3940045
-
 import (
 	"bytes"
 	"cmp"
@@ -75,7 +72,9 @@ func kvbmergesort(data [][]byte, reclen, keyoff, keylen int) [][]byte {
 	ldata := kvbmergesort(data[:middle], reclen, keyoff, keylen)
 	rdata := kvbmergesort(data[middle:], reclen, keyoff, keylen)
 
-	return kvbmerge(ldata, rdata, reclen, keyoff, keylen)
+	tdata := kvbmerge(ldata, rdata, reclen, keyoff, keylen)
+	copy(data, tdata)
+	return data
 }
 
 // https://gist.github.com/julianshen/3940045
@@ -119,7 +118,9 @@ func gmergesort[E cmp.Ordered](data []E) []E {
 	ldata := gmergesort(data[:middle])
 	rdata := gmergesort(data[middle:])
 
-	return gmerge(ldata, rdata)
+	tdata := gmerge(ldata, rdata)
+	copy(data, tdata)
+	return data
 }
 
 func gmergefunc[E any](ldata, rdata []E, cmp func(a, b E) bool) []E {
@@ -165,7 +166,9 @@ func gmergesortfunc[E any](data []E, cmp func(a, b E) bool) []E {
 	ldata := gmergesortfunc(data[:middle], cmp)
 	rdata := gmergesortfunc(data[middle:], cmp)
 
-	return gmergefunc(ldata, rdata, cmp)
+	tdata := gmergefunc(ldata, rdata, cmp)
+	copy(data, tdata)
+	return data
 }
 
 // kvsmergesort

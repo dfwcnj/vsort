@@ -15,7 +15,7 @@ import (
 func Test_sortvlbytesfile(t *testing.T) {
 	var rlen int = 32
 	var r bool = true
-	var stypes []string = make([]string, 4, 4)
+	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
 	stypes[1] = "merge"
 	stypes[2] = "radix"

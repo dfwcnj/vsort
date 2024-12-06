@@ -17,7 +17,7 @@ func Test_sortflbytesfile(t *testing.T) {
 	var r bool = false
 	var nrs int64 = 1 << 20
 	var iomem int64 = nrs * int64(rlen/2)
-	var stypes []string = make([]string, 4, 4)
+	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
 	stypes[1] = "merge"
 	stypes[2] = "radix"

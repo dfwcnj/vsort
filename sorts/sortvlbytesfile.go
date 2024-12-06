@@ -55,7 +55,7 @@ func sortvlbytesfile(fn string, dn string, stype string, iomem int64) ([][]byte,
 		case "insertion":
 			kvbinsertionsort(lns, 0, 0, 0)
 		case "merge":
-			lns = kvbmergesort(lns, 0, 0, 0)
+			kvbmergesort(lns, 0, 0, 0)
 		case "radix":
 			rsort2ba(lns)
 		case "std":

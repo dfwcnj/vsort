@@ -16,9 +16,9 @@ import (
 
 func Test_mergebytefilesch(t *testing.T) {
 	var rlen int = 32
-	var bools []bool = make([]bool, 2, 2)
-	bools[0] = true
-	bools[1] = false
+	var bools []bool = make([]bool, 2)
+	bools[0] = false
+	bools[1] = true
 	var nrs int64 = 1 << 20
 
 	var nmf = 10

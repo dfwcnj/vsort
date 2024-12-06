@@ -21,7 +21,7 @@ func sortflbytesslice(lns [][]byte, stype string, reclen, keyoff, keylen int) {
 	case "insertion":
 		kvbinsertionsort(lns, reclen, keyoff, keylen)
 	case "merge":
-		lns = kvbmergesort(lns, reclen, keyoff, keylen)
+		kvbmergesort(lns, reclen, keyoff, keylen)
 	case "radix":
 		kvrsort2a(lns, reclen, keyoff, keylen)
 	case "std":
@@ -47,7 +47,7 @@ func sortvlbytesslice(lns [][]byte, stype string) {
 	case "insertion":
 		kvbinsertionsort(lns, 0, 0, 0)
 	case "merge":
-		lns = kvbmergesort(lns, 0, 0, 0)
+		kvbmergesort(lns, 0, 0, 0)
 	case "radix":
 		rsort2ba(lns)
 	case "std":
