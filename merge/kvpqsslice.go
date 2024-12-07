@@ -71,7 +71,8 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 		itm.keyoff = keyoff
 		itm.keylen = keylen
 
-		itm.ln = nextssitem(itm)
+		itm.ln = itm.lns[0]
+		itm.lns = itm.lns[1:]
 		itm.index = i
 
 		pq[i] = &itm
@@ -80,16 +81,6 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 	heap.Init(&pq)
 
 	return pq
-}
-
-func nextssitem(itm kvssitem) string {
-	if len(itm.lns) == 0 {
-		return ""
-	}
-	ln := itm.lns[0]
-	itm.lns = itm.lns[1:]
-
-	return ln
 }
 
 // kvpqsslicemerge
@@ -115,7 +106,8 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
 		}
 		osl = append(osl, ritem.ln)
 
-		ritem.ln = nextssitem(*ritem)
+		ritem.ln = ritem.lns[0]
+		ritem.lns = ritem.lns[1:]
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
@@ -143,6 +135,9 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 	var ne int64
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvssitem)
+		if len(ritem.lns) == 0 {
+			continue
+		}
 		log.Printf("kvpqssemit ritem.ln %v", ritem.ln)
 
 		if string(ritem.ln) == "\n" {
@@ -153,12 +148,10 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 			log.Fatal("kvpqssliceemit writestring ", err)
 		}
 
-		log.Printf("nextssitem %v before", len(ritem.lns))
-		ritem.ln = nextssitem(*ritem)
-		log.Printf("nextssitem %v after", len(ritem.lns))
-		if len(ritem.lns) == 0 {
-			continue
-		}
+		log.Printf("kvpqssliceemit  %v before", len(ritem.lns))
+		ritem.ln = ritem.lns[0]
+		ritem.lns = ritem.lns[1:]
+		log.Printf("kvpqssliceemit  %v after", len(ritem.lns))
 		//ritem.rlen = reclen
 		//ritem.keyoff = keyoff
 		//ritem.keylen = keylen

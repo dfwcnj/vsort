@@ -71,7 +71,8 @@ func initbpq(reclen, keyoff, keylen int, bparts [][][]byte) KVBSPQ {
 		itm.keyoff = keyoff
 		itm.keylen = keylen
 
-		itm.ln = nextbyteslice(itm)
+		itm.ln = itm.lns[0]
+		itm.lns = itm.lns[1:]
 		itm.index = i
 
 		pq[i] = &itm
@@ -80,18 +81,6 @@ func initbpq(reclen, keyoff, keylen int, bparts [][][]byte) KVBSPQ {
 	heap.Init(&pq)
 
 	return pq
-}
-
-func nextbyteslice(itm kvbsitem) []byte {
-
-	if len(itm.lns) == 0 {
-		var nilb []byte
-		return nilb
-	}
-
-	ln := itm.lns[0]
-	itm.lns = itm.lns[1:]
-	return ln
 }
 
 // kvpqsslicemerge
@@ -117,7 +106,8 @@ func kvpqbslicesmerge(reclen, keyoff, keylen int, bparts [][][]byte) [][]byte {
 		}
 		osl = append(osl, ritem.ln)
 
-		ritem.ln = nextbyteslice(*ritem)
+		ritem.ln = ritem.lns[0]
+		ritem.lns = ritem.lns[1:]
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
@@ -146,7 +136,10 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 	var ne int64
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvbsitem)
-		log.Printf("kvpqbsliceemit pq initiated %v", string(ritem.ln))
+		if len(ritem.lns) == 0 {
+			continue
+		}
+		log.Printf("kvpqbsliceemit line pop  %v", string(ritem.ln))
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqbsliceemit pop line ", string(ritem.ln))
 		}
@@ -155,12 +148,10 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 			log.Fatal("kvpqbsliceemit writestring ", err)
 		}
 
-		log.Printf("kvpqbsliceemit nextbyteslice %v slices before", len(ritem.lns))
-		ritem.ln = nextbyteslice(*ritem)
-		log.Printf("kvpqbsliceemit nextbyteslice %v slices after", len(ritem.lns))
-		if len(ritem.lns) == 0 {
-			continue
-		}
+		log.Printf("kvpqbsliceemit %v slices before", len(ritem.lns))
+		ritem.ln = ritem.lns[0]
+		ritem.lns = ritem.lns[1:]
+		log.Printf("kvpqbsliceemit %v slices after", len(ritem.lns))
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
