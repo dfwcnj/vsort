@@ -87,7 +87,7 @@ func sortstringsslicech(lns []string, stype string, reclen, keyoff, keylen int, 
 
 // sortbytesfilech
 // routine to split a file into pieces to sort concurrently
-func sortbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64) {
+func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, iomem int64) {
 	log.Print("sortbytesfilech")
 	fp, err := os.Open(fn)
 	if err != nil {
@@ -98,13 +98,7 @@ func sortbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen 
 
 	// exceeds our iomem limit
 	if fsz > iomem {
-		log.Print("sortbytesfilech file size greater than iomem")
-		if reclen > 0 {
-			sortflbytesfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
-		} else {
-			sortvlbytesfile(fn, dn, stype, iomem)
-		}
-		return
+		log.Fatalf("sortbytesfilech file %v too large %v", fn, fsz)
 	}
 
 	var nc = runtime.NumCPU()
@@ -129,11 +123,18 @@ func sortbytesfilech(fn string, dn string, stype string, reclen, keyoff, keylen 
 	}
 
 	wg.Wait()
+	tparts := make([][][]byte, len(parts))
+
+	for i := range tparts {
+		tparts[i] = <-inch
+	}
+
+	merge.Mergebytesparts(ofn, reclen, keyoff, keylen, tparts)
 }
 
 // sortstringsfilech
 // routine to split a file into pieces to sort concurrently
-func sortstringsfilech(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64) {
+func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, iomem int64) {
 	log.Print("sortstringsfilech")
 	fp, err := os.Open(fn)
 	if err != nil {
@@ -144,13 +145,7 @@ func sortstringsfilech(fn string, dn string, stype string, reclen, keyoff, keyle
 
 	// exceeds our iomem limits
 	if fsz > iomem {
-		log.Print("sortstringsfilech file size greater than iomem")
-		if reclen > 0 {
-			sortflstringsfile(fn, dn, stype, reclen, keyoff, keylen, iomem)
-		} else {
-			sortvlstringsfile(fn, dn, stype, iomem)
-		}
-		return
+		log.Fatalf("sortstringsfilech %v too large %v", fn, fsz)
 	}
 
 	var nc = runtime.NumCPU()
@@ -175,4 +170,11 @@ func sortstringsfilech(fn string, dn string, stype string, reclen, keyoff, keyle
 	}
 
 	wg.Wait()
+	tparts := make([][]string, len(parts))
+
+	for i := range tparts {
+		tparts[i] = <-inch
+	}
+
+	merge.MergeStringsparts(ofn, reclen, keyoff, keylen, tparts)
 }
