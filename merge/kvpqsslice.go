@@ -83,13 +83,11 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 }
 
 func nextssitem(itm kvssitem) string {
-	log.Printf("nextssitem %v before", len(itm.lns))
 	if len(itm.lns) == 0 {
 		return ""
 	}
 	ln := itm.lns[0]
 	itm.lns = itm.lns[1:]
-	log.Printf("nextssitem %v after", len(itm.lns))
 
 	return ln
 }
@@ -155,8 +153,10 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 			log.Fatal("kvpqssliceemit writestring ", err)
 		}
 
+		log.Printf("nextssitem %v before", len(ritem.lns))
 		ritem.ln = nextssitem(*ritem)
-		if err != nil {
+		log.Printf("nextssitem %v after", len(ritem.lns))
+		if len(ritem.lns) == 0 {
 			continue
 		}
 		//ritem.rlen = reclen

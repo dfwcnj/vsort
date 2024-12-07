@@ -84,7 +84,6 @@ func initbpq(reclen, keyoff, keylen int, bparts [][][]byte) KVBSPQ {
 
 func nextbyteslice(itm kvbsitem) []byte {
 
-	log.Printf("nextbyteslice %v slices before", len(itm.lns))
 	if len(itm.lns) == 0 {
 		var nilb []byte
 		return nilb
@@ -92,7 +91,6 @@ func nextbyteslice(itm kvbsitem) []byte {
 
 	ln := itm.lns[0]
 	itm.lns = itm.lns[1:]
-	log.Printf("nextbyteslice %v slices after", len(itm.lns))
 	return ln
 }
 
@@ -157,8 +155,10 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 			log.Fatal("kvpqbsliceemit writestring ", err)
 		}
 
+		log.Printf("kvpqbsliceemit nextbyteslice %v slices before", len(ritem.lns))
 		ritem.ln = nextbyteslice(*ritem)
-		if err != nil {
+		log.Printf("kvpqbsliceemit nextbyteslice %v slices after", len(ritem.lns))
+		if len(ritem.lns) == 0 {
 			continue
 		}
 
