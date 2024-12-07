@@ -101,6 +101,9 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
 
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvssitem)
+		if len(ritem.lns) == 0 {
+			continue
+		}
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqssliceemit pop line ", string(ritem.ln))
 		}
