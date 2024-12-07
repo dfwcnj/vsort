@@ -176,5 +176,5 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 		tparts[i] = <-inch
 	}
 
-	merge.MergeStringsparts(ofn, reclen, keyoff, keylen, tparts)
+	merge.Mergestringsparts(ofn, reclen, keyoff, keylen, tparts)
 }
