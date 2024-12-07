@@ -58,14 +58,15 @@ func (pq *KVBSPQ) update(ritem *kvbsitem, value []byte) {
 	heap.Fix(pq, ritem.index)
 }
 
-func initbpq(reclen, keyoff, keylen int, bls [][][]byte) KVBSPQ {
-	pq := make(KVBSPQ, len(bls))
+func initbpq(reclen, keyoff, keylen int, bparts [][][]byte) KVBSPQ {
+	log.Print("initbpq")
+	pq := make(KVBSPQ, len(bparts))
 
-	nbls := len(bls)
-	for i := 0; i < nbls; i++ {
+	nbparts := len(bparts)
+	for i := 0; i < nbparts; i++ {
 		var itm kvbsitem
 
-		itm.lns = bls[i]
+		itm.lns = bparts[i]
 		itm.rlen = reclen
 		itm.keyoff = keyoff
 		itm.keylen = keylen
@@ -83,6 +84,7 @@ func initbpq(reclen, keyoff, keylen int, bls [][][]byte) KVBSPQ {
 
 func nextbyteslice(itm kvbsitem) []byte {
 
+	log.Printf("nextbyteslice %v slices before", len(itm.lns))
 	if len(itm.lns) == 0 {
 		var nilb []byte
 		return nilb
@@ -90,6 +92,7 @@ func nextbyteslice(itm kvbsitem) []byte {
 
 	ln := itm.lns[0]
 	itm.lns = itm.lns[1:]
+	log.Printf("nextbyteslice %v slices after", len(itm.lns))
 	return ln
 }
 
@@ -98,14 +101,14 @@ func nextbyteslice(itm kvbsitem) []byte {
 // reclen - key lengths for fixed length records
 // keyoff - offset of key in fixed length record
 // keylen - length of key in fixed length record
-// bls - slice of byte slices
-func kvpqbslicesmerge(reclen, keyoff, keylen int, bls [][][]byte) [][]byte {
-	log.Printf("kvpqbslicemerge %v %v %v %v", reclen, keyoff, keylen, len(bls))
-	pq := initbpq(reclen, keyoff, keylen, bls)
+// bparts - slice of byte slices
+func kvpqbslicesmerge(reclen, keyoff, keylen int, bparts [][][]byte) [][]byte {
+	log.Printf("kvpqbslicemerge %v %v %v %v", reclen, keyoff, keylen, len(bparts))
+	pq := initbpq(reclen, keyoff, keylen, bparts)
 
 	var oln int
-	for i := range bls {
-		oln += len(bls[i])
+	for i := range bparts {
+		oln += len(bparts[i])
 	}
 	osl := make([][]byte, 0, oln)
 
@@ -130,30 +133,14 @@ func kvpqbslicesmerge(reclen, keyoff, keylen int, bls [][][]byte) [][]byte {
 // reclen - record length for fixed length records
 // keyoff - offset of key for fixed length record
 // keylen - length of key for fixed length record
-// bls    - byte slices to merge
-func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bls [][][]byte) {
+// bparts    - byte slices to merge
+func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][][]byte) {
 
-	// log.Printf("kvpqbsliceemit merging fp %v, reclen %v keyoff %v,
-	// keylen %v", ofp, reclen, keyoff, keylen)
-	// log.Print("kvpqbsliceemit merging %v slices", len(bls))
-	pq := make(KVBSPQ, len(bls))
+	log.Printf("kvpqbsliceemit merging fp %v, reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
+	log.Printf("kvpqbsliceemit merging %v parts", len(bparts))
 
-	lbls := len(bls)
-	for i := 0; i < lbls; i++ {
-		var itm kvbsitem
-
-		itm.lns = bls[i]
-		itm.rlen = reclen
-		itm.keyoff = keyoff
-		itm.keylen = keylen
-
-		itm.ln = nextbyteslice(itm)
-		itm.index = i
-
-		pq[i] = &itm
-	}
-
-	heap.Init(&pq)
+	pq := initbpq(reclen, keyoff, keylen, bparts)
+	log.Printf("kvpqbsliceemit pq initiated %v", pq.Len())
 
 	nw := bufio.NewWriter(ofp)
 	defer nw.Flush()
@@ -161,6 +148,7 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bls [][][]
 	var ne int64
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvbsitem)
+		log.Printf("kvpqbsliceemit pq initiated %v", string(ritem.ln))
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqbsliceemit pop line ", string(ritem.ln))
 		}
