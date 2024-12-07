@@ -6,6 +6,7 @@ import (
 )
 
 func Mergebytesparts(ofn string, reclen, keyoff, keylen int, parts [][][]byte) {
+	log.Printf("mergebytesparts ofn %v reclen %v, keyoff %v keylen %v nparts %v", ofn, reclen, keyoff, keylen, len(parts))
 	var err error
 
 	ofp := os.Stdout
@@ -18,11 +19,11 @@ func Mergebytesparts(ofn string, reclen, keyoff, keylen int, parts [][][]byte) {
 		defer ofp.Close()
 	}
 
-	// log.Print("mergebytesparts kvpqbsliceemit", reclen)
 	kvpqbsliceemit(ofp, reclen, keyoff, keylen, parts)
 }
 
 func Mergestringsparts(ofn string, reclen, keyoff, keylen int, parts [][]string) {
+	log.Printf("mergestringsparts ofn %v reclen %v, keyoff %v keylen %v nparts %v", ofn, reclen, keyoff, keylen, len(parts))
 
 	var err error
 
@@ -35,6 +36,5 @@ func Mergestringsparts(ofn string, reclen, keyoff, keylen int, parts [][]string)
 		defer ofp.Close()
 	}
 
-	// log.Print("mergestringsparts kvpqssliceemit ", reclen)
 	kvpqssliceemit(ofp, reclen, keyoff, keylen, parts)
 }
