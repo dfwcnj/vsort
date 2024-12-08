@@ -90,7 +90,7 @@ func initbpq(reclen, keyoff, keylen int, bparts [][][]byte) KVBSPQ {
 // keylen - length of key in fixed length record
 // bparts - slice of byte slices
 func kvpqbslicesmerge(reclen, keyoff, keylen int, bparts [][][]byte) [][]byte {
-	log.Printf("kvpqbslicemerge %v %v %v %v", reclen, keyoff, keylen, len(bparts))
+	// log.Printf("kvpqbslicemerge %v %v %v %v", reclen, keyoff, keylen, len(bparts))
 	pq := initbpq(reclen, keyoff, keylen, bparts)
 
 	var oln int
@@ -127,11 +127,11 @@ func kvpqbslicesmerge(reclen, keyoff, keylen int, bparts [][][]byte) [][]byte {
 // bparts    - byte slices to merge
 func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][][]byte) {
 
-	log.Printf("kvpqbsliceemit merging fp %v, reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
-	log.Printf("kvpqbsliceemit merging %v parts", len(bparts))
+	// log.Printf("kvpqbsliceemit merging fp %v, reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
+	// log.Printf("kvpqbsliceemit merging %v parts", len(bparts))
 
 	pq := initbpq(reclen, keyoff, keylen, bparts)
-	log.Printf("kvpqbsliceemit pq initiated %v", pq.Len())
+	// log.Printf("kvpqbsliceemit pq initiated %v", pq.Len())
 
 	nw := bufio.NewWriter(ofp)
 	defer nw.Flush()
@@ -142,7 +142,7 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 		if len(ritem.lns) == 0 {
 			continue
 		}
-		log.Printf("kvpqbsliceemit line pop  %v", string(ritem.ln))
+		// log.Printf("kvpqbsliceemit line pop  %v", string(ritem.ln))
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqbsliceemit pop line ", string(ritem.ln))
 		}
@@ -151,10 +151,10 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 			log.Fatal("kvpqbsliceemit writestring ", err)
 		}
 
-		log.Printf("kvpqbsliceemit %v slices before", len(ritem.lns))
+		// log.Printf("kvpqbsliceemit %v slices before", len(ritem.lns))
 		ritem.ln = ritem.lns[0]
 		ritem.lns = ritem.lns[1:]
-		log.Printf("kvpqbsliceemit %v slices after", len(ritem.lns))
+		// log.Printf("kvpqbsliceemit %v slices after", len(ritem.lns))
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)

@@ -59,7 +59,7 @@ func (pq *KVSSPQ) update(ritem *kvssitem, value string) {
 }
 
 func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
-	log.Print("initspq")
+	// log.Print("initspq")
 	pq := make(KVSSPQ, len(sparts))
 
 	nsparts := len(sparts)
@@ -90,7 +90,7 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 // keylen - length of key in fixed length record
 // sparts - slice of string slices
 func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
-	log.Printf("kvpqsslicemerge %v %v %v %v", reclen, keyoff, keylen, len(sparts))
+	// log.Printf("kvpqsslicemerge %v %v %v %v", reclen, keyoff, keylen, len(sparts))
 	pq := initspq(reclen, keyoff, keylen, sparts)
 
 	var oln int
@@ -127,10 +127,10 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
 // sparts - slice of string slices
 func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][]string) {
 
-	log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
-	log.Printf("kvpqssliceemit merging %v slices", len(sparts))
+	// log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
+	// log.Printf("kvpqssliceemit merging %v slices", len(sparts))
 	pq := initspq(reclen, keyoff, keylen, sparts)
-	log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
+	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
 
 	nw := bufio.NewWriter(ofp)
 	defer nw.Flush()
@@ -141,7 +141,7 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 		if len(ritem.lns) == 0 {
 			continue
 		}
-		log.Printf("kvpqssemit ritem.ln %v", ritem.ln)
+		// log.Printf("kvpqssemit ritem.ln %v", ritem.ln)
 
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqssliceemit pop line ", string(ritem.ln))
@@ -151,10 +151,10 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 			log.Fatal("kvpqssliceemit writestring ", err)
 		}
 
-		log.Printf("kvpqssliceemit  %v before", len(ritem.lns))
+		// log.Printf("kvpqssliceemit  %v before", len(ritem.lns))
 		ritem.ln = ritem.lns[0]
 		ritem.lns = ritem.lns[1:]
-		log.Printf("kvpqssliceemit  %v after", len(ritem.lns))
+		// log.Printf("kvpqssliceemit  %v after", len(ritem.lns))
 		//ritem.rlen = reclen
 		//ritem.keyoff = keyoff
 		//ritem.keylen = keylen
