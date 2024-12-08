@@ -164,6 +164,6 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 	if err != nil {
 		log.Fatal("kvpqbsliceemit flush ", err)
 	}
-	log.Print("kvpqbsliceemit lines written ", ne)
+	// log.Print("kvpqbsliceemit lines written ", ne)
 
 }
