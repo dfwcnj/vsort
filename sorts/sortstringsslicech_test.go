@@ -31,7 +31,7 @@ func Test_sortstringsslicech(t *testing.T) {
 
 			parts := splitstringsslice(rsl, ns)
 			var np = len(parts)
-			log.Printf("sortstringsslicech split into %v parts", np)
+			// log.Printf("sortstringsslicech split into %v parts", np)
 
 			inch := make(chan []string, np)
 			var wg sync.WaitGroup

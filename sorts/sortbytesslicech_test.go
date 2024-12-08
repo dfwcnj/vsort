@@ -39,7 +39,7 @@ func Test_sortbytesslicech(t *testing.T) {
 
 			parts := splitbytesslice(lns, ns)
 			var np = len(parts)
-			log.Printf("sortbytesslicech split into %v parts", np)
+			// log.Printf("sortbytesslicech split into %v parts", np)
 
 			inch := make(chan [][]byte, np)
 			var wg sync.WaitGroup
