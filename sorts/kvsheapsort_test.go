@@ -19,7 +19,7 @@ func Test_kvsheapsort(t *testing.T) {
 		for _, nl := range ns {
 
 			var r bool = false
-			log.Print("testing kvsheapsort of ", nl, " strings length ", ll)
+			// log.Print("kvsheapsort test of ", nl, " strings length ", ll)
 			lns := randomdata.Randomstrings(nl, ll, r)
 			if len(lns) != int(nl) {
 				t.Fatal("kvsheapsort test rsl: wanted len ", nl, " got ", len(lns))

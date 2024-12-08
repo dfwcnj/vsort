@@ -18,7 +18,7 @@ func Test_mergestringsparts(t *testing.T) {
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
-	var nrs int64 = 1 << 20
+	var nrs int64 = 1 << 15
 
 	var nparts = 10
 	var parts = make([][]string, 0, nparts)

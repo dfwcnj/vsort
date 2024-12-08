@@ -24,7 +24,7 @@ func Test_gheapsort(t *testing.T) {
 				log.Print("gheapsort test ", r)
 
 				var l int = ll
-				//log.Print("testing gheapsort of ", nl, " random strings length ", l)
+				//log.Print("gheapsort test of ", nl, " random strings length ", l)
 				rsl := randomdata.Randomstrings(nl, l, r)
 				if len(rsl) != int(nl) {
 					t.Fatal("gheapsort test rsl: wanted len ", nl, " got ", len(rsl))

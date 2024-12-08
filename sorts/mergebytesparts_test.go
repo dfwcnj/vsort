@@ -48,11 +48,11 @@ func Test_mergebytesparts(t *testing.T) {
 
 			parts = append(parts, lns)
 		}
-		log.Printf("mergebytesparts test nparts %v ", len(parts))
+		// log.Printf("mergebytesparts test nparts %v ", len(parts))
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
-		log.Printf("mergebytesparts test mpath %v ", mpath)
+		// log.Printf("mergebytesparts test mpath %v ", mpath)
 
 		if r == true {
 			merge.Mergebytesparts(mpath, 0, 0, 0, parts)

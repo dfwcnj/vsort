@@ -22,7 +22,7 @@ func Test_kvbheapsort(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			log.Print("testing kvbheapsort of ", nl, " strings length ", ll)
+			// log.Print("kvbheapsort test of ", nl, " strings length ", ll)
 			rsl := randomdata.Randomstrings(nl, ll, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvbheapsort test rsl: wanted len ", nl, " got ", len(rsl))
