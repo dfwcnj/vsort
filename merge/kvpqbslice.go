@@ -59,7 +59,7 @@ func (pq *KVBSPQ) update(ritem *kvbsitem, value []byte) {
 }
 
 func initbpq(reclen, keyoff, keylen int, bparts [][][]byte) KVBSPQ {
-	log.Print("initbpq")
+	// log.Print("initbpq")
 	pq := make(KVBSPQ, len(bparts))
 
 	nbparts := len(bparts)
@@ -136,7 +136,7 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 	nw := bufio.NewWriter(ofp)
 	defer nw.Flush()
 
-	var ne int64
+	var ne int64 = int64(len(bparts))
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvbsitem)
 		// log.Printf("kvpqbsliceemit line pop  %v", string(ritem.ln))
