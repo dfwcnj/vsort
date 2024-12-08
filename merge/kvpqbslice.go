@@ -139,9 +139,6 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 	var ne int64
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvbsitem)
-		if len(ritem.lns) == 0 {
-			continue
-		}
 		// log.Printf("kvpqbsliceemit line pop  %v", string(ritem.ln))
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqbsliceemit pop line ", string(ritem.ln))
@@ -152,6 +149,9 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 		}
 
 		// log.Printf("kvpqbsliceemit %v slices before", len(ritem.lns))
+		if len(ritem.lns) == 0 {
+			continue
+		}
 		ritem.ln = ritem.lns[0]
 		ritem.lns = ritem.lns[1:]
 		// log.Printf("kvpqbsliceemit %v slices after", len(ritem.lns))
@@ -164,6 +164,6 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 	if err != nil {
 		log.Fatal("kvpqbsliceemit flush ", err)
 	}
-	//log.Print("kvpqbsliceemit lines written ", ne)
+	log.Print("kvpqbsliceemit lines written ", ne)
 
 }
