@@ -127,8 +127,8 @@ func kvpqbslicesmerge(reclen, keyoff, keylen int, bparts [][][]byte) [][]byte {
 // bparts    - byte slices to merge
 func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][][]byte) {
 
-	log.Printf("kvpqbsliceemit merging fp %v, reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
-	log.Printf("kvpqbsliceemit merging %v parts", len(bparts))
+	// log.Printf("kvpqbsliceemit merging fp %v, reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
+	// log.Printf("kvpqbsliceemit merging %v parts", len(bparts))
 
 	pq := initbpq(reclen, keyoff, keylen, bparts)
 	// log.Printf("kvpqbsliceemit pq initiated %v", pq.Len())

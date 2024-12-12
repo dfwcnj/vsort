@@ -6,7 +6,7 @@ import (
 )
 
 func Mergebytesparts(ofn string, reclen, keyoff, keylen int, parts [][][]byte) {
-	log.Printf("mergebytesparts ofn %v reclen %v, keyoff %v keylen %v nparts %v", ofn, reclen, keyoff, keylen, len(parts))
+	// log.Printf("mergebytesparts ofn %v reclen %v, keyoff %v keylen %v nparts %v", ofn, reclen, keyoff, keylen, len(parts))
 	var err error
 
 	ofp := os.Stdout
