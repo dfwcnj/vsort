@@ -127,8 +127,8 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
 // sparts - slice of string slices
 func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][]string) {
 
-	log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
-	log.Printf("kvpqssliceemit merging %v slices", len(sparts))
+	// log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
+	// log.Printf("kvpqssliceemit merging %v slices", len(sparts))
 
 	pq := initspq(reclen, keyoff, keylen, sparts)
 	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
