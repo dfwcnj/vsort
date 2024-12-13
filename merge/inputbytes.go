@@ -86,9 +86,9 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 		}
 
 		lns = append(lns, buf)
-		offset += int64(reclen)
+		offset += int64(bl)
 
-		memused += int64(reclen)
+		memused += int64(bl)
 
 		nr++
 	}
@@ -157,16 +157,17 @@ func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error
 
 		l, err := nw.ReadString('\n')
 		// Seek seens to return the buffer offset
-		offset += int64(len(l))
 		if err != nil {
 			if err == io.EOF {
 				if len(l) != 0 {
+					offset += int64(len(l))
 					lns = append(lns, []byte(l))
 				}
 				return lns, offset, err
 			}
 			log.Fatal("vlreadbytes readstring ", err)
 		}
+		offset += int64(len(l))
 
 		bln := []byte(l)
 
