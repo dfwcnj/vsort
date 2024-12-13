@@ -24,9 +24,9 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 
 	recbuf := make([]byte, reclen)
 	for {
-		_, err := io.ReadFull(r, recbuf)
+		n, err := io.ReadFull(r, recbuf)
 		if err != nil {
-			if err != io.EOF {
+			if n != 0 && err != io.EOF {
 				log.Fatal("flreadallstrings ", err)
 			}
 			return lns, 0, nil
