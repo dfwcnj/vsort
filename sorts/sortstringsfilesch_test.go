@@ -45,9 +45,6 @@ func Test_sortstringsfilesch(t *testing.T) {
 			for i := range nmf {
 
 				lns := randomdata.Randomstrings(nrs, rlen, r)
-				if len(lns) != int(nrs) {
-					log.Fatal("sortstringsfilesch test before sort wanted len ", nrs, " got ", len(lns))
-				}
 				if r == true {
 					for i, _ := range lns {
 						lns[i] = lns[i] + "\n"
@@ -58,14 +55,13 @@ func Test_sortstringsfilesch(t *testing.T) {
 				//log.Println("sortstringsfilesch test saving ", fn)
 				merge.Savestringmergefile(lns, fn)
 				fns = append(fns, fn)
+
 				if r == true {
 					tns += filelinecount(fn)
 				} else {
 					tns += filereccount(fn, rlen)
 				}
 			}
-
-			// log.Print("sortstringsfilesch test test files record count ", tns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
@@ -76,12 +72,11 @@ func Test_sortstringsfilesch(t *testing.T) {
 			} else {
 				Sortstringsfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
-			t1 := time.Now()
-			log.Printf("sortstringsfilesch test sort duration %v", t1.Sub(t0))
+			log.Printf("sortstringsfilesch test %v %v duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
-				log.Fatal("sortstringsfilesch test ", err)
+				log.Fatalf("sortstringsfilesch test %v open %v ", mpath, err)
 			}
 			defer mfp.Close()
 

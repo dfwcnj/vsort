@@ -80,8 +80,7 @@ func Test_sortbytesfiles(t *testing.T) {
 			} else {
 				Sortbytesfiles(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
-			t1 := time.Now()
-			log.Printf("sortbytesfiles test sort duration %v", t1.Sub(t0))
+			log.Printf("sortbytesfiles test %v %v  duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {

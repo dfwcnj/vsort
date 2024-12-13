@@ -23,7 +23,7 @@ func Test_kvslicesbsort(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			//log.Print("testing kvslicesbsort of ", nl, " random strings length ", l)
+			//log.Printf("kvslicesbsort %v %v", nl, l)
 			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvslicesbsort test rsl: wanted len ", nl, " got ", len(rsl))

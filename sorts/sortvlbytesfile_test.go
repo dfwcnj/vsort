@@ -7,6 +7,7 @@ import (
 	"path"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 	"github.com/dfwcnj/vsort/merge"
@@ -55,7 +56,9 @@ func Test_sortvlbytesfile(t *testing.T) {
 		fp.Close()
 		// log.Print("sortvlbytesfile test file ", fn)
 
+		t0 := time.Now()
 		lns, fns, err := sortvlbytesfile(fn, dn, st, iomem)
+		log.Printf("sortvlbytesfile %v duration %v", st, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortvlbytesfile test lns ", len(lns))
 		}

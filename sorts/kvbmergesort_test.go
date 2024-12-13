@@ -23,7 +23,7 @@ func Test_kvbmergesort(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			//log.Print("testing kvbmergesort of ", nl, " random strings length ", l)
+			log.Printf("kvbmergesort %v %v", nl, l)
 			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvbmergesort test rsl: wanted len ", nl, " got ", len(rsl))
@@ -42,10 +42,8 @@ func Test_kvbmergesort(t *testing.T) {
 			}
 			if !slices.IsSorted(ssl) {
 				t.Fatal("kvbmergesort test failed not sorted")
-			} else {
-				log.Print("kvbmergesort test passed for ", nl)
 			}
-
 		}
 	}
+	log.Print("kvbmergesort test passed")
 }

@@ -60,9 +60,7 @@ func Test_sortbytesslicech(t *testing.T) {
 				}
 			}
 			wg.Wait()
-			t1 := time.Now()
-
-			log.Printf("sortbytesslicech test sort %v duration %v", st, t1.Sub(t0))
+			log.Printf("sortbytesslicech test %v %v duration %v", st, r, time.Since(t0))
 
 			for i := range np {
 				ss := make([]string, 0, len(parts[i]))

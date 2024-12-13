@@ -40,7 +40,6 @@ func Test_sortbytesfilesch(t *testing.T) {
 			//log.Print("sortbytesfilesch test initmergedir ", dn)
 
 			var fns []string
-			//log.Print("sortbytesfilesch test making ", nmf, " files to sort")
 			var tns int64
 			for i := range nmf {
 				var lns [][]byte
@@ -79,8 +78,7 @@ func Test_sortbytesfilesch(t *testing.T) {
 			} else {
 				Sortbytesfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
-			t1 := time.Now()
-			log.Printf("sortbytesfilesch test sort duration %v", t1.Sub(t0))
+			log.Printf("sortbytesfilesch test %v %v  duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {

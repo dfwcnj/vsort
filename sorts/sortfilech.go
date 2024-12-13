@@ -15,7 +15,10 @@ func splitbytesslice(lns [][]byte, ns int) [][][]byte {
 
 	var off int
 	for {
-		if off+pl > len(lns) {
+		if off >= len(lns) {
+			break
+		}
+		if len(lns)-(off+pl) < pl/2 {
 			parts = append(parts, lns[off:])
 			break
 		}
@@ -31,7 +34,10 @@ func splitstringsslice(lns []string, ns int) [][]string {
 
 	var off int
 	for {
-		if off+pl > len(lns) {
+		if off >= len(lns) {
+			break
+		}
+		if len(lns)-(off+pl) < pl/2 {
 			parts = append(parts, lns[off:])
 			break
 		}
@@ -43,7 +49,7 @@ func splitstringsslice(lns []string, ns int) [][]string {
 
 // sortbytesslicech
 func sortbytesslicech(lns [][]byte, stype string, reclen, keyoff, keylen int, ouch chan [][]byte) {
-	// log.Printf("sortbytesslicech %v", stype)
+	// log.Printf("sortbytesslicech %v %v lines", stype, len(lns))
 	switch stype {
 	case "heap":
 		kvbheapsort(lns, reclen, keyoff, keylen)
@@ -67,7 +73,7 @@ func sortbytesslicech(lns [][]byte, stype string, reclen, keyoff, keylen int, ou
 
 // sortstringsslicech
 func sortstringsslicech(lns []string, stype string, reclen, keyoff, keylen int, ouch chan []string) {
-	// log.Printf("sortstringsslicech %v", stype)
+	// log.Printf("sortstringsslicech %v %v lines", stype, len(lns))
 	switch stype {
 	case "heap":
 		kvsheapsort(lns, reclen, keyoff, keylen)
@@ -88,7 +94,7 @@ func sortstringsslicech(lns []string, stype string, reclen, keyoff, keylen int, 
 // sortbytesfilech
 // routine to split a file into pieces to sort concurrently
 func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, iomem int64) {
-	log.Print("sortbytesfilech")
+	// log.Print("sortbytesfilech")
 	fp, err := os.Open(fn)
 	if err != nil {
 		log.Fatalf("sortbytesfilech open %v: %v", fn, err)
@@ -99,6 +105,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	// exceeds our iomem limit
 	if fsz > iomem {
 		log.Fatalf("sortbytesfilech file %v too large %v", fn, fsz)
+		// sortbїgbytesfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
 	}
 
 	var nc = runtime.NumCPU()
@@ -117,7 +124,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	for i := range parts {
 		go func() {
 			defer wg.Done()
-			log.Printf("sortbytesfilech %v", i)
+			// log.Printf("sortbytesfilech %v", i)
 			sortbytesslicech(parts[i], stype, reclen, keyoff, keylen, inch)
 		}()
 	}
@@ -135,7 +142,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 // sortstringsfilech
 // routine to split a file into pieces to sort concurrently
 func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, iomem int64) {
-	log.Print("sortstringsfilech")
+	// log.Print("sortstringsfilech")
 	fp, err := os.Open(fn)
 	if err != nil {
 		log.Fatalf("sortstringsfilech open %v: %v", fn, err)
@@ -146,6 +153,7 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	// exceeds our iomem limits
 	if fsz > iomem {
 		log.Fatalf("sortstringsfilech %v too large %v", fn, fsz)
+		// sortbїgstringsfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
 	}
 
 	var nc = runtime.NumCPU()
@@ -164,7 +172,7 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	for i := range parts {
 		go func() {
 			defer wg.Done()
-			log.Printf("sortstringsfilech %v", i)
+			// log.Printf("sortstringsfilech %v", i)
 			sortstringsslicech(parts[i], stype, reclen, keyoff, keylen, inch)
 		}()
 	}

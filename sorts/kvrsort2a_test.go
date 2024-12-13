@@ -23,7 +23,7 @@ func Test_kvrsort2a(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			//log.Print("testing kvrsort2a of ", nl, " random strings length ", l)
+			//log.Printf("kvrsort2a %v %v ", nl, l)
 			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvrsort2a test rsl: wanted len ", nl, " got ", len(rsl))
@@ -39,10 +39,9 @@ func Test_kvrsort2a(t *testing.T) {
 			}
 			if !slices.IsSorted(ssl) {
 				t.Fatal("kvrsort2a test failed not sorted")
-			} else {
-				log.Print("kvrsort2a test passed for ", nl)
 			}
 
 		}
 	}
+	log.Print("kvrsort2a test passed")
 }

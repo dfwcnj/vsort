@@ -64,14 +64,17 @@ func Test_mergestringsparts(t *testing.T) {
 		defer mfp.Close()
 
 		//log.Print("counting merged records")
+		var nlns int64
 		var mlns []string
 		if r == true {
+			nlns = filelinecount(mpath)
 			scanner := bufio.NewScanner(mfp)
 			for scanner.Scan() {
 				l := scanner.Text()
 				mlns = append(mlns, l)
 			}
 		} else {
+			nlns = filereccount(mpath, rlen)
 			for {
 				ln := make([]byte, rlen)
 				_, err := io.ReadFull(mfp, ln)
@@ -84,7 +87,7 @@ func Test_mergestringsparts(t *testing.T) {
 				mlns = append(mlns, string(ln))
 			}
 		}
-		if len(mlns) != int(nrs)*nparts {
+		if nlns != nrs*int64(nparts) {
 			t.Fatal("mergestringsparts test ", mpath, " wanted ", int(nrs)*nparts, " got ", len(mlns))
 		}
 		if !slices.IsSorted(mlns) {

@@ -76,8 +76,7 @@ func Test_sortstringsfiles(t *testing.T) {
 			} else {
 				Sortstringsfiles(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
-			t1 := time.Now()
-			log.Printf("sortstringsfiles test sort duration %v", t1.Sub(t0))
+			log.Printf("sortstringsfiles test %v %v duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
@@ -85,14 +84,17 @@ func Test_sortstringsfiles(t *testing.T) {
 			}
 			defer mfp.Close()
 
+			var nlns int64
 			var mlns []string
 			if r == true {
+				nlns = filelinecount(mpath)
 				scanner := bufio.NewScanner(mfp)
 				for scanner.Scan() {
 					l := scanner.Text()
 					mlns = append(mlns, l)
 				}
 			} else {
+				nlns = filereccount(mpath, rlen)
 				for {
 					ln := make([]byte, rlen)
 					_, err := io.ReadFull(mfp, ln)
@@ -105,7 +107,7 @@ func Test_sortstringsfiles(t *testing.T) {
 					mlns = append(mlns, string(ln))
 				}
 			}
-			if len(mlns) != int(nrs)*nmf {
+			if nlns != nrs*int64(nmf) {
 				t.Fatal("sortstringsfiles test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 			}
 			if !slices.IsSorted(mlns) {

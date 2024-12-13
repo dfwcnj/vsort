@@ -7,6 +7,7 @@ import (
 	"path"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 	"github.com/dfwcnj/vsort/merge"
@@ -35,7 +36,7 @@ func Test_sortvlstringsfile(t *testing.T) {
 
 		//log.Println("sortvlstringsfile test")
 
-		rsl := randomdata.Randomstrings(nrs, rlen, r)
+		ulns := randomdata.Randomstrings(nrs, rlen, r)
 
 		fn := path.Join(dn, "sortvlstringsfiletest")
 		fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
@@ -44,8 +45,8 @@ func Test_sortvlstringsfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortvlstringsfile test NewWriter ", err)
 		}
-		for i, _ := range rsl {
-			_, err := nw.WriteString(rsl[i] + "\n")
+		for i, _ := range ulns {
+			_, err := nw.WriteString(ulns[i] + "\n")
 			if err != nil {
 				log.Fatal("sortvlstringsfile test WriteString ", err)
 			}
@@ -55,7 +56,9 @@ func Test_sortvlstringsfile(t *testing.T) {
 		fp.Close()
 		//log.Print("sortvlstringsfile test file ", fn)
 
+		t0 := time.Now()
 		lns, fns, err := sortvlstringsfile(fn, dn, st, iomem)
+		log.Printf("sortvlstringsfile %v duration %v", st, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortvlstringsfile test lns ", len(lns))
 		}

@@ -23,7 +23,7 @@ func Test_kvslicesssort(t *testing.T) {
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			//log.Print("testing kvslicesssort of ", nl, " random strings length ", l)
+			//log.Printf("kvslicesssort %v %v", nl, l)
 			lns := randomdata.Randomstrings(nl, l, r)
 			if len(lns) != int(nl) {
 				t.Fatal("kvslicesssort test lns: wanted len ", nl, " got ", len(lns))

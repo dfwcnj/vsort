@@ -52,9 +52,7 @@ func Test_sortstringsslicech(t *testing.T) {
 				}
 			}
 			wg.Wait()
-			t1 := time.Now()
-
-			log.Printf("sortstringsslicech test sort %v duration %v", st, t1.Sub(t0))
+			log.Printf("sortstringsslicech test sort %v %v duration %v", st, r, time.Since(t0))
 
 			for i := range np {
 				if !slices.IsSorted(parts[i]) {

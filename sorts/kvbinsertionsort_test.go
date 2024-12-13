@@ -17,13 +17,13 @@ func Test_kvbinsertionsort(t *testing.T) {
 
 	for _, ll := range ls {
 		for _, nl := range ns {
+			log.Printf("kvbinsertionsort test %v %v", ll, nl)
 
 			var l int = ll
 			var r bool = false
 			var keyoff = 0
 			var reclen = ll
 			var keylen = ll
-			log.Print("testing kvbinsertionsort of ", nl, " random strings length ", l)
 			rsl := randomdata.Randomstrings(nl, l, r)
 			if len(rsl) != int(nl) {
 				t.Fatal("kvbinsertionsort test rsl: wanted len ", nl, " got ", len(rsl))
@@ -39,10 +39,8 @@ func Test_kvbinsertionsort(t *testing.T) {
 			}
 			if !slices.IsSorted(ssl) {
 				t.Fatal("kvbinsertionsort test failed not sorted")
-			} else {
-				log.Print("kvbinsertionsort test passed for ", nl)
 			}
-
 		}
 	}
+	log.Print("kvbinsertionsort test passed")
 }

@@ -7,6 +7,7 @@ import (
 	"path"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 	"github.com/dfwcnj/vsort/merge"
@@ -35,7 +36,7 @@ func Test_sortflbytesfile(t *testing.T) {
 
 		log.Println("sortflbytesfile test")
 
-		rsl := randomdata.Randomstrings(nrs, rlen, r)
+		ulns := randomdata.Randomstrings(nrs, rlen, r)
 
 		fn := path.Join(dn, "sortflbytesfiletest")
 		fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
@@ -44,12 +45,9 @@ func Test_sortflbytesfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortflbytesfile test NewWriter ", err)
 		}
-		rlns := make([][]byte, 0, nrs)
-		for _, s := range rsl {
-			rlns = append(rlns, []byte(s))
-		}
-		for i, _ := range rlns {
-			_, err := nw.Write(rlns[i])
+
+		for i := range ulns {
+			_, err := nw.Write([]byte(ulns[i]))
 			if err != nil {
 				log.Fatal("sortflbytesfile test Write ", err)
 			}
@@ -59,7 +57,9 @@ func Test_sortflbytesfile(t *testing.T) {
 		fp.Close()
 		//log.Print("sortflbytesfile test file ", fn)
 
+		t0 := time.Now()
 		lns, fns, err := sortflbytesfile(fn, dn, st, rlen, 0, rlen, iomem)
+		log.Printf("sortflbbytesfile %v %v duration %v", st, r, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortflbytesfile test lns ", len(lns))
 		}
