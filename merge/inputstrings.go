@@ -23,6 +23,7 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 	}
 	var r io.Reader = bytes.NewReader(buf)
 
+	var off int64
 	recbuf := make([]byte, reclen)
 	for {
 		n, err := io.ReadFull(r, recbuf)
@@ -30,9 +31,10 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 			if err != io.EOF {
 				log.Fatalf("flreadallstrings %v %v", n, err)
 			}
-			return lns, 0, nil
+			return lns, off, nil
 		}
 		lns = append(lns, string(recbuf))
+		off += int64(reclen)
 	}
 }
 
@@ -100,14 +102,17 @@ func vlreadallstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, 
 	if err != nil && err != io.EOF {
 		log.Fatal("vlreadallstrings ", err)
 	}
+
 	lines := strings.Split(string(buf), "\n")
+	var off int64
 	for _, l := range lines {
 		if len(l) == 0 {
 			continue
 		}
 		lns = append(lns, l)
+		off += int64(len(l))
 	}
-	return lns, offset, nil
+	return lns, off, nil
 }
 
 // Vlreadstrings

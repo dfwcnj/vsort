@@ -22,6 +22,7 @@ func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, erro
 	}
 	var r io.Reader = bytes.NewReader(buf)
 
+	var off int64
 	recbuf := make([]byte, reclen)
 	for {
 		_, err := io.ReadFull(r, recbuf)
@@ -29,9 +30,10 @@ func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, erro
 			if err != io.EOF {
 				log.Fatal("flreadall ", err)
 			}
-			return lns, 0, nil
+			return lns, off, nil
 		}
 		lns = append(lns, recbuf)
+		off += int64(reclen)
 	}
 }
 
@@ -102,14 +104,16 @@ func vlreadallbytes(fp *os.File, iomem int64) ([][]byte, int64, error) {
 		log.Fatal("vlreadall ", err)
 	}
 	lines := strings.Split(string(buf), "\n")
+	var off int64
 	for _, l := range lines {
 		if len(l) == 0 {
 			continue
 		}
 		bln := []byte(l)
 		lns = append(lns, bln)
+		off += int64(len(l))
 	}
-	return lns, 0, nil
+	return lns, off, nil
 }
 
 // vlreadbytes
