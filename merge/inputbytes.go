@@ -12,7 +12,7 @@ import (
 // flreadallbytes
 // read fixed length lines from a 'small' file
 // return slice of byte slices, 0, error
-func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, error) {
+func flreadallbytes(fp *os.File, reclen int) ([][]byte, int64, error) {
 
 	var lns [][]byte
 
@@ -20,12 +20,13 @@ func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, erro
 	if err != nil {
 		log.Fatal("flreadall ", err)
 	}
+	log.Printf("flreadallbytes read %v", len(buf))
 	var r io.Reader = bytes.NewReader(buf)
 
 	var off int64
 	recbuf := make([]byte, reclen)
 	for {
-		_, err := io.ReadFull(r, recbuf)
+		n, err := io.ReadFull(r, recbuf)
 		if err != nil {
 			if err != io.EOF {
 				log.Fatal("flreadall ", err)
@@ -33,7 +34,7 @@ func flreadallbytes(fp *os.File, reclen int, iomem int64) ([][]byte, int64, erro
 			return lns, off, nil
 		}
 		lns = append(lns, recbuf)
-		off += int64(reclen)
+		off += int64(n)
 	}
 }
 
@@ -57,7 +58,7 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 			log.Fatal("flreadn stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return flreadallbytes(fp, reclen, finf.Size())
+			return flreadallbytes(fp, reclen)
 		}
 
 		if offset != 0 {
@@ -97,20 +98,21 @@ func Flreadbytes(fp *os.File, offset int64, reclen int, iomem int64) ([][]byte, 
 // vlreadallbytes
 // read all variable length newline delimited records from a 'small' file
 // return a slice of byte slices, 0, and error
-func vlreadallbytes(fp *os.File, iomem int64) ([][]byte, int64, error) {
+func vlreadallbytes(fp *os.File) ([][]byte, int64, error) {
 	var lns [][]byte
 	buf, err := io.ReadAll(fp)
 	if err != nil && err != io.EOF {
 		log.Fatal("vlreadall ", err)
 	}
+	log.Printf("vlreadallbytes read %v ", len(buf))
+
 	lines := strings.Split(string(buf), "\n")
 	var off int64
 	for _, l := range lines {
 		if len(l) == 0 {
 			continue
 		}
-		bln := []byte(l)
-		lns = append(lns, bln)
+		lns = append(lns, []byte(l))
 		off += int64(len(l))
 	}
 	return lns, off, nil
@@ -133,7 +135,7 @@ func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error
 			log.Fatal("vlreadbytes stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return vlreadallbytes(fp, finf.Size())
+			return vlreadallbytes(fp)
 		}
 
 		if offset != 0 {

@@ -12,15 +12,15 @@ import (
 // flreadallstrings
 // read all fixed length strings from a 'small' file
 // return a slice of strings, 0, and error
-func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, error) {
+func flreadallstrings(fp *os.File, reclen int) ([]string, int64, error) {
 
-	log.Printf("flreadallstrings %v %v", reclen, iomem)
 	var lns []string
 
 	buf, err := io.ReadAll(fp)
 	if err != nil {
 		log.Fatal("flreadallstrings ", err)
 	}
+	log.Printf("flreadallstrings %v %v", reclen, len(buf))
 	var r io.Reader = bytes.NewReader(buf)
 
 	var off int64
@@ -34,7 +34,7 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 			return lns, off, nil
 		}
 		lns = append(lns, string(recbuf))
-		off += int64(reclen)
+		off += int64(n)
 	}
 }
 
@@ -59,7 +59,7 @@ func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string
 			log.Fatal("flreadn stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return flreadallstrings(fp, reclen, finf.Size())
+			return flreadallstrings(fp, reclen)
 		}
 
 		if offset != 0 {
@@ -96,12 +96,13 @@ func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string
 // vlreadallstrings
 // read all variable length records from a  'small' file
 // return slice of strings, 0, error
-func vlreadallstrings(fp *os.File, iomem int64) ([]string, int64, error) {
+func vlreadallstrings(fp *os.File) ([]string, int64, error) {
 	var lns []string
 	buf, err := io.ReadAll(fp)
 	if err != nil && err != io.EOF {
 		log.Fatal("vlreadallstrings ", err)
 	}
+	log.Printf("vlreadallstrings read %v", len(buf))
 
 	lines := strings.Split(string(buf), "\n")
 	var off int64
@@ -131,7 +132,7 @@ func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, err
 			log.Fatal("vlreadstrings stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return vlreadallstrings(fp, finf.Size())
+			return vlreadallstrings(fp)
 		}
 
 		if offset != 0 {
