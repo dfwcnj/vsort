@@ -96,7 +96,7 @@ func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string
 // vlreadallstrings
 // read all variable length records from a  'small' file
 // return slice of strings, 0, error
-func vlreadallstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, error) {
+func vlreadallstrings(fp *os.File, iomem int64) ([]string, int64, error) {
 	var lns []string
 	buf, err := io.ReadAll(fp)
 	if err != nil && err != io.EOF {
@@ -131,7 +131,7 @@ func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, err
 			log.Fatal("vlreadstrings stat ", err)
 		}
 		if finf.Size() <= iomem {
-			return vlreadallstrings(fp, offset, finf.Size())
+			return vlreadallstrings(fp, finf.Size())
 		}
 
 		if offset != 0 {
