@@ -27,7 +27,7 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 		n, err := io.ReadFull(r, recbuf)
 		if err != nil {
 			if n != 0 && err != io.EOF {
-				log.Fatal("flreadallstrings ", err)
+				log.Fatalf("flreadallstrings %v %v", n, err)
 			}
 			return lns, 0, nil
 		}
