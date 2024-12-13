@@ -14,6 +14,7 @@ import (
 // return a slice of strings, 0, and error
 func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, error) {
 
+	log.Printf("flreadallstrings %v %v", reclen, iomem)
 	var lns []string
 
 	buf, err := io.ReadAll(fp)
@@ -26,9 +27,6 @@ func flreadallstrings(fp *os.File, reclen int, iomem int64) ([]string, int64, er
 	for {
 		n, err := io.ReadFull(r, recbuf)
 		if err != nil {
-			if n == 0 && err == io.ErrUnexpectedEOF {
-				return lns, 0, nil
-			}
 			if err != io.EOF {
 				log.Fatalf("flreadallstrings %v %v", n, err)
 			}
