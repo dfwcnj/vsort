@@ -36,5 +36,11 @@ func Mergestringsparts(ofn string, reclen, keyoff, keylen int, parts [][]string)
 		defer ofp.Close()
 	}
 
+	var ns int
+	for i := range parts {
+		ns += len(parts[i])
+	}
+	log.Printf("mergestringparts %v %v strings", ofn, ns)
+
 	kvpqssliceemit(ofp, reclen, keyoff, keylen, parts)
 }
