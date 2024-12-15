@@ -13,7 +13,7 @@ import (
 // returns name of file written
 func Savebytemergefile(lns [][]byte, fn string) string {
 
-	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0600)
+	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		log.Fatal("Savebytemergefile open ", err)
 	}
@@ -42,7 +42,7 @@ func Savebytemergefile(lns [][]byte, fn string) string {
 // returns name of file written
 func Savestringmergefile(lns []string, fn string) string {
 
-	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0600)
+	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		log.Fatal("Savestringmergefile open ", err)
 	}

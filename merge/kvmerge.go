@@ -17,7 +17,7 @@ func KVmergebytefiles(ofn string, reclen int, keyoff int, keylen int, fns []stri
 
 	ofp := os.Stdout
 	if ofn != "" {
-		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0644)
+		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -39,7 +39,7 @@ func KVmergestringfiles(ofn string, reclen int, keyoff int, keylen int, fns []st
 
 	ofp := os.Stdout
 	if ofn != "" {
-		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0644)
+		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}

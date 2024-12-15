@@ -12,7 +12,7 @@ func Mergebytesparts(ofn string, reclen, keyoff, keylen int, parts [][][]byte) {
 	ofp := os.Stdout
 
 	if ofn != "" {
-		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0644)
+		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			log.Fatalf("Mergebytesparts %v open %v", ofn, err)
 		}
@@ -29,7 +29,7 @@ func Mergestringsparts(ofn string, reclen, keyoff, keylen int, parts [][]string)
 
 	ofp := os.Stdout
 	if ofn != "" {
-		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0644)
+		ofp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			log.Fatalf("Mergestringsparts %v open %v", ofn, err)
 		}
