@@ -53,6 +53,9 @@ func sortbigbytesfilech(fn, dn string, stype string, reclen, keyoff, keylen int,
 		} else {
 			lns, offset, err = merge.Flreadbytes(fp, offset, reclen, iomem)
 		}
+		if err != nil && err != io.EOF {
+			log.Fatalf("sortbigbytesfilech %v %v", fn, err)
+		}
 		// log.Print("sortflbytesfile vlreadbytes ", len(lns), " ", offset)
 
 		if len(lns) == 0 {
@@ -69,10 +72,11 @@ func sortbigbytesfilech(fn, dn string, stype string, reclen, keyoff, keylen int,
 		if pc != len(lns) {
 			log.Fatalf("sortbigbytesfilech splitbytesslice wanted %v got %v", len(lns), pc)
 		}
+
 		inch := make(chan [][]byte, len(parts))
+
 		var wg sync.WaitGroup
 		wg.Add(len(parts))
-
 		for i := range parts {
 			go func() {
 				defer wg.Done()
@@ -80,10 +84,9 @@ func sortbigbytesfilech(fn, dn string, stype string, reclen, keyoff, keylen int,
 				sortbytesslicech(parts[i], stype, reclen, keyoff, keylen, inch)
 			}()
 		}
-
 		wg.Wait()
-		tparts := make([][][]byte, len(parts))
 
+		tparts := make([][][]byte, len(parts))
 		for i := range tparts {
 			tparts[i] = <-inch
 			// log.Printf("sortbigbytesfilech tpart %v %v", i, len(tparts[i]))
@@ -141,13 +144,16 @@ func sortbigstringsfilech(fn, dn string, stype string, reclen, keyoff, keylen in
 
 		if reclen == 0 {
 			lns, offset, err = merge.Vlreadstrings(fp, offset, iomem)
-			log.Printf("sortbigstringsfilech Vlreadstrings %v %v", len(lns), offset)
 		} else {
 			lns, offset, err = merge.Flreadstrings(fp, offset, reclen, iomem)
-			log.Printf("sortbigstringsfilech Flreadstrings %v %v %v", len(lns), len(lns)*reclen, offset)
+		}
+		log.Printf("sortbigstringsfilech readstrings %v %v", len(lns), offset)
+		if err != nil && err != io.EOF {
+			log.Fatalf("sortbigstringsfilech %v %v", fn, err)
 		}
 
 		if len(lns) == 0 {
+			log.Print("sortbigstringsfilech return on len(lns) == 0")
 			return lns, mfiles, err
 		}
 
@@ -177,9 +183,14 @@ func sortbigstringsfilech(fn, dn string, stype string, reclen, keyoff, keylen in
 		wg.Wait()
 		tparts := make([][]string, len(parts))
 
+		var plns int
 		for i := range tparts {
 			tparts[i] = <-inch
 			// log.Printf("sortbigstringsfilech tpart %v %v", i, len(tparts[i]))
+			plns += len(tparts[i])
+		}
+		if plns != len(lns) {
+			log.Fatalf("sortbigstringsfilech tpsrts wanted %v got %v", len(lns), pc)
 		}
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))
 		merge.Mergestringsparts(mfn, reclen, keyoff, keylen, tparts)
@@ -187,7 +198,7 @@ func sortbigstringsfilech(fn, dn string, stype string, reclen, keyoff, keylen in
 
 		// log.Print("sortbigstringsfilech mfn ", mfn)
 		if err == io.EOF {
-			//log.Print("sortbigstringsfilech return on EOF")
+			log.Print("sortbigstringsfilech return on EOF")
 			return lns[:0], mfiles, err
 		}
 		i++

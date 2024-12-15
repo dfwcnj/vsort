@@ -24,7 +24,9 @@ func Test_mergestringsparts(t *testing.T) {
 	var parts = make([][]string, 0, nparts)
 
 	for _, r := range bools {
+
 		log.Print("mergestringsparts test ", r)
+
 		dn, err := initmergedir("/tmp", "mergestringsparts")
 		if err != nil {
 			log.Fatal("mergestringsparts test initmergedir ", err)
@@ -35,9 +37,8 @@ func Test_mergestringsparts(t *testing.T) {
 
 			lns := randomdata.Randomstrings(nrs, rlen, r)
 			// random length strings must be newline delimited
-			var nlns = len(lns)
 			if r == true {
-				for i := range nlns {
+				for i := range lns {
 					lns[i] = lns[i] + "\n"
 				}
 			}

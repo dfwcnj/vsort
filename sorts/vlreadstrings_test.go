@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -13,61 +14,78 @@ import (
 
 func Test_vlreadstrings(t *testing.T) {
 	var rlen int = 32
-	var bools []bool = make([]bool, 2)
-	bools[0] = false
-	bools[1] = true
-	var nrs int64 = 1 << 20
-	var iomem int64 = nrs*int64(rlen) + nrs
+	var r bool = true
+	var nrs int64 = 1 << 21
+	var iomem int64 = nrs * 8
 	var nr int
 
 	var lns []string
 
-	for _, r := range bools {
-		log.Print("vlreadstrings test ", r)
+	log.Print("vlreadstrings test")
 
-		dn, err := initmergedir("/tmp", "vlreadreadstringstest")
+	lns = randomdata.Randomstrings(nrs, rlen, r)
+
+	dn, err := initmergedir("/tmp", "vlreadreadstringstest")
+	if err != nil {
+		t.Fatal("vlreadstrings test initmergedir ", err)
+	}
+	// log.Print("vlreadstrings test initmergedir ", dn)
+	// defer os.RemoveAll(dn)
+
+	fn := path.Join(dn, "vlreadstrings")
+	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		t.Fatal("vlreadstrings test open ", err)
+	}
+	defer fp.Close()
+	// log.Print("vlreadstrings test file ", fn)
+
+	nw := bufio.NewWriter(fp)
+	for _, l := range lns {
+		_, err := nw.WriteString(l + "\n")
 		if err != nil {
-			log.Fatal("vlreadstrings test initmergedir ", err)
+			t.Fatal("flreadstrings test write ", err)
 		}
-		// log.Print("vlreadstrings test initmergedir ", dn)
-		// defer os.RemoveAll(dn)
+		nr++
+	}
+	err = nw.Flush()
+	if err != nil {
+		t.Fatal("flreadstrings test flush ", err)
+	}
+	finf, err := fp.Stat()
+	log.Printf("vlreadstrings test %v size %v", fn, finf.Size())
+	fp.Close()
 
-		fn := path.Join(dn, "vlreadstrings")
-		fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-		if err != nil {
-			log.Fatal("vlreadstrings test open ", err)
+	var offset int64
+	var tlns []string
+	var tnrs int64
+	fp, err = os.Open(fn)
+	if err != nil {
+		t.Fatalf("vlreadstrings test %v open %v", fn, err)
+	}
+	defer fp.Close()
+	for {
+		log.Printf("vlreadstrings test vlreadstrings %v offset %v", fn, offset)
+		tlns, offset, err = merge.Vlreadstrings(fp, offset, iomem)
+		if err != nil && err != io.EOF {
+			t.Fatalf("flreadstrings test %v %v", fn, err)
 		}
-		defer fp.Close()
-		// log.Print("vlreadstrings test file ", fn)
-
-		rsl := randomdata.Randomstrings(nrs, rlen, r)
-		nw := bufio.NewWriter(fp)
-		for _, l := range rsl {
-			_, err := nw.WriteString(l + "\n")
-			if err != nil {
-				log.Fatal("flreadstrings test write ", err)
+		if len(tlns) == 0 {
+			break
+		}
+		for i := range tlns {
+			if len(tlns[i]) == 0 {
+				t.Fatalf("vlreadstrings test failed %v len %v", tlns[i], len(tlns[i]))
 			}
-			nr++
+			//log.Print(tlns[i])
 		}
-		err = nw.Flush()
-		if err != nil {
-			log.Fatal("flreadstrings test flush ", err)
+		tnrs += int64(len(tlns))
+		if err == io.EOF {
+			break
 		}
-
-		_, err = fp.Seek(0, 0)
-		if err != nil {
-			log.Fatal("vlreadstrings test seek ", err)
-		}
-		lns, _, err = merge.Vlreadstrings(fp, int64(0), iomem)
-		for _, ln := range lns {
-			if len(ln) == 0 {
-				t.Fatal("vlreadstrings test len(ln) == 0")
-			}
-			//log.Print(string(ln))
-		}
-		if len(lns) != int(nrs) {
-			t.Fatal("vlreadstrings: expected ", nrs, " got ", len(lns))
-		}
+	}
+	if tnrs != nrs {
+		t.Fatalf("vlreadstrings testexpected %v got %v", nrs, tnrs)
 	}
 	log.Print("vlreadstrings test passed")
 }

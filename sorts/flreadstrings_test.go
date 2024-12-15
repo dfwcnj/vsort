@@ -2,34 +2,34 @@ package sorts
 
 import (
 	"fmt"
-	"github.com/dfwcnj/randomdata"
-	"github.com/dfwcnj/vsort/merge"
+	"io"
 	"log"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/dfwcnj/randomdata"
+	"github.com/dfwcnj/vsort/merge"
 )
 
 func Test_flreadstrings(t *testing.T) {
 	var rlen int = 32
 	var r bool = false
-	var nrs int64 = 1 << 20
-	var iomem int64 = nrs * int64(rlen/2)
+	var nrs int64 = 1 << 21
+	var iomem int64 = nrs * 8
 
 	var lns []string
-	var tlns []string
-	var offset int64
 	var err error
 	var nr int
 
-	// log.Print("flreadstrings test")
+	log.Print("flreadstrings test")
 
-	rsl := randomdata.Randomstrings(nrs, rlen, r)
-	// log.Print("flreadstrings test rsl ", len(rsl))
+	lns = randomdata.Randomstrings(nrs, rlen, r)
+	// log.Print("flreadstrings test lns ", len(lns))
 
 	dn, err := initmergedir("/tmp", "flreadstringstest")
 	if err != nil {
-		log.Fatal("flreadstrings test initmergedir ", err)
+		t.Fatal("flreadstrings test initmergedir ", err)
 	}
 	// log.Print("flreadstrings initmergedir ", dn)
 	defer os.RemoveAll(dn)
@@ -37,44 +37,49 @@ func Test_flreadstrings(t *testing.T) {
 	fn := path.Join(dn, "flreadstringstest")
 	fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		log.Fatal("flreadstrings test open ", err)
+		t.Fatal("flreadstrings test open ", err)
 	}
 	defer fp.Close()
 
-	for i, _ := range rsl {
-		fmt.Fprint(fp, rsl[i])
+	for i := range lns {
+		fmt.Fprint(fp, lns[i])
 		nr++
 	}
 	fp.Sync()
+	// finf, err := fp.Stat()
+	// log.Printf("flreadstrings test %v size %v", fn, finf.Size())
+	fp.Close()
 
-	// file length
-	offset, err = fp.Seek(0, 1)
+	var offset int64
+	var tlns []string
+	var tnrs int64
+	fp, err = os.Open(fn)
 	if err != nil {
-		log.Fatal("flreadstrings test seek 1 ", err)
+		t.Fatalf("flreadstrings test %v όpen %v", fn, err)
 	}
-
-	// rewind file
-	offset, err = fp.Seek(0, 0)
-	if err != nil {
-		log.Fatal("flreadstrings test seek 0 ", err)
-	}
-
+	defer fp.Close()
 	for {
-		//log.Println("flreadstrings test flreadstrings ", fn, " ", l)
-		lns, offset, err = merge.Flreadstrings(fp, offset, int(rlen), iomem)
-		if len(lns) == 0 {
+		// log.Printf("flreadstrings test flreadstrings %v offset %v", fn, offset)
+		tlns, offset, err = merge.Flreadstrings(fp, offset, int(rlen), iomem)
+		if err != nil && err != io.EOF {
+			t.Fatalf("flreadbytes test %v %v", fn, err)
+		}
+		if len(tlns) == 0 {
 			break
 		}
-		for _, ln := range lns {
-			if len(ln) != int(rlen) {
-				log.Fatal("ln ", ln, " len ", len(ln))
+		for i := range tlns {
+			if len(tlns[i]) != rlen {
+				t.Fatalf("flreadstrings test failed  %v len %v", tlns[i], len(tlns[i]))
 			}
-			//log.Print(string(ln))
+			//log.Print(string(tlns[i]))
 		}
-		tlns = append(tlns, lns...)
+		tnrs += int64(len(tlns))
+		if err == io.EOF {
+			break
+		}
 	}
-	if len(tlns) != int(nrs) {
-		t.Fatal("flreadstrings failed  expected ", nrs, " got ", len(lns))
+	if tnrs != nrs {
+		t.Fatalf("flreadstrings test failed expected %v got %v", nrs, tnrs)
 	}
 	log.Print("flreadstrings test passed")
 }

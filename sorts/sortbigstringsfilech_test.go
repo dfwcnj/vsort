@@ -19,7 +19,7 @@ func Test_sortbigstringsfilech(t *testing.T) {
 	bools[0] = true
 	bools[1] = false
 	var nrs int64 = 1 << 20
-	var iomem int64 = nrs * int64(rlen/2)
+	var iomem int64 = nrs * 8
 	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
 	stypes[1] = "merge"
@@ -60,12 +60,13 @@ func Test_sortbigstringsfilech(t *testing.T) {
 				nr++
 			}
 			nw.Flush()
+			finf, err := fp.Stat()
 			fp.Close()
-			log.Print("sortbigstringsfilech test file ", fn)
+			// log.Printf("sortbigstringsfilech test %v size %v ", fn, finf.Size())
 
-			t0 := time.Now()
 			var lns []string
 			var fns []string
+			t0 := time.Now()
 			if r == true {
 				lns, fns, err = sortbigstringsfilech(fn, dn, st, 0, 0, 0, iomem)
 			} else {
@@ -83,15 +84,14 @@ func Test_sortbigstringsfilech(t *testing.T) {
 					log.Fatal("sortbigstringsfilech test open ", err)
 				}
 
-				finf, err := mfp.Stat()
-				log.Printf("sortbigstringsfilech test after sort %v %v %v", fn, r, finf.Size())
+				// finf, err := mfp.Stat()
+				// log.Printf("sortbigstringsfilech test after sort %v %v %v", fn, r, finf.Size())
 				if r == true {
-					lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
-					log.Printf("sortbigstringsfilech Vlreadstrings %v %v lns", f, len(lns))
+					lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size()*2)
 				} else {
-					lns, _, err = merge.Flreadstrings(mfp, 0, rlen, finf.Size())
-					log.Printf("sortbigstringsfilech Flreadstrings %v %v lns", f, len(lns))
+					lns, _, err = merge.Flreadstrings(mfp, 0, rlen, finf.Size()*2)
 				}
+				log.Printf("sortbigstringsfilech test readstrings %v %v lns", f, len(lns))
 
 				if slices.IsSorted(lns) == false {
 					t.Fatal("sortbigstringsfilech test failed  ", f, " is not sorted")
@@ -99,7 +99,7 @@ func Test_sortbigstringsfilech(t *testing.T) {
 				nss += int64(len(lns))
 			}
 			if nrs != nss {
-				t.Fatal("sortbigstringsfilech failed test wanted ", nrs, " got ", nss)
+				t.Fatal("sortbigstringsfilech test failed test wanted ", nrs, " got ", nss)
 			}
 		}
 	}
