@@ -62,9 +62,10 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 	// log.Print("initspq")
 	pq := make(KVSSPQ, len(sparts))
 
-	nsparts := len(sparts)
-	for i := 0; i < nsparts; i++ {
+	for i := range sparts {
 		var itm kvssitem
+
+		log.Printf("initspq sparts[%v] %v lns", i, len(sparts[i]))
 
 		// initialize the structure
 		itm.lns = sparts[i]
@@ -78,6 +79,7 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 		itm.index = i
 
 		pq[i] = &itm
+		log.Printf("initspq itm %v %v len(itm.lns)", i, len(itm.lns))
 	}
 
 	heap.Init(&pq)
@@ -139,6 +141,11 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 	log.Printf("kvpqssliceemit %v strings", ns)
 
 	pq := initspq(reclen, keyoff, keylen, sparts)
+	ns = 0
+	for i := range sparts {
+		ns += len(sparts[i])
+	}
+	log.Printf("kvpqssliceemit after initspq %v strings", ns)
 	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
 
 	nw := bufio.NewWriter(ofp)
@@ -155,11 +162,11 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 		if err != nil {
 			log.Fatal("kvpqssliceemit writestring ", err)
 		}
+		ne++
 
 		if len(ritem.lns) == 0 {
 			continue
 		}
-		ne++
 
 		ritem.ln = ritem.lns[0]
 		ritem.lns = ritem.lns[1:]
