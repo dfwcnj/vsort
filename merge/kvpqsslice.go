@@ -148,6 +148,7 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 		if err != nil {
 			log.Fatal("kvpqssliceemit writestring ", err)
 		}
+		ne++
 
 		// log.Printf("kvpqssliceemit  %v before", len(ritem.lns))
 		if len(ritem.lns) == 0 {
@@ -159,12 +160,11 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
-		ne++
 	}
 	err := nw.Flush()
 	if err != nil {
 		log.Fatal("kvpqssliceemit flush ", err)
 	}
-	// log.Print("kvpqssliceemit lines written ", ne)
+	log.Print("kvpqssliceemit lines written ", ne)
 
 }
