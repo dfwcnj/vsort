@@ -156,9 +156,6 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 		ritem.ln = ritem.lns[0]
 		ritem.lns = ritem.lns[1:]
 		// log.Printf("kvpqssliceemit  %v after", len(ritem.lns))
-		//ritem.rlen = reclen
-		//ritem.keyoff = keyoff
-		//ritem.keylen = keylen
 
 		heap.Push(&pq, ritem)
 		pq.update(ritem, ritem.ln)
