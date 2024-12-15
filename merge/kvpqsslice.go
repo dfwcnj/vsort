@@ -66,11 +66,13 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 	for i := 0; i < nsparts; i++ {
 		var itm kvssitem
 
+		// initialize the structure
 		itm.lns = sparts[i]
 		itm.rlen = reclen
 		itm.keyoff = keyoff
 		itm.keylen = keylen
 
+		// load the first line
 		itm.ln = itm.lns[0]
 		itm.lns = itm.lns[1:]
 		itm.index = i
@@ -101,13 +103,13 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
 
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvssitem)
-		if len(ritem.lns) == 0 {
-			continue
-		}
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqssliceemit pop line ", string(ritem.ln))
 		}
 		osl = append(osl, ritem.ln)
+		if len(ritem.lns) == 0 {
+			continue
+		}
 
 		ritem.ln = ritem.lns[0]
 		ritem.lns = ritem.lns[1:]
@@ -139,18 +141,17 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 	var ne int64
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvssitem)
-		// log.Printf("kvpqssemit ritem.ln %v", ritem.ln)
-		// log.Printf("kvpqssliceemit  %v before", len(ritem.lns))
-		if len(ritem.lns) == 0 {
-			continue
-		}
-
 		if string(ritem.ln) == "\n" {
 			log.Fatal("kvpqssliceemit pop line ", string(ritem.ln))
 		}
+
 		_, err := nw.WriteString(string(ritem.ln))
 		if err != nil {
 			log.Fatal("kvpqssliceemit writestring ", err)
+		}
+
+		if len(ritem.lns) == 0 {
+			continue
 		}
 		ne++
 
