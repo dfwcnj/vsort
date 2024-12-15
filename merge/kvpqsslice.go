@@ -132,6 +132,12 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 	// log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
 	// log.Printf("kvpqssliceemit merging %v slices", len(sparts))
 
+	var ns int
+	for i := range sparts {
+		ns += len(sparts[i])
+	}
+	log.Printf("kvpqssliceemit %v strings", ns)
+
 	pq := initspq(reclen, keyoff, keylen, sparts)
 	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
 
@@ -166,6 +172,6 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][
 	if err != nil {
 		log.Fatal("kvpqssliceemit flush ", err)
 	}
-	log.Print("kvpqssliceemit lines written ", ne)
+	log.Printf("kvpqssliceemit %v written ", ne)
 
 }
