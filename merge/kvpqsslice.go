@@ -59,24 +59,24 @@ func (pq *KVSSPQ) update(ritem *kvssitem, value string) {
 	heap.Fix(pq, ritem.index)
 }
 
-func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
+func initspq(reclen, keyoff, keylen int, parts [][]string) KVSSPQ {
 	// log.Print("initspq")
-	pq := make(KVSSPQ, len(sparts))
+	pq := make(KVSSPQ, len(parts))
 
-	for i := range sparts {
+	for i := range parts {
 		var itm kvssitem
 
-		log.Printf("initspq sparts[%v] %v lns", i, len(sparts[i]))
+		log.Printf("initspq parts[%v] %v lns", i, len(parts[i]))
 
 		// initialize the structure
-		itm.lns = sparts[i]
+		// itm.lns = parts[i]
 		itm.rlen = reclen
 		itm.keyoff = keyoff
 		itm.keylen = keylen
 
 		// load the first line
-		itm.ln = itm.lns[0]
-		itm.lns = itm.lns[1:]
+		itm.ln = parts[i][0]
+		itm.lns = parts[i][1:]
 		itm.index = i
 
 		pq[i] = &itm
@@ -94,14 +94,14 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 // reclen - key lengths for fixed length records
 // keyoff - offset of key in fixed length record
 // keylen - length of key in fixed length record
-// sparts - slice of string slices
-func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
-	// log.Printf("kvpqsslicemerge %v %v %v %v", reclen, keyoff, keylen, len(sparts))
-	pq := initspq(reclen, keyoff, keylen, sparts)
+// parts - slice of string slices
+func kvpqsslicesmerge(reclen, keyoff, keylen int, parts [][]string) []string {
+	// log.Printf("kvpqsslicemerge %v %v %v %v", reclen, keyoff, keylen, len(parts))
+	pq := initspq(reclen, keyoff, keylen, parts)
 
 	var oln int
-	for i := range sparts {
-		oln += len(sparts[i])
+	for i := range parts {
+		oln += len(parts[i])
 	}
 	osl := make([]string, 0, oln)
 
@@ -130,22 +130,22 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, sparts [][]string) []string {
 // reclen - key lengths for fixed length records
 // keyoff - offset of key in fixed length record
 // keylen - length of key in fixed length record
-// sparts - slice of string slices
-func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, sparts [][]string) {
+// parts - slice of string slices
+func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, parts [][]string) {
 
 	// log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
-	// log.Printf("kvpqssliceemit merging %v slices", len(sparts))
+	log.Printf("kvpqssliceemit merging %v parts", len(parts))
 
 	var ns int
-	for i := range sparts {
-		ns += len(sparts[i])
+	for i := range parts {
+		ns += len(parts[i])
 	}
 	log.Printf("kvpqssliceemit %v strings", ns)
 
-	pq := initspq(reclen, keyoff, keylen, sparts)
+	pq := initspq(reclen, keyoff, keylen, parts)
 	ns = 0
-	for i := range sparts {
-		ns += len(sparts[i])
+	for i := range parts {
+		ns += len(parts[i])
 	}
 	log.Printf("kvpqssliceemit after initspq %v strings", ns)
 	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
