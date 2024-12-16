@@ -43,7 +43,11 @@ func Test_mergestringfiles(t *testing.T) {
 				}
 			}
 
-			rsort2sa(lns, 0, 0, 0)
+			if r == true {
+				rsort2sa(lns, 0, 0, 0)
+			} else {
+				rsort2sa(lns, rlen, 0, rlen)
+			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
 			merge.Savestringmergefile(lns, fn)

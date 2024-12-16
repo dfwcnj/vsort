@@ -45,7 +45,11 @@ func Test_mergebytefiles(t *testing.T) {
 				lns = append(lns, ln)
 			}
 
-			rsort2ba(lns)
+			if r == true {
+				rsort2ba(lns)
+			} else {
+				kvrsort2a(lns, rlen, 0, rlen)
+			}
 
 			var fn = filepath.Join(dn, fmt.Sprint("file", i))
 			merge.Savebytemergefile(lns, fn)

@@ -44,7 +44,11 @@ func Test_mergebytesparts(t *testing.T) {
 				lns = append(lns, ln)
 			}
 
-			rsort2ba(lns)
+			if r == true {
+				rsort2ba(lns)
+			} else {
+				kvrsort2a(lns, rlen, 0, rlen)
+			}
 
 			parts = append(parts, lns)
 		}

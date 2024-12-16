@@ -16,16 +16,16 @@ import (
 func Test_mergestringsparts(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2)
-	bools[0] = false
-	bools[1] = true
-	var nrs int64 = 1 << 15
+	bools[0] = true
+	bools[1] = false
+	var nrs int64 = 1 << 20
 
 	var nparts = 10
 	var parts = make([][]string, 0, nparts)
 
 	for _, r := range bools {
 
-		log.Print("mergestringsparts test ", r)
+		log.Printf("mergestringsparts test %v %v", rlen, r)
 
 		dn, err := initmergedir("/tmp", "mergestringsparts")
 		if err != nil {
@@ -43,7 +43,11 @@ func Test_mergestringsparts(t *testing.T) {
 				}
 			}
 
-			rsort2sa(lns, 0, 0, 0)
+			if r == true {
+				rsort2sa(lns, 0, 0, 0)
+			} else {
+				rsort2sa(lns, rlen, 0, rlen)
+			}
 
 			parts = append(parts, lns)
 		}
@@ -55,7 +59,7 @@ func Test_mergestringsparts(t *testing.T) {
 		if r == true {
 			merge.Mergestringsparts(mpath, 0, 0, 0, parts)
 		} else {
-			merge.Mergestringsparts(mpath, rlen, 0, 0, parts)
+			merge.Mergestringsparts(mpath, rlen, 0, rlen, parts)
 		}
 
 		mfp, err := os.Open(mpath)
