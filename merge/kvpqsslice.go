@@ -20,6 +20,7 @@ type KVSSPQ []*kvssitem
 func (pq KVSSPQ) Len() int { return len(pq) }
 
 func (pq KVSSPQ) Less(i, j int) bool {
+	log.Printf("kvpqsslice Less %v %v %v %v", i, len(pq[i].ln), j, len(pq[j].ln))
 	if pq[i].keyoff != 0 || pq[i].keylen != 0 {
 		ik := pq[i].ln[pq[i].keyoff : pq[i].keyoff+pq[i].keylen]
 		jk := pq[j].ln[pq[j].keyoff : pq[j].keyoff+pq[j].keylen]
