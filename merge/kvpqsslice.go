@@ -79,7 +79,8 @@ func initspq(reclen, keyoff, keylen int, sparts [][]string) KVSSPQ {
 		itm.index = i
 
 		pq[i] = &itm
-		log.Printf("initspq itm %v %v len(itm.lns)", i, len(itm.lns))
+		log.Printf("initspq itm %v %v len(itm.ln)", i, len(itm.ln))
+		// log.Printf("initspq itm %v %v len(itm.lns)", i, len(itm.lns))
 	}
 
 	heap.Init(&pq)
