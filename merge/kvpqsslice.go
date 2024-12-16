@@ -21,7 +21,7 @@ func (pq KVSSPQ) Len() int { return len(pq) }
 
 func (pq KVSSPQ) Less(i, j int) bool {
 	if pq[i].keyoff != 0 || pq[i].keylen != 0 {
-		log.Printf("kvpqsslice Less %v %v %v %v", i, len(pq[i].ln), j, len(pq[j].ln))
+		// log.Printf("kvpqsslice Less %v %v %v %v", i, len(pq[i].ln), j, len(pq[j].ln))
 		ik := pq[i].ln[pq[i].keyoff : pq[i].keyoff+pq[i].keylen]
 		jk := pq[j].ln[pq[j].keyoff : pq[j].keyoff+pq[j].keylen]
 		//log.Print("KVSSPQ.Less keys ", ik, " ", jk)
