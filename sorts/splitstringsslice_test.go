@@ -9,26 +9,38 @@ import (
 
 func Test_splitstringsslice(t *testing.T) {
 	var rlen int = 32
-	var r bool = false
+	var np int = 10
+	var bools []bool = make([]bool, 2)
+	bools[0] = false
+	bools[1] = true
 	nrsa := []int64{1 << 20, 1 << 22, 1 << 24}
 
 	for _, nrs := range nrsa {
-		log.Printf("sortflbytesfile test %v", nrs)
+		for _, r := range bools {
+			log.Printf("sortflbytesfile test %v %v", nrs, r)
 
-		ssl := randomdata.Randomstrings(nrs, rlen, r)
+			ssl := randomdata.Randomstrings(nrs, rlen, r)
 
-		parts := splitstringsslice(ssl, 10)
-		log.Printf("splitstringsslice %v parts", len(parts))
+			parts := splitstringsslice(ssl, np)
+			log.Printf("splitstringsslice %v parts", len(parts))
 
-		var nlns int64
-		for i := range len(parts) {
-			pl := len(parts[i])
-			nlns += int64(pl)
-		}
-		log.Print("splitstringsslice after count")
+			var nlns int64
+			for i, part := range parts {
+				pl := len(part)
+				if r == false {
+					for j, l := range part {
+						if len(l) != rlen {
+							t.Fatalf("splitstringsslice %v %v %v", i, j, l)
+						}
+					}
+				}
+				nlns += int64(pl)
+			}
+			log.Print("splitstringsslice after count")
 
-		if nrs != nlns {
-			t.Fatalf("splitstringsslice test wanted %v got %v", nrs, nlns)
+			if nrs != nlns {
+				t.Fatalf("splitstringsslice test wanted %v got %v", nrs, nlns)
+			}
 		}
 	}
 	log.Print("splitstringsslice test passed")

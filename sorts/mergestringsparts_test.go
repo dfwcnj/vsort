@@ -19,8 +19,8 @@ func Test_mergestringsparts(t *testing.T) {
 	bools[0] = true
 	bools[1] = false
 	var nrs int64 = 1 << 20
-
 	var nparts = 10
+
 	var parts = make([][]string, 0, nparts)
 
 	for _, r := range bools {
@@ -33,25 +33,27 @@ func Test_mergestringsparts(t *testing.T) {
 		}
 		//log.Print("mergestringsparts test initmergedir ", dn)
 
-		for range nparts {
+		lns := randomdata.Randomstrings(nrs*int64(nparts), rlen, r)
+		// random length strings must be newline delimited
+		if r == true {
+			for i := range lns {
+				lns[i] = lns[i] + "\n"
+			}
+		}
 
-			lns := randomdata.Randomstrings(nrs, rlen, r)
-			// random length strings must be newline delimited
-			if r == true {
-				for i := range lns {
-					lns[i] = lns[i] + "\n"
+		if r == true {
+			rsort2sa(lns, 0, 0, 0)
+		} else {
+			rsort2sa(lns, rlen, 0, rlen)
+			for _, l := range lns {
+				if len(l) != rlen {
+					log.Fatalf("mergestringsparts test after sort %v wanted %v got %v", r, rlen, len(l))
 				}
 			}
-
-			if r == true {
-				rsort2sa(lns, 0, 0, 0)
-			} else {
-				rsort2sa(lns, rlen, 0, rlen)
-			}
-
-			parts = append(parts, lns)
-			// log.Printf("mergestringsparts test part %v len %v", i, len(parts[i]))
 		}
+
+		parts = splitstringsslice(lns, nparts)
+		// log.Printf("mergestringsparts test part %v len %v", i, len(parts[i]))
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
@@ -60,6 +62,13 @@ func Test_mergestringsparts(t *testing.T) {
 		if r == true {
 			merge.Mergestringsparts(mpath, 0, 0, 0, parts)
 		} else {
+			for _, part := range parts {
+				for _, l := range part {
+					if len(l) != rlen {
+						log.Fatalf("mergestringsparts test before mergestringparts %v wanted %v got %v", r, rlen, len(l))
+					}
+				}
+			}
 			merge.Mergestringsparts(mpath, rlen, 0, rlen, parts)
 		}
 
