@@ -57,7 +57,7 @@ func Test_mergestringsparts(t *testing.T) {
 
 		mfn := "mergeout.txt"
 		mpath := filepath.Join(dn, mfn)
-		log.Printf("merge.mergestringsparts %v", mpath)
+		// log.Printf("merge.mergestringsparts %v", mpath)
 
 		if r == true {
 			merge.Mergestringsparts(mpath, 0, 0, 0, parts)

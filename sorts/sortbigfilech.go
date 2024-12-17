@@ -117,7 +117,7 @@ func sortbigbytesfilech(fn, dn string, stype string, reclen, keyoff, keylen int,
 // iomem - approximate amount of memory for sorting
 func sortbigstringsfilech(fn, dn string, stype string, reclen, keyoff, keylen int, iomem int64) ([]string, []string, error) {
 
-	log.Printf("sortbigstringsfilech fn %v dn %v, stype %v reclen %v keyoff %v keylen %v, iomem %v ", fn, dn, stype, reclen, keyoff, keylen, iomem)
+	// log.Printf("sortbigstringsfilech fn %v dn %v, stype %v reclen %v keyoff %v keylen %v, iomem %v ", fn, dn, stype, reclen, keyoff, keylen, iomem)
 	var lns []string
 	var err error
 	var i int
@@ -147,20 +147,19 @@ func sortbigstringsfilech(fn, dn string, stype string, reclen, keyoff, keylen in
 		} else {
 			lns, offset, err = merge.Flreadstrings(fp, offset, reclen, iomem)
 		}
-		log.Printf("sortbigstringsfilech readstrings %v %v", len(lns), offset)
+		// log.Printf("sortbigstringsfilech readstrings %v %v", len(lns), offset)
 		if err != nil && err != io.EOF {
 			log.Fatalf("sortbigstringsfilech %v %v", fn, err)
 		}
 
 		if len(lns) == 0 {
-			log.Print("sortbigstringsfilech return on len(lns) == 0")
+			// log.Print("sortbigstringsfilech return on len(lns) == 0")
 			return lns, mfiles, err
 		}
 
 		parts := splitstringsslice(lns, nc)
 		var pc int
 		for i := range parts {
-			// log.Printf("sortbigbytesfilech splitbytesslicepart %v %v", i, len(parts[i]))
 			pc += len(parts[i])
 		}
 		if pc != len(lns) {
@@ -198,7 +197,7 @@ func sortbigstringsfilech(fn, dn string, stype string, reclen, keyoff, keylen in
 
 		// log.Print("sortbigstringsfilech mfn ", mfn)
 		if err == io.EOF {
-			log.Print("sortbigstringsfilech return on EOF")
+			// log.Print("sortbigstringsfilech return on EOF")
 			return lns[:0], mfiles, err
 		}
 		i++

@@ -31,14 +31,10 @@ func Test_sortstringsfilech(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Print("sortstringsfilech test ", st, " ", r)
 			dn, err := initmergedir("/tmp", "sortstringsfilechtest")
 			if err != nil {
 				log.Fatal("sortstringsfilech test initmergedir ", err)
 			}
-			//log.Print("sortstringsfilech test initmergedir ", dn)
-
-			log.Println("sortstringsfilech test")
 
 			ulns := randomdata.Randomstrings(nrs, rlen, r)
 
@@ -64,11 +60,11 @@ func Test_sortstringsfilech(t *testing.T) {
 			nw.Flush()
 			fp.Close()
 
+			log.Printf("sortstringsfilech test %v %v %v", fn, st, r)
+
 			// make output file string
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
-			//log.Print("merge.Mergebytefiles ", fns)
-			//log.Print("sortstringsfilech test file ", fn)
 
 			t0 := time.Now()
 			if r == true {
@@ -76,7 +72,7 @@ func Test_sortstringsfilech(t *testing.T) {
 			} else {
 				sortstringsfilech(fn, mpath, st, rlen, 0, rlen, iomem)
 			}
-			log.Printf("sortstringsfilech %v %v duration %v", st, r, time.Since(t0))
+			log.Printf("sortstringsfilech test after sort %v %v %v duration %v", mpath, st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
@@ -91,13 +87,15 @@ func Test_sortstringsfilech(t *testing.T) {
 			} else {
 				slns, _, err = merge.Flreadstrings(mfp, 0, rlen, finf.Size())
 			}
-			//log.Println("sortstringsfilech test lns ", len(lns))
+			if err != nil {
+				t.Fatalf("sortstringsfilech test readstrings %v %v", mpath, err)
+			}
+			if nrs != int64(len(slns)) {
+				t.Fatalf("sortstringsfilech test %v wanted %v got %v", mpath, nrs, len(slns))
+			}
 
 			if slices.IsSorted(slns) == false {
 				t.Fatal("sortstringsfilech test failed  ", mpath, " is not sorted")
-			}
-			if nrs != int64(len(slns)) {
-				t.Fatal("sortstringsfilech failed test wanted ", nrs, " got ", len(slns))
 			}
 		}
 	}

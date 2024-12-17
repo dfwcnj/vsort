@@ -70,7 +70,7 @@ func Test_sortbigstringsfilech(t *testing.T) {
 			if r == true {
 				lns, fns, err = sortbigstringsfilech(fn, dn, st, 0, 0, 0, iomem)
 			} else {
-				lns, fns, err = sortbigstringsfilech(fn, dn, st, rlen+1, 0, rlen, iomem)
+				lns, fns, err = sortbigstringsfilech(fn, dn, st, rlen, 0, rlen, iomem)
 			}
 			log.Printf("sortbigstringsfilech test %v %v duration %v", st, r, time.Since(t0))
 			if len(lns) != 0 {
@@ -91,7 +91,9 @@ func Test_sortbigstringsfilech(t *testing.T) {
 				} else {
 					lns, _, err = merge.Flreadstrings(mfp, 0, rlen, finf.Size()*2)
 				}
-				log.Printf("sortbigstringsfilech test readstrings %v %v lns", f, len(lns))
+				if err != nil {
+					t.Fatalf("sortbigstringsfilech test readstring %v %v", f, err)
+				}
 
 				if slices.IsSorted(lns) == false {
 					t.Fatal("sortbigstringsfilech test failed  ", f, " is not sorted")

@@ -9,50 +9,6 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-// sortbytesslicech
-func sortbytesslicech(lns [][]byte, stype string, reclen, keyoff, keylen int, ouch chan [][]byte) {
-	// log.Printf("sortbytesslicech %v %v lines", stype, len(lns))
-	switch stype {
-	case "heap":
-		kvbheapsort(lns, reclen, keyoff, keylen)
-	case "insertion":
-		kvbinsertionsort(lns, reclen, keyoff, keylen)
-	case "merge":
-		kvbmergesort(lns, reclen, keyoff, keylen)
-	case "radix":
-		if keylen > 0 {
-			kvrsort2a(lns, reclen, keyoff, keylen)
-		} else {
-			rsort2ba(lns)
-		}
-	case "std":
-		kvslicesbsort(lns, reclen, keyoff, keylen)
-	default:
-		log.Fatal("sortbytesslicech stype ", stype)
-	}
-	ouch <- lns
-}
-
-// sortstringsslicech
-func sortstringsslicech(lns []string, stype string, reclen, keyoff, keylen int, ouch chan []string) {
-	// log.Printf("sortstringsslicech %v %v lines", stype, len(lns))
-	switch stype {
-	case "heap":
-		kvsheapsort(lns, reclen, keyoff, keylen)
-	case "insertion":
-		kvsinsertionsort(lns, reclen, keyoff, keylen)
-	case "merge":
-		kvsmergesort(lns, reclen, keyoff, keylen)
-	case "radix":
-		rsort2sa(lns, reclen, keyoff, keylen)
-	case "std":
-		kvslicesssort(lns, reclen, keyoff, keylen)
-	default:
-		log.Fatal("sortstringsslicech stype ", stype)
-	}
-	ouch <- lns
-}
-
 // sortbytesfilech
 // routine to split a file into pieces to sort concurrently
 func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, iomem int64) {
@@ -70,32 +26,35 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 		// sortbїgbytesfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
 	}
 
-	var nc = runtime.NumCPU()
-	// readthe bytes
-	lns, _, err := merge.Flreadbytes(fp, int64(0), reclen, fsz)
+	lns, _, err := merge.Flreadbytes(fp, int64(0), reclen, iomem)
 	if err != nil {
 		log.Fatalf("sortbytesfilech read %v: %v", fn, err)
 	}
+	var nlns = len(lns)
 
+	var nc = runtime.NumCPU()
 	parts := splitbytesslice(lns, nc)
-	// create a byte slice channel with n parts capacity
+
 	inch := make(chan [][]byte, len(parts))
+
 	var wg sync.WaitGroup
 	wg.Add(len(parts))
-
-	for i := range parts {
+	for _, part := range parts {
 		go func() {
 			defer wg.Done()
-			// log.Printf("sortbytesfilech %v", i)
-			sortbytesslicech(parts[i], stype, reclen, keyoff, keylen, inch)
+			sortbytesslicech(part, stype, reclen, keyoff, keylen, inch)
 		}()
 	}
-
 	wg.Wait()
-	tparts := make([][][]byte, len(parts))
 
+	tparts := make([][][]byte, 0, len(parts))
+	var ns int
 	for i := range tparts {
 		tparts[i] = <-inch
+		ns += len(tparts[i])
+	}
+	if ns != len(lns) {
+		log.Fatalf("sortbytesfilech sortbytesslicech %v %v wanted %v got %v", fn, stype, nlns, ns)
 	}
 
 	merge.Mergebytesparts(ofn, reclen, keyoff, keylen, tparts)
@@ -112,38 +71,40 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	finf, err := fp.Stat()
 	var fsz = finf.Size()
 
-	// exceeds our iomem limits
 	if fsz > iomem {
 		log.Fatalf("sortstringsfilech %v too large %v", fn, fsz)
 		// sortbїgstringsfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
 	}
 
-	var nc = runtime.NumCPU()
-	// readthe strings
-	lns, _, err := merge.Flreadstrings(fp, int64(0), reclen, fsz)
+	lns, _, err := merge.Flreadstrings(fp, int64(0), reclen, iomem)
 	if err != nil {
 		log.Fatalf("sortstringsfilech read %v: %v", fn, err)
 	}
+	var nlns = len(lns)
 
+	var nc = runtime.NumCPU()
 	parts := splitstringsslice(lns, nc)
-	// create a string slice channel with capacity n parts
+
 	inch := make(chan []string, len(parts))
+
 	var wg sync.WaitGroup
 	wg.Add(len(parts))
-
-	for i := range parts {
+	for _, part := range parts {
 		go func() {
 			defer wg.Done()
-			// log.Printf("sortstringsfilech %v", i)
-			sortstringsslicech(parts[i], stype, reclen, keyoff, keylen, inch)
+			sortstringsslicech(part, stype, reclen, keyoff, keylen, inch)
 		}()
 	}
-
 	wg.Wait()
-	tparts := make([][]string, len(parts))
 
+	tparts := make([][]string, 0, len(parts))
+	var ns int
 	for i := range tparts {
 		tparts[i] = <-inch
+		ns += len(tparts[i])
+	}
+	if ns != len(lns) {
+		log.Fatalf("sortstringsfilech sortstringsslicech %v %v wanted %v got %v", fn, stype, nlns, ns)
 	}
 
 	merge.Mergestringsparts(ofn, reclen, keyoff, keylen, tparts)
