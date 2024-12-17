@@ -78,14 +78,14 @@ func Flreadstrings(fp *os.File, offset int64, reclen int, iomem int64) ([]string
 	for {
 
 		if fp != os.Stdin && memused >= iomem {
-			log.Printf("flreadallstrings iomem %v lns %v offset", len(lns), offset)
+			// log.Printf("flreadallstrings iomem %v lns %v offset", len(lns), offset)
 			return lns, offset, err
 		}
 
 		buf := make([]byte, reclen)
 		if bl, err = io.ReadFull(fp, buf); err != nil {
 			if err == io.EOF {
-				log.Printf("flreadallstrings EOF %v lns %v offset", len(lns), offset)
+				// log.Printf("flreadallstrings EOF %v lns %v offset", len(lns), offset)
 				if bl == reclen {
 					lns = append(lns, string(buf))
 				}
@@ -160,7 +160,7 @@ func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, err
 
 	for {
 		if fp != os.Stdin && memused >= iomem {
-			log.Printf("vlreadstrings iomem %v lns %v offset", len(lns), offset)
+			// log.Printf("vlreadstrings iomem %v lns %v offset", len(lns), offset)
 			return lns, offset, nil
 		}
 
@@ -172,7 +172,7 @@ func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, err
 				if len(l) != 0 {
 					lns = append(lns, l)
 				}
-				log.Printf("vlreadstrings EOF  %v lns %v offset", len(lns), offset)
+				// log.Printf("vlreadstrings EOF  %v lns %v offset", len(lns), offset)
 				return lns, offset, err
 			}
 			log.Fatal("vlreadstrings readstring ", err)
