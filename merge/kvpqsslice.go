@@ -66,8 +66,9 @@ func initspq(reclen, keyoff, keylen int, parts [][]string) KVSSPQ {
 	for i, part := range parts {
 		var itm kvssitem
 
-		log.Printf("initspq parts[%v] %v lns", i, len(part))
-
+		if reclen != 0 && len(part[0]) != reclen {
+			log.Fatalf("kvpqsslice initspq part[%v] %v", i, len(part[0]))
+		}
 		// initialize the structure
 		// itm.lns = parts[i]
 		itm.rlen = reclen
@@ -136,18 +137,7 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, parts [][]
 	// log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
 	log.Printf("kvpqssliceemit merging %v parts", len(parts))
 
-	var ns int
-	for i := range parts {
-		ns += len(parts[i])
-	}
-	log.Printf("kvpqssliceemit %v strings", ns)
-
 	pq := initspq(reclen, keyoff, keylen, parts)
-	ns = 0
-	for i := range parts {
-		ns += len(parts[i])
-	}
-	log.Printf("kvpqssliceemit after initspq %v strings", ns)
 	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
 
 	nw := bufio.NewWriter(ofp)
