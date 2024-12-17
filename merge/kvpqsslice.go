@@ -81,8 +81,6 @@ func initspq(reclen, keyoff, keylen int, parts [][]string) KVSSPQ {
 		itm.index = i
 
 		pq[i] = &itm
-		log.Printf("initspq itm %v %v len(itm.ln)", i, len(itm.ln))
-		// log.Printf("initspq itm %v %v len(itm.lns)", i, len(itm.lns))
 	}
 
 	heap.Init(&pq)
@@ -135,7 +133,7 @@ func kvpqsslicesmerge(reclen, keyoff, keylen int, parts [][]string) []string {
 func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, parts [][]string) {
 
 	// log.Printf("kvpqssliceemit ofp %v reclen %v keyoff %v, keylen %v", ofp, reclen, keyoff, keylen)
-	log.Printf("kvpqssliceemit merging %v parts", len(parts))
+	// log.Printf("kvpqssliceemit merging %v parts", len(parts))
 
 	pq := initspq(reclen, keyoff, keylen, parts)
 	// log.Printf("kvpqsslieceemit pq initiated %v", pq.Len())
@@ -171,6 +169,6 @@ func kvpqssliceemit(ofp *os.File, reclen int, keyoff int, keylen int, parts [][]
 	if err != nil {
 		log.Fatal("kvpqssliceemit flush ", err)
 	}
-	log.Printf("kvpqssliceemit %v written ", ne)
+	// log.Printf("kvpqssliceemit %v written ", ne)
 
 }
