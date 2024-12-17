@@ -20,7 +20,7 @@ func flreadallbytes(fp *os.File, reclen int) ([][]byte, int64, error) {
 	if err != nil {
 		log.Fatal("flreadall ", err)
 	}
-	log.Printf("flreadallbytes read %v", len(buf))
+	// log.Printf("flreadallbytes read %v", len(buf))
 	var r io.Reader = bytes.NewReader(buf)
 
 	var off int64
@@ -104,7 +104,7 @@ func vlreadallbytes(fp *os.File) ([][]byte, int64, error) {
 	if err != nil && err != io.EOF {
 		log.Fatal("vlreadall ", err)
 	}
-	log.Printf("vlreadallbytes read %v ", len(buf))
+	// log.Printf("vlreadallbytes read %v ", len(buf))
 
 	lines := strings.Split(string(buf), "\n")
 	var off int64
