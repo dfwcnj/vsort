@@ -23,7 +23,7 @@ func Mergebytesparts(ofn string, reclen, keyoff, keylen int, parts [][][]byte) {
 }
 
 func Mergestringsparts(ofn string, reclen, keyoff, keylen int, parts [][]string) {
-	log.Printf("mergestringsparts ofn %v reclen %v, keyoff %v keylen %v nparts %v", ofn, reclen, keyoff, keylen, len(parts))
+	// log.Printf("mergestringsparts ofn %v reclen %v, keyoff %v keylen %v nparts %v", ofn, reclen, keyoff, keylen, len(parts))
 
 	var err error
 
@@ -35,12 +35,6 @@ func Mergestringsparts(ofn string, reclen, keyoff, keylen int, parts [][]string)
 		}
 		defer ofp.Close()
 	}
-
-	var ns int
-	for i := range parts {
-		ns += len(parts[i])
-	}
-	log.Printf("mergestringparts %v %v strings", ofn, ns)
 
 	kvpqssliceemit(ofp, reclen, keyoff, keylen, parts)
 }
