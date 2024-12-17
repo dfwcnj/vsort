@@ -63,10 +63,10 @@ func initspq(reclen, keyoff, keylen int, parts [][]string) KVSSPQ {
 	// log.Print("initspq")
 	pq := make(KVSSPQ, len(parts))
 
-	for i := range parts {
+	for i, part := range parts {
 		var itm kvssitem
 
-		log.Printf("initspq parts[%v] %v lns", i, len(parts[i]))
+		log.Printf("initspq parts[%v] %v lns", i, len(part))
 
 		// initialize the structure
 		// itm.lns = parts[i]
@@ -75,8 +75,8 @@ func initspq(reclen, keyoff, keylen int, parts [][]string) KVSSPQ {
 		itm.keylen = keylen
 
 		// load the first line
-		itm.ln = parts[i][0]
-		itm.lns = parts[i][1:]
+		itm.ln = part[0]
+		itm.lns = part[1:]
 		itm.index = i
 
 		pq[i] = &itm
