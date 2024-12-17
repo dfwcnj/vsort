@@ -9,44 +9,6 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-func splitbytesslice(lns [][]byte, ns int) [][][]byte {
-	var parts [][][]byte
-	var pl int = len(lns) / ns
-
-	var off int
-	for {
-		if off >= len(lns) {
-			break
-		}
-		if len(lns)-(off+pl) < pl/2 {
-			parts = append(parts, lns[off:])
-			break
-		}
-		parts = append(parts, lns[off:off+pl])
-		off += pl
-	}
-	return parts
-}
-
-func splitstringsslice(lns []string, ns int) [][]string {
-	var parts [][]string
-	var pl int = len(lns) / ns
-
-	var off int
-	for {
-		if off >= len(lns) {
-			break
-		}
-		if len(lns)-(off+pl) < pl/2 {
-			parts = append(parts, lns[off:])
-			break
-		}
-		parts = append(parts, lns[off:off+pl])
-		off += pl
-	}
-	return parts
-}
-
 // sortbytesslicech
 func sortbytesslicech(lns [][]byte, stype string, reclen, keyoff, keylen int, ouch chan [][]byte) {
 	// log.Printf("sortbytesslicech %v %v lines", stype, len(lns))
