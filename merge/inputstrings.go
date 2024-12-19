@@ -165,6 +165,10 @@ func Vlreadstrings(fp *os.File, offset int64, iomem int64) ([]string, int64, err
 		}
 
 		l, err := nw.ReadString('\n')
+		if !strings.HasSuffix(l, "\n") {
+			// contrary to pkg.go.dev/bufio@go1.23.4#Reader.ReadString
+			l = l + "\n"
+		}
 		// Seek seens to return the buffer offset
 		offset += int64(len(l))
 		if err != nil {
