@@ -27,7 +27,7 @@ func Test_sortvlbytesfile(t *testing.T) {
 	var nr int
 
 	for _, st := range stypes {
-		log.Print("sortvlbytesfile test ", st)
+		log.Printf("sortvlbytesfile test %v %v", nrs, st)
 		dn, err := initmergedir("/tmp", "sortvlbytesfiletest")
 		if err != nil {
 			log.Fatal("sortvlbytesfile test initmergedir ", err)
@@ -45,7 +45,7 @@ func Test_sortvlbytesfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortvlbytesfile test NewWriter ", err)
 		}
-		for i, _ := range rsl {
+		for i := range rsl {
 			_, err := nw.WriteString(rsl[i] + "\n")
 			if err != nil {
 				log.Fatal("sortvlbytesfile test WriteString ", err)

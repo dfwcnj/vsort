@@ -27,14 +27,11 @@ func Test_sortvlstringsfile(t *testing.T) {
 	var nr int
 
 	for _, st := range stypes {
-		log.Print("sortvlstringsfile test ", st)
+		log.Printf("sortvlstringsfile test %v %v", nrs, st)
 		dn, err := initmergedir("/tmp", "sortvlstringsfiletest")
 		if err != nil {
 			log.Fatal("sortvlstringsfile test initmergedir ", err)
 		}
-		//log.Print("sortvlstringsfile test initmergedir ", dn)
-
-		//log.Println("sortvlstringsfile test")
 
 		ulns := randomdata.Randomstrings(nrs, rlen, r)
 
@@ -45,7 +42,7 @@ func Test_sortvlstringsfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortvlstringsfile test NewWriter ", err)
 		}
-		for i, _ := range ulns {
+		for i := range ulns {
 			_, err := nw.WriteString(ulns[i] + "\n")
 			if err != nil {
 				log.Fatal("sortvlstringsfile test WriteString ", err)
@@ -54,11 +51,10 @@ func Test_sortvlstringsfile(t *testing.T) {
 		}
 		nw.Flush()
 		fp.Close()
-		//log.Print("sortvlstringsfile test file ", fn)
 
 		t0 := time.Now()
 		lns, fns, err := sortvlstringsfile(fn, dn, st, iomem)
-		log.Printf("sortvlstringsfile %v duration %v", st, time.Since(t0))
+		log.Printf("sortvlstringsfile %v %v duration %v", fn, st, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortvlstringsfile test lns ", len(lns))
 		}
@@ -73,7 +69,6 @@ func Test_sortvlstringsfile(t *testing.T) {
 			}
 			finf, err := mfp.Stat()
 			lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
-			//log.Println("sortvlstringsfile test lns ", len(lns))
 
 			if slices.IsSorted(lns) == false {
 				t.Fatal("sortvlstringsfile test failed  ", f, " is not sorted")

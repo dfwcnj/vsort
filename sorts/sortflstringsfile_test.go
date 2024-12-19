@@ -27,14 +27,11 @@ func Test_sortflstringsfile(t *testing.T) {
 	var nr int
 
 	for _, st := range stypes {
-		log.Print("sortflstringsfile test ", st)
+		log.Printf("sortflstringsfile test %v %v", nrs, st)
 		dn, err := initmergedir("/tmp", "sortflstringsfiletest")
 		if err != nil {
 			log.Fatal("sortflstringsfile test initmergedir ", err)
 		}
-		//log.Print("sortflstringsfile test initmergedir ", dn)
-
-		//log.Println("sortflstringsfile test")
 
 		rsl := randomdata.Randomstrings(nrs, rlen, r)
 
@@ -45,7 +42,7 @@ func Test_sortflstringsfile(t *testing.T) {
 		if err != nil {
 			log.Fatal("sortflstringsfile test NewWriter ", err)
 		}
-		for i, _ := range rsl {
+		for i := range rsl {
 			_, err := nw.WriteString(rsl[i] + "\n")
 			if err != nil {
 				log.Fatal("sortflstringsfile test WriteString ", err)
@@ -54,7 +51,6 @@ func Test_sortflstringsfile(t *testing.T) {
 		}
 		nw.Flush()
 		fp.Close()
-		//log.Print("sortflstringsfile test file ", fn)
 
 		t0 := time.Now()
 		lns, fns, err := sortflstringsfile(fn, dn, st, rlen+1, 0, rlen, iomem)
@@ -62,8 +58,6 @@ func Test_sortflstringsfile(t *testing.T) {
 		if len(lns) != 0 {
 			log.Fatal("sortflstringsfile test lns ", len(lns))
 		}
-
-		//log.Println("sortflstringsfile test after fns ", fns, " ", err)
 
 		var nss int64
 		for _, f := range fns {

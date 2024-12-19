@@ -18,8 +18,8 @@ import (
 func Test_sortbytesfiles(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2)
-	bools[0] = true
-	bools[1] = false
+	bools[0] = false
+	bools[1] = true
 	var stypes []string = make([]string, 4)
 
 	stypes[0] = "heap"
@@ -32,7 +32,7 @@ func Test_sortbytesfiles(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Print("sortbytesfiles test ", st, " ", r)
+			log.Printf("sortbytesfiles test %v %v %v", nrs, st, r)
 
 			dn, err := initmergedir("/tmp", "sortbytesfilestest")
 			if err != nil {

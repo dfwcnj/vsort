@@ -60,7 +60,7 @@ func Test_sortstringsfilech(t *testing.T) {
 			nw.Flush()
 			fp.Close()
 
-			log.Printf("sortstringsfilech test %v %v %v", fn, st, r)
+			log.Printf("sortstringsfilech test %v %v %v", nrs, st, r)
 
 			// make output file string
 			mfn := "mergeout.txt"
@@ -79,13 +79,13 @@ func Test_sortstringsfilech(t *testing.T) {
 				log.Fatalf("sortstringsfilech test %vopen %v", mpath, err)
 			}
 			defer mfp.Close()
-			finf, err := mfp.Stat()
+			// finf, err := mfp.Stat()
 
-			var slns = make([]string, 0)
+			var slns []string
 			if r == true {
-				slns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
+				slns, _, err = merge.Vlreadstrings(mfp, 0, iomem)
 			} else {
-				slns, _, err = merge.Flreadstrings(mfp, 0, rlen, finf.Size())
+				slns, _, err = merge.Flreadstrings(mfp, 0, rlen, iomem)
 			}
 			if err != nil {
 				t.Fatalf("sortstringsfilech test readstrings %v %v", mpath, err)

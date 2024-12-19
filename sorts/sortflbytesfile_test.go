@@ -27,14 +27,12 @@ func Test_sortflbytesfile(t *testing.T) {
 	var nr int
 
 	for _, st := range stypes {
-		log.Print("sortflbytesfile test ", st)
+		log.Printf("sortflbytesfile test %v %v", nrs, st)
 		dn, err := initmergedir("/tmp", "sortflbytesfiletest")
 		if err != nil {
 			log.Fatal("sortflbytesfile test initmergedir ", err)
 		}
 		//log.Print("sortflbytesfile test initmergedir ", dn)
-
-		log.Println("sortflbytesfile test")
 
 		ulns := randomdata.Randomstrings(nrs, rlen, r)
 

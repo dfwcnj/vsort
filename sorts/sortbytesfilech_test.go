@@ -59,31 +59,34 @@ func Test_sortbytesfilech(t *testing.T) {
 			nw.Flush()
 			fp.Close()
 
-			log.Printf("sortbytesfilech test %v %v %v", fn, st, r)
+			log.Printf("sortbytesfilech test %v %v %v %v", fn, nrs, st, r)
 
 			// make output file string
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
 
 			t0 := time.Now()
-			sortbytesfilech(fn, mpath, st, rlen, 0, rlen, iomem)
-			log.Printf("sortbytesfilech test %v %v %v duration %v", mpath, st, r, time.Since(t0))
+			if r == true {
+				sortbytesfilech(fn, mpath, st, 0, 0, 0, iomem)
+			} else {
+				sortbytesfilech(fn, mpath, st, rlen, 0, rlen, iomem)
+			}
+			log.Printf("sortbytesfilech test %v %v duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
 				log.Fatalf("sortbytesfilech test %vopen %v", mpath, err)
 			}
-			finf, err := mfp.Stat()
+			// finf, err := mfp.Stat()
 
-			var slns = make([]string, 0)
-			var fns []string
+			var slns []string
 			if r == true {
-				slns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
+				slns, _, err = merge.Vlreadstrings(mfp, 0, iomem)
 			} else {
-				slns, _, err = merge.Flreadstrings(mfp, 0, rlen, finf.Size())
+				slns, _, err = merge.Flreadstrings(mfp, 0, rlen, iomem)
 			}
 			if err != nil {
-				t.Fatalf("sortbytesfilech test readstrings %v %v", mpath, len(fns))
+				t.Fatalf("sortbytesfilech test readstrings %v %v %v", mpath, len(slns), err)
 			}
 			if nrs != int64(len(slns)) {
 				t.Fatalf("sortbytesfilech test %v wanted %v got %v", mpath, nrs, len(slns))

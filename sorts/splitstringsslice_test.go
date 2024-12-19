@@ -22,7 +22,9 @@ func Test_splitstringsslice(t *testing.T) {
 			ssl := randomdata.Randomstrings(nrs, rlen, r)
 
 			parts := splitstringsslice(ssl, np)
-			log.Printf("splitstringsslice %v parts", len(parts))
+			if len(parts) != np {
+				log.Fatalf("splitstringsslice test wanted %v got %v", np, len(parts))
+			}
 
 			var nlns int64
 			for i, part := range parts {

@@ -27,7 +27,9 @@ func Test_splitbytesslice(t *testing.T) {
 			}
 
 			parts := splitbytesslice(bsl, np)
-			log.Printf("splitbytesslice %v parts", len(parts))
+			if len(parts) != np {
+				log.Fatalf("splitbytesslice test wanted %v got  %v ", np, len(parts))
+			}
 
 			var nlns int64
 			for i, part := range parts {

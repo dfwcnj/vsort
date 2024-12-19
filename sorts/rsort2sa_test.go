@@ -39,11 +39,10 @@ func Test_rsort2sa(t *testing.T) {
 
 				if !slices.IsSorted(lns) {
 					t.Error("rsort2sa test failed for size ", nl)
-				} else {
-					log.Print("rsort2sa test passed for ", nl)
 				}
 			}
 
 		}
 	}
+	log.Print("rsort2sa test passed")
 }

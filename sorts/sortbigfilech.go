@@ -87,9 +87,14 @@ func sortbigbytesfilech(fn, dn string, stype string, reclen, keyoff, keylen int,
 		wg.Wait()
 
 		tparts := make([][][]byte, len(parts))
+		var ns int
 		for i := range tparts {
 			tparts[i] = <-inch
+			ns += len(parts[i])
 			// log.Printf("sortbigbytesfilech tpart %v %v", i, len(tparts[i]))
+		}
+		if ns != len(lns) {
+			log.Fatalf("sortbifbytesfilech sortbytesslicech %v %v wanted %v got %v", fn, stype, len(lns), ns)
 		}
 
 		mfn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, i)))

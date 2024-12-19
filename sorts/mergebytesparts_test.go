@@ -21,7 +21,6 @@ func Test_mergebytesparts(t *testing.T) {
 	var nrs int64 = 1 << 20
 
 	var nparts = 10
-	var parts = make([][][]byte, 0, nparts)
 
 	for _, r := range bools {
 		log.Print("mergebytesparts test ", r)
@@ -31,27 +30,22 @@ func Test_mergebytesparts(t *testing.T) {
 			log.Fatal("mergebytefiles test initmergedir ", err)
 		}
 
-		for range nparts {
-			var lns [][]byte
-
-			rsl := randomdata.Randomstrings(nrs, rlen, r)
-
-			for _, s := range rsl {
-				ln := []byte(s)
-				if r == true {
-					ln = append(ln, "\n"...)
-				}
-				lns = append(lns, ln)
-			}
-
+		rsl := randomdata.Randomstrings(nrs*int64(nparts), rlen, r)
+		var lns [][]byte
+		for _, s := range rsl {
+			ln := []byte(s)
 			if r == true {
-				rsort2ba(lns)
-			} else {
-				kvrsort2a(lns, rlen, 0, rlen)
+				ln = append(ln, "\n"...)
 			}
-
-			parts = append(parts, lns)
+			lns = append(lns, ln)
 		}
+		if r == true {
+			rsort2ba(lns)
+		} else {
+			kvrsort2a(lns, rlen, 0, rlen)
+		}
+		parts := splitbytesslice(lns, nparts)
+
 		// log.Printf("mergebytesparts test nparts %v ", len(parts))
 
 		mfn := "mergeout.txt"

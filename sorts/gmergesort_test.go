@@ -13,8 +13,8 @@ func Test_gmergesort(t *testing.T) {
 	//ls := []int64{1, 2, 1 << 4, 1 << 8, 1 << 16, 1 << 20}
 	ls := []int64{1 << 20}
 	var bools []bool = make([]bool, 2, 2)
-	bools[0] = true
-	bools[1] = false
+	bools[0] = false
+	bools[1] = true
 
 	for _, nl := range ls {
 		for _, r := range bools {

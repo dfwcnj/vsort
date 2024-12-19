@@ -31,7 +31,7 @@ func Test_sortbytesfilesch(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Print("sortbytesfilesch test ", st, " ", r)
+			log.Printf("sortbytesfilesch test %v %v %v", nrs, st, r)
 
 			dn, err := initmergedir("/tmp", "sortbytesfileschtest")
 			if err != nil {

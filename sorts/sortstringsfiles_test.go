@@ -31,16 +31,15 @@ func Test_sortstringsfiles(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Print("sortstringsfiles test ", st, " ", r)
+			log.Printf("sortstringsfiles test %v %v %v", nrs, st, r)
 
 			dn, err := initmergedir("/tmp", "sortstringsfilestest")
 			if err != nil {
 				log.Fatal("sortstringsfiles test initmergedir ", err)
 			}
-			//log.Print("sortstringsfiles test initmergedir ", dn)
 
 			var fns []string
-			//log.Print("sortstringsfiles test making ", nmf, " files to sort")
+
 			var tns int64
 			for i := range nmf {
 
@@ -55,7 +54,6 @@ func Test_sortstringsfiles(t *testing.T) {
 				}
 
 				var fn = filepath.Join(dn, fmt.Sprint("sortstringsfilestest", i))
-				//log.Println("sortstringsfiles test saving ", fn)
 				merge.Savestringmergefile(lns, fn)
 				fns = append(fns, fn)
 				if r == true {
@@ -64,8 +62,6 @@ func Test_sortstringsfiles(t *testing.T) {
 					tns += filereccount(fn, rlen)
 				}
 			}
-
-			// log.Print("sortstringsfiles test test files record count ", tns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)

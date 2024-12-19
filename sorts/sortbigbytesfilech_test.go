@@ -16,10 +16,10 @@ import (
 func Test_sortbigbytesfilech(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2)
-	bools[0] = true
-	bools[1] = false
-	var nrs int64 = 1 << 20
-	var iomem int64 = nrs * int64(rlen/2)
+	bools[0] = false
+	bools[1] = true
+	var nrs int64 = 1 << 22
+	var iomem int64 = nrs * int64(rlen/4)
 	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
 	stypes[1] = "merge"
@@ -30,7 +30,7 @@ func Test_sortbigbytesfilech(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Printf("sortbigbytesfilech test %v %v", st, r)
+			log.Printf("sortbigbytesfilech test %v %v %v", nrs, st, r)
 			dn, err := initmergedir("/tmp", "sortbigbytesfilechtest")
 			if err != nil {
 				log.Fatal("sortbigbytesfilech test initmergedir ", err)

@@ -85,7 +85,7 @@ func Test_vlreadstrings(t *testing.T) {
 		}
 	}
 	if tnrs != nrs {
-		t.Fatalf("vlreadstrings testexpected %v got %v", nrs, tnrs)
+		t.Fatalf("vlreadstrings test expected %v got %v", nrs, tnrs)
 	}
 	log.Print("vlreadstrings test passed")
 }

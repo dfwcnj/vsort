@@ -25,7 +25,7 @@ func Test_sortstringsslicech(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Printf("sortstringsslicech test %v %v", st, r)
+			log.Printf("sortstringsslicech test %v %v %v", nrs, st, r)
 
 			rsl := randomdata.Randomstrings(nrs, rlen, r)
 

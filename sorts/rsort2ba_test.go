@@ -52,9 +52,7 @@ func Test_rsort2ba(t *testing.T) {
 				}
 
 				if !slices.IsSorted(ssl) {
-					t.Error("rsort2ba test failed for size ", nl)
-				} else {
-					log.Print("rsort2ba test passed for ", nl)
+					t.Error("rsort2ba test bytes failed for size ", nl)
 				}
 
 				//log.Print("testing rsort2ba of ", nl, " random uints")
@@ -83,11 +81,10 @@ func Test_rsort2ba(t *testing.T) {
 				}
 				if !slices.IsSorted(ulns) {
 					t.Fatal("rsort2ba test failed for size ", nl)
-				} else {
-					log.Print("rsort2ba test passed for ", nl)
 				}
 			}
 
 		}
 	}
+	log.Print("rsort2ba test passed")
 }
