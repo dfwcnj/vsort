@@ -121,6 +121,10 @@ func vlreadallstrings(fp *os.File) ([]string, int64, error) {
 		if len(l) == 0 {
 			continue
 		}
+		if !strings.HasSuffix(l, "\n") {
+			// contrary to pkg.go.dev/bufio@go1.23.4#Reader.ReadString
+			l = l + "\n"
+		}
 		lns = append(lns, l)
 		off += int64(len(l))
 	}

@@ -112,6 +112,10 @@ func vlreadallbytes(fp *os.File) ([][]byte, int64, error) {
 		if len(l) == 0 {
 			continue
 		}
+		if !strings.HasSuffix(l, "\n") {
+			// contrary to pkg.go.dev/bufio@go1.23.4#Reader.ReadString
+			l = l + "\n"
+		}
 		lns = append(lns, []byte(l))
 		off += int64(len(l))
 	}
@@ -151,7 +155,7 @@ func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error
 
 	for {
 		if fp != os.Stdin && memused >= iomem {
-			//log.Println("vlreadbytes memused >= iomem")
+			// log.Println("vlreadbytes newlines added memused >= iomem")
 			return lns, offset, nil
 		}
 
@@ -167,6 +171,7 @@ func Vlreadbytes(fp *os.File, offset int64, iomem int64) ([][]byte, int64, error
 					offset += int64(len(l))
 					lns = append(lns, []byte(l))
 				}
+				// log.Println("vlreadbytes newlines added EOF")
 				return lns, offset, err
 			}
 			log.Fatal("vlreadbytes readstring ", err)
