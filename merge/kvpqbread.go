@@ -140,7 +140,7 @@ func kvpqbreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []strin
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvbitem)
 		if string(ritem.ln) == "\n" {
-			log.Fatal("kvpqbreademit pop line ", string(ritem.ln))
+			log.Fatal("kvpqbreademit pop newline ", string(ritem.ln))
 		}
 		_, err := nw.WriteString(string(ritem.ln))
 		if err != nil {

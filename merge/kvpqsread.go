@@ -134,7 +134,7 @@ func kvpqsreademit(ofp *os.File, reclen int, keyoff int, keylen int, fns []strin
 	for pq.Len() > 0 {
 		ritem := heap.Pop(&pq).(*kvsitem)
 		if string(ritem.ln) == "\n" {
-			log.Fatal("kvpqsreademit pop line ", string(ritem.ln))
+			log.Fatal("kvpqsreademit pop newline ", string(ritem.ln))
 		}
 		_, err := nw.WriteString(string(ritem.ln))
 		if err != nil {

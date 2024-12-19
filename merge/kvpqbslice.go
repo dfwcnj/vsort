@@ -105,7 +105,7 @@ func kvpqbslicesmerge(reclen, keyoff, keylen int, bparts [][][]byte) [][]byte {
 			continue
 		}
 		if string(ritem.ln) == "\n" {
-			log.Fatal("kvpqssliceemit pop line ", string(ritem.ln))
+			log.Fatal("kvpqsslicemerge pop newline ", string(ritem.ln))
 		}
 		osl = append(osl, ritem.ln)
 
@@ -141,7 +141,7 @@ func kvpqbsliceemit(ofp *os.File, reclen int, keyoff int, keylen int, bparts [][
 		ritem := heap.Pop(&pq).(*kvbsitem)
 		// log.Printf("kvpqbsliceemit line pop  %v", string(ritem.ln))
 		if string(ritem.ln) == "\n" {
-			log.Fatal("kvpqbsliceemit pop line ", string(ritem.ln))
+			log.Fatal("kvpqbsliceemit pop newline ", string(ritem.ln))
 		}
 		_, err := nw.WriteString(string(ritem.ln))
 		if err != nil {
