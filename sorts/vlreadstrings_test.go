@@ -65,7 +65,7 @@ func Test_vlreadstrings(t *testing.T) {
 	}
 	defer fp.Close()
 	for {
-		log.Printf("vlreadstrings test vlreadstrings %v offset %v", fn, offset)
+		// log.Printf("vlreadstrings test vlreadstrings %v offset %v", fn, offset)
 		tlns, offset, err = merge.Vlreadstrings(fp, offset, iomem)
 		if err != nil && err != io.EOF {
 			t.Fatalf("flreadstrings test %v %v", fn, err)

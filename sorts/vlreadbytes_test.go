@@ -63,7 +63,7 @@ func Test_vlreadbytes(t *testing.T) {
 	}
 	defer fp.Close()
 	for {
-		log.Printf("vlreadbytes test vlreadbytes %v offset %v", fn, offset)
+		// log.Printf("vlreadbytes test vlreadbytes %v offset %v", fn, offset)
 		tlns, offset, err = merge.Vlreadbytes(fp, offset, iomem)
 		if err != nil && err != io.EOF {
 			t.Fatalf("flreadbytes test %v %v", fn, err)

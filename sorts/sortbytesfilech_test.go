@@ -59,7 +59,7 @@ func Test_sortbytesfilech(t *testing.T) {
 			nw.Flush()
 			fp.Close()
 
-			log.Printf("sortbytesfilech test %v %v %v %v", fn, nrs, st, r)
+			// log.Printf("sortbytesfilech test %v %v %v %v", fn, nrs, st, r)
 
 			// make output file string
 			mfn := "mergeout.txt"
