@@ -65,7 +65,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	var wg sync.WaitGroup
 	wg.Add(len(parts))
 	for i := range parts {
-		log.Printf("sortbytesfilech calling sortbytesslicech %v", len(parts[i]))
+		// log.Printf("sortbytesfilech calling sortbytesslicech %v", len(parts[i]))
 		go func() {
 			defer wg.Done()
 			sortbytesslicech(parts[i], stype, reclen, keyoff, keylen, inch)
@@ -148,7 +148,7 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	var wg sync.WaitGroup
 	wg.Add(len(parts))
 	for _, part := range parts {
-		log.Printf("sortstringsfilech sending %v", len(part))
+		// log.Printf("sortstringsfilech calling %v", len(part))
 		go func() {
 			defer wg.Done()
 			sortstringsslicech(part, stype, reclen, keyoff, keylen, inch)
@@ -156,13 +156,11 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	}
 	wg.Wait()
 
-	tparts := make([][]string, 0, nc)
-	log.Printf("sortstringsfilech tparts %v", len(tparts))
-	var ok bool
+	tparts := make([][]string, nc)
+	// log.Printf("sortstringsfilech tparts %v", len(tparts))
 	var ns int
 	for i := range tparts {
-		lns, ok = <-inch
-		log.Printf("sortstringsfilech receiving %v", len(lns))
+		lns, ok := <-inch
 		tparts[i] = lns
 		if ok == false {
 			log.Printf("sortstringsfilech tpart %v <- inch %v", i, ok)
