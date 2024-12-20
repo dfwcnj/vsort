@@ -72,7 +72,7 @@ func Test_sortstringsfilech(t *testing.T) {
 			} else {
 				sortstringsfilech(fn, mpath, st, rlen, 0, rlen, iomem)
 			}
-			log.Printf("sortstringsfilech test after sort %v %v %v duration %v", mpath, st, r, time.Since(t0))
+			// log.Printf("sortstringsfilech test after sort %v %v %v duration %v", mpath, st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
