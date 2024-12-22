@@ -1,6 +1,0 @@
-
-merge infrastructure sort lines
-
-fixed or variable length records
-fixed length records may be delimited
-variable length records must be delimited
