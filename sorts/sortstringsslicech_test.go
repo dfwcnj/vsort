@@ -20,7 +20,7 @@ func Test_sortstringsslicech(t *testing.T) {
 	stypes[1] = "merge"
 	stypes[2] = "radix"
 	stypes[3] = "std"
-	var nrs int64 = 1 << 20
+	var nrs int64 = 1 << 23
 	var ns int = 10
 
 	for _, st := range stypes {

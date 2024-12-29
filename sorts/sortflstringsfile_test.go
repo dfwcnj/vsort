@@ -17,7 +17,7 @@ import (
 func Test_sortflstringsfile(t *testing.T) {
 	var rlen int = 32
 	var r bool = false
-	var nrs int64 = 1 << 20
+	var nrs int64 = 1 << 23
 	var iomem int64 = nrs * int64(rlen/2)
 	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
