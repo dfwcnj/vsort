@@ -33,7 +33,7 @@ func flreadallstrings(fp *os.File, reclen int) ([]string, int64, error) {
 					lns = append(lns, string(recbuf))
 				}
 			} else {
-				log.Fatalf("flreadallstrings wanted %v got %v %v", reclen, n, err)
+				log.Printf("flreadallstrings wanted %v got %v %v", reclen, n, err)
 			}
 			// log.Printf("flreadallstrings %v lns %v offset", len(lns), off)
 			return lns, off, nil

@@ -12,7 +12,7 @@ vet: fmt
 	go vet
 
 test: vet
-	go test -timeout 15m
+	go test -timeout 20m
 
 check: vet
 	staticcheck .

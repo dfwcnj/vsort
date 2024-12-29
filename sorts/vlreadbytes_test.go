@@ -50,7 +50,7 @@ func Test_vlreadbytes(t *testing.T) {
 	if err != nil {
 		t.Fatal("vlreadbytes test flush ", err)
 	}
-	finf, err := fp.Stat()
+	finf, _ := fp.Stat()
 	log.Printf("vlreadbytes test %v size %v", fn, finf.Size())
 	fp.Close()
 

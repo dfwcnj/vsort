@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -40,11 +41,11 @@ func Test_sortvlbytesfile(t *testing.T) {
 
 		fn := path.Join(dn, "sortvlbytesfiletest")
 		fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			log.Fatalf("sortvlbytesfile test %v open %v", fn, err)
+		}
 		defer fp.Close()
 		nw := bufio.NewWriter(fp)
-		if err != nil {
-			log.Fatal("sortvlbytesfile test NewWriter ", err)
-		}
 		for i := range rsl {
 			_, err := nw.WriteString(rsl[i] + "\n")
 			if err != nil {
@@ -58,7 +59,10 @@ func Test_sortvlbytesfile(t *testing.T) {
 
 		t0 := time.Now()
 		lns, fns, err := sortvlbytesfile(fn, dn, st, iomem)
-		log.Printf("sortvlbytesfile %v duration %v", st, time.Since(t0))
+		if err != nil && err != io.EOF {
+			t.Fatalf("sortvlbytesfile test sort %v %v %v", fn, st, err)
+		}
+		log.Printf("sortvlbytesfile test %v duration %v", st, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortvlbytesfile test lns ", len(lns))
 		}
@@ -71,8 +75,11 @@ func Test_sortvlbytesfile(t *testing.T) {
 			if err != nil {
 				log.Fatal("sortvlbytesfile test open ", err)
 			}
-			finf, err := mfp.Stat()
+			finf, _ := mfp.Stat()
 			lns, _, err = merge.Vlreadbytes(mfp, 0, finf.Size())
+			if err != nil && err != io.EOF {
+				t.Fatalf("sortvlbytesfile test vlread %v %v %v", f, st, err)
+			}
 			//log.Println("sortvlbytesfile test lns ", len(lns))
 
 			var slns = make([]string, 0)

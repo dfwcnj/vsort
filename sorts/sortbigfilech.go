@@ -12,6 +12,20 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
+func sortbigbytesfilechshim(fn, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
+	var r mflst
+	lns, fns, err := sortbigbytesfilech(fn, dn, stype, reclen, keyoff, keylen, iomem)
+	if err != nil && err != io.EOF {
+		log.Fatalf("sortbigbytesfileshim %v %v", fn, err)
+	}
+	if len(lns) != 0 {
+		log.Fatalf("sortbigbytesfileshim %v lns %v", fn, len(lns))
+	}
+	r.mfls = fns
+	r.err = err
+	res <- r
+}
+
 // sortbigbytesfilech
 // sort a file concurrently splitting big files into iomem chunks
 // fn - file to sort
@@ -109,6 +123,20 @@ func sortbigbytesfilech(fn, dn string, stype string, reclen, keyoff, keylen int,
 		i++
 	}
 
+}
+
+func sortbigstringsfilechshim(fn, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
+	var r mflst
+	lns, fns, err := sortbigstringsfilech(fn, dn, stype, reclen, keyoff, keylen, iomem)
+	if err != nil && err != io.EOF {
+		log.Fatalf("sortbigbytesfileshim %v %v", fn, err)
+	}
+	if len(lns) != 0 {
+		log.Fatalf("sortbigbytesfileshim %v lns %v", fn, len(lns))
+	}
+	r.mfls = fns
+	r.err = err
+	res <- r
 }
 
 // sortbigtringsilech

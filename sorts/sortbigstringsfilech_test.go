@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -18,7 +19,7 @@ func Test_sortbigstringsfilech(t *testing.T) {
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
-	var nrs int64 = 1 << 22
+	var nrs int64 = 1 << 23
 	var iomem int64 = nrs * int64(rlen/4)
 	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
@@ -60,7 +61,7 @@ func Test_sortbigstringsfilech(t *testing.T) {
 				nr++
 			}
 			nw.Flush()
-			finf, err := fp.Stat()
+			finf, _ := fp.Stat()
 			fp.Close()
 			// log.Printf("sortbigstringsfilech test %v size %v ", fn, finf.Size())
 
@@ -71,6 +72,9 @@ func Test_sortbigstringsfilech(t *testing.T) {
 				lns, fns, err = sortbigstringsfilech(fn, dn, st, 0, 0, 0, iomem)
 			} else {
 				lns, fns, err = sortbigstringsfilech(fn, dn, st, rlen, 0, rlen, iomem)
+			}
+			if err != nil && err != io.EOF {
+				log.Fatalf("sortbigstringsfilech %v %v %v", fn, r, err)
 			}
 			log.Printf("sortbigstringsfilech test %v %v duration %v", st, r, time.Since(t0))
 			if len(lns) != 0 {

@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -38,11 +39,11 @@ func Test_sortflbytesfile(t *testing.T) {
 
 		fn := path.Join(dn, "sortflbytesfiletest")
 		fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			log.Fatalf("sortflbytesfile %v open %v ", fn, err)
+		}
 		defer fp.Close()
 		nw := bufio.NewWriter(fp)
-		if err != nil {
-			log.Fatal("sortflbytesfile test NewWriter ", err)
-		}
 
 		for i := range ulns {
 			_, err := nw.Write([]byte(ulns[i]))
@@ -57,6 +58,9 @@ func Test_sortflbytesfile(t *testing.T) {
 
 		t0 := time.Now()
 		lns, fns, err := sortflbytesfile(fn, dn, st, rlen, 0, rlen, iomem)
+		if err != nil && err != io.EOF {
+			t.Fatalf("sortflbytesfile test %v %v %v", fn, r, err)
+		}
 		log.Printf("sortflbbytesfile %v %v duration %v", st, r, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortflbytesfile test lns ", len(lns))
@@ -70,8 +74,11 @@ func Test_sortflbytesfile(t *testing.T) {
 			if err != nil {
 				log.Fatal("sortflbytesfile test open ", err)
 			}
-			finf, err := mfp.Stat()
+			finf, _ := mfp.Stat()
 			lns, _, err = merge.Flreadbytes(mfp, 0, rlen, finf.Size())
+			if err != nil && err != io.EOF {
+				t.Fatalf("sortflbytesfile test flread %v %v", f, err)
+			}
 			//log.Println("sortflbytesfile test lns ", len(lns))
 
 			var slns = make([]string, 0)

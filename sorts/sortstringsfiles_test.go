@@ -48,7 +48,7 @@ func Test_sortstringsfiles(t *testing.T) {
 					log.Fatal("sortstringsfiles test before sort wanted len ", nrs, " got ", len(lns))
 				}
 				if r == true {
-					for i, _ := range lns {
+					for i := range lns {
 						lns[i] = lns[i] + "\n"
 					}
 				}

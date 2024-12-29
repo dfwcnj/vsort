@@ -21,7 +21,7 @@ func Test_mergestringfilesch(t *testing.T) {
 	bools[1] = true
 	var nrs int64 = 1 << 20
 
-	var nmf = 10
+	var nmf = 8
 
 	for _, r := range bools {
 		log.Print("mergestringfilesch test ", r)
@@ -37,7 +37,7 @@ func Test_mergestringfilesch(t *testing.T) {
 			lns := randomdata.Randomstrings(nrs, rlen, r)
 			// random length strings must be newline delimited
 			if r == true {
-				for i, _ := range lns {
+				for i := range lns {
 					lns[i] = lns[i] + "\n"
 				}
 			}

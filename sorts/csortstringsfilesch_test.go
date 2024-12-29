@@ -15,7 +15,7 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-func Test_sortstringsfilesch(t *testing.T) {
+func Test_csortstringsfilesch(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
@@ -31,11 +31,11 @@ func Test_sortstringsfilesch(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Printf("sortstringsfilesch test %v %v %v", nrs, st, r)
+			log.Printf("csortstringsfilesch test %v %v %v", nrs, st, r)
 
-			dn, err := initmergedir("/tmp", "sortstringsfileschtest")
+			dn, err := initmergedir("/tmp", "csortstringsfileschtest")
 			if err != nil {
-				log.Fatal("sortstringsfilesch test initmergedir ", err)
+				log.Fatal("csortstringsfilesch test initmergedir ", err)
 			}
 
 			var fns []string
@@ -49,7 +49,7 @@ func Test_sortstringsfilesch(t *testing.T) {
 					}
 				}
 
-				var fn = filepath.Join(dn, fmt.Sprint("sortstringsfileschtest", i))
+				var fn = filepath.Join(dn, fmt.Sprint("csortstringsfileschtest", i))
 				merge.Savestringmergefile(lns, fn)
 				fns = append(fns, fn)
 
@@ -65,15 +65,15 @@ func Test_sortstringsfilesch(t *testing.T) {
 
 			t0 := time.Now()
 			if r == true {
-				Sortstringsfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
+				CSortstringsfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
-				Sortstringsfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
+				CSortstringsfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
-			log.Printf("sortstringsfilesch test %v %v duration %v", st, r, time.Since(t0))
+			log.Printf("csortstringsfilesch test %v %v duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
-				log.Fatalf("sortstringsfilesch test %v open %v ", mpath, err)
+				log.Fatalf("csortstringsfilesch test %v open %v ", mpath, err)
 			}
 			defer mfp.Close()
 
@@ -92,19 +92,19 @@ func Test_sortstringsfilesch(t *testing.T) {
 						if err == io.EOF {
 							break
 						}
-						log.Fatal("sortstringsfilesch test  readfull ", err)
+						log.Fatal("csortstringsfilesch test  readfull ", err)
 					}
 					mlns = append(mlns, string(ln))
 				}
 			}
 			if len(mlns) != int(nrs)*nmf {
-				t.Fatal("sortstringsfilesch test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
+				t.Fatal("csortstringsfilesch test ", nmf, " wanted ", int(nrs)*nmf, " got ", len(mlns))
 			}
 			if !slices.IsSorted(mlns) {
-				t.Fatal("sortstringsfilesch test lines in ", mpath, " not in sort order")
+				t.Fatal("csortstringsfilesch test lines in ", mpath, " not in sort order")
 			}
 		}
 	}
-	log.Print("sortstringsfilesch test passed")
+	log.Print("csortstringsfilesch test passed")
 
 }

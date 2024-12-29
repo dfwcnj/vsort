@@ -1,7 +1,6 @@
 package sorts
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -25,15 +24,13 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 	var mfiles []string
 	// log.Printf("Sortbytesfiles ofn %v dn %v stype %v reclen %v keyoff %v keylen %v, iomem %v ", ofn, dn, stype, reclen, keyoff, keylen, iomem)
 
-	var fp *os.File
+	var fp *os.File = os.Stdout
 	if ofn != "" {
 		fp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0600)
 		if err != nil {
 			log.Fatal("Sortbytesfiles open ", err)
 		}
 		defer fp.Close()
-	} else {
-		fp = os.Stdout
 	}
 
 	if len(fns) == 0 {
@@ -68,7 +65,10 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 				lns, mfns, err = sortvlbytesfile(fn, dn, stype, iomem)
 			}
 			if err != nil && err != io.EOF {
-				log.Fatal("Sortbytesfiles after sort ", err)
+				log.Fatalf("Sortbytesfiles sort[fv]bytesfile %v", err)
+			}
+			if len(lns) != 0 {
+				log.Fatalf("Sortbytesfiles sort[fv]lbytesfile lns %v", len(lns))
 			}
 			if len(mfns) > 0 {
 				mfiles = append(mfiles, mfns...)
@@ -77,10 +77,9 @@ func Sortbytesfiles(fns []string, ofn string, dn string, stype string, reclen in
 				log.Fatal("Sortbytesfiles no mergefiles")
 			}
 
-			mfn := fmt.Sprintf("%s", filepath.Base(fn))
+			mfn := filepath.Base(fn)
 			mpath := filepath.Join(dn, mfn)
-			var mf string
-			mf = merge.Savebytemergefile(lns, mpath)
+			mf := merge.Savebytemergefile(lns, mpath)
 			if mf == "" {
 				log.Fatal("Sortbytesfiles Savemergefile failed ", mpath)
 			}

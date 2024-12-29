@@ -2,6 +2,7 @@ package sorts
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -37,11 +38,11 @@ func Test_sortvlstringsfile(t *testing.T) {
 
 		fn := path.Join(dn, "sortvlstringsfiletest")
 		fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+		if err != nil {
+			log.Fatalf("sortvlstringsfile %v open %v", fn, err)
+		}
 		defer fp.Close()
 		nw := bufio.NewWriter(fp)
-		if err != nil {
-			log.Fatal("sortvlstringsfile test NewWriter ", err)
-		}
 		for i := range ulns {
 			_, err := nw.WriteString(ulns[i] + "\n")
 			if err != nil {
@@ -54,6 +55,9 @@ func Test_sortvlstringsfile(t *testing.T) {
 
 		t0 := time.Now()
 		lns, fns, err := sortvlstringsfile(fn, dn, st, iomem)
+		if err != nil && err != io.EOF {
+			t.Fatalf("sortvlstringsfile test sort %v %v %v", fn, st, err)
+		}
 		log.Printf("sortvlstringsfile %v duration %v", st, time.Since(t0))
 		if len(lns) != 0 {
 			log.Fatal("sortvlstringsfile test lns ", len(lns))
@@ -67,8 +71,11 @@ func Test_sortvlstringsfile(t *testing.T) {
 			if err != nil {
 				log.Fatal("sortvlstringsfile test open ", err)
 			}
-			finf, err := mfp.Stat()
+			finf, _ := mfp.Stat()
 			lns, _, err = merge.Vlreadstrings(mfp, 0, finf.Size())
+			if err != nil && err != io.EOF {
+				t.Fatalf("sortvlstringsfile test vlread %v %v", f, err)
+			}
 
 			if slices.IsSorted(lns) == false {
 				t.Fatal("sortvlstringsfile test failed  ", f, " is not sorted")

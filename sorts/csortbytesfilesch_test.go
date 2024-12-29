@@ -15,7 +15,7 @@ import (
 	"github.com/dfwcnj/vsort/merge"
 )
 
-func Test_sortbytesfilesch(t *testing.T) {
+func Test_csortbytesfilesch(t *testing.T) {
 	var rlen int = 32
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
@@ -31,13 +31,13 @@ func Test_sortbytesfilesch(t *testing.T) {
 
 	for _, st := range stypes {
 		for _, r := range bools {
-			log.Printf("sortbytesfilesch test %v %v %v", nrs, st, r)
+			log.Printf("csortbytesfilesch test %v %v %v", nrs, st, r)
 
-			dn, err := initmergedir("/tmp", "sortbytesfileschtest")
+			dn, err := initmergedir("/tmp", "csortbytesfileschtest")
 			if err != nil {
-				log.Fatal("sortbytesfilesch test initmergedir ", err)
+				log.Fatal("csortbytesfilesch test initmergedir ", err)
 			}
-			//log.Print("sortbytesfilesch test initmergedir ", dn)
+			//log.Print("csortbytesfilesch test initmergedir ", dn)
 
 			var fns []string
 			var tns int64
@@ -53,11 +53,11 @@ func Test_sortbytesfilesch(t *testing.T) {
 					lns = append(lns, ln)
 				}
 				if len(lns) != int(nrs) {
-					log.Fatal("sortbytesfilesch test before sort wanted len ", nrs, " got ", len(lns))
+					log.Fatal("csortbytesfilesch test before sort wanted len ", nrs, " got ", len(lns))
 				}
 
-				var fn = filepath.Join(dn, fmt.Sprint("sortbytesfileschtest", i))
-				//log.Print("sortbytesfilesch test saving ", fn)
+				var fn = filepath.Join(dn, fmt.Sprint("csortbytesfileschtest", i))
+				//log.Print("csortbytesfilesch test saving ", fn)
 				merge.Savebytemergefile(lns, fn)
 				fns = append(fns, fn)
 				if r == true {
@@ -67,22 +67,22 @@ func Test_sortbytesfilesch(t *testing.T) {
 				}
 			}
 
-			// log.Print("sortbytesfilesch test test files to sort ", fns)
+			// log.Print("csortbytesfilesch test test files to sort ", fns)
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
 
 			t0 := time.Now()
 			if r == true {
-				Sortbytesfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
+				CSortbytesfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
 			} else {
-				Sortbytesfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
+				CSortbytesfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
 			}
-			log.Printf("sortbytesfilesch test %v %v  duration %v", st, r, time.Since(t0))
+			log.Printf("csortbytesfilesch test %v %v  duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
-				log.Fatal("sortbytesfilesch test ", err)
+				log.Fatal("csortbytesfilesch test ", err)
 			}
 			defer mfp.Close()
 
@@ -104,19 +104,19 @@ func Test_sortbytesfilesch(t *testing.T) {
 						if err == io.EOF {
 							break
 						}
-						log.Fatal("sortbytesfilesch test  readfull ", err)
+						log.Fatal("csortbytesfilesch test  readfull ", err)
 					}
 					mlns = append(mlns, string(ln))
 				}
 			}
 			if nlns != nrs*int64(nmf) {
-				t.Fatal("sortbytesfilesch test ", nmf, " wanted ", int(nrs)*nmf, " got ", nlns)
+				t.Fatal("csortbytesfilesch test ", nmf, " wanted ", int(nrs)*nmf, " got ", nlns)
 			}
 			if !slices.IsSorted(mlns) {
-				t.Fatal("sortbytesfilesch test lines in ", mpath, " not in sort order")
+				t.Fatal("csortbytesfilesch test lines in ", mpath, " not in sort order")
 			}
 		}
 	}
-	log.Print("sortbytesfilesch test passed")
+	log.Print("csortbytesfilesch test passed")
 
 }

@@ -19,7 +19,7 @@ func Test_sortbytesfilech(t *testing.T) {
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
-	var nrs int64 = 1 << 20
+	var nrs int64 = 1 << 23
 	var iomem int64 = 1 << 28
 	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"
@@ -40,11 +40,11 @@ func Test_sortbytesfilech(t *testing.T) {
 
 			fn := path.Join(dn, "sortbytesfilechtest")
 			fp, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+			if err != nil {
+				log.Fatalf("sortbytesfilech %v open %v ", fn, err)
+			}
 			defer fp.Close()
 			nw := bufio.NewWriter(fp)
-			if err != nil {
-				log.Fatal("sortbytesfilech test NewWriter ", err)
-			}
 			for i := range lns {
 				if r == true {
 					_, err = nw.Write([]byte(lns[i] + "\n"))

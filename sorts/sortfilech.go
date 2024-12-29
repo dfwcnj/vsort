@@ -1,14 +1,30 @@
 package sorts
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
 
 	"github.com/dfwcnj/vsort/merge"
 )
+
+// sortbyteѕfilechshim
+// shim to adapt sortbytesfilech to sort[fv]lbytesfilech
+func sortbytesfilechshim(fn, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
+	ofn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, 0)))
+	sortbytesfilech(fn, ofn, stype, reclen, keyoff, keylen, iomem)
+	var fns = make([]string, 1)
+	fns[0] = ofn
+	var r mflst
+	r.mfls = fns
+	r.err = nil
+	res <- r
+}
 
 // sortbytesfilech
 // routine to split a file into pieces to sort concurrently
@@ -22,13 +38,21 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	if err != nil {
 		log.Fatalf("sortbytesfilech open %v: %v", fn, err)
 	}
-	finf, err := fp.Stat()
+	finf, _ := fp.Stat()
 	var fsz = finf.Size()
 
 	// exceeds our iomem limit
 	if fsz > iomem {
-		log.Fatalf("sortbytesfilech file %v too large %v", fn, fsz)
-		// sortbїgbytesfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
+		// log.Fatalf("sortbytesfilech file %v too large %v", fn, fsz)
+		lns, mfns, err := sortbigbytesfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
+		if err != nil && err != io.EOF {
+			log.Fatalf("sortbytesfilech sortbigbytesfilech %v %v", fn, err)
+		}
+		if len(lns) != 0 {
+			log.Fatalf("sortbytesfilech sortbigbytesfilech %v %v lns", fn, len(lns))
+		}
+		merge.Mergebytefiles(ofn, reclen, keyoff, keylen, mfns)
+		return
 	}
 
 	if reclen == 0 {
@@ -39,7 +63,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	} else {
 		lns, offset, err = merge.Flreadbytes(fp, int64(0), reclen, iomem)
 	}
-	if err != nil {
+	if err != nil && err != io.EOF {
 		log.Fatalf("sortbytesfilech read %v: %v %v", fn, offset, err)
 	}
 	var nlns = len(lns)
@@ -79,7 +103,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	for i := range tparts {
 		lns, ok := <-inch
 		tparts[i] = lns
-		if ok == false {
+		if !ok {
 			log.Printf("sortbyteѕfilech tpart %v <- inch %v", i, ok)
 		}
 		ns += len(lns)
@@ -95,6 +119,19 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 	merge.Mergebytesparts(ofn, reclen, keyoff, keylen, tparts)
 }
 
+// sortstringsfilechshim
+// shim to adapt sortstringsfilech to sort[fv]lstringsfilech
+func sortstringsfilechshim(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
+	ofn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, 0)))
+	sortstringsfilech(fn, ofn, stype, reclen, keyoff, keylen, iomem)
+	var fns = make([]string, 1)
+	fns[0] = ofn
+	var r mflst
+	r.mfls = fns
+	r.err = nil
+	res <- r
+}
+
 // sortstringsfilech
 // routine to split a file into pieces to sort concurrently
 func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, iomem int64) {
@@ -106,12 +143,20 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	if err != nil {
 		log.Fatalf("sortstringsfilech open %v: %v", fn, err)
 	}
-	finf, err := fp.Stat()
+	finf, _ := fp.Stat()
 	var fsz = finf.Size()
 
 	if fsz > iomem {
-		log.Fatalf("sortstringsfilech %v too large %v", fn, fsz)
-		// sortbїgstringsfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
+		// log.Fatalf("sortstringsfilech %v too large %v", fn, fsz)
+		lns, mfns, err := sortbigstringsfilech(fn, "", stype, reclen, keyoff, keylen, iomem)
+		if err != nil && err != io.EOF {
+			log.Fatalf("sortstringsfilech sortbigstringsfilech %v %v", fn, err)
+		}
+		if len(lns) != 0 {
+			log.Fatalf("sortstringsfilech sortbigstringsfilech %v %v lns", fn, len(lns))
+		}
+		merge.Mergestringfiles(ofn, reclen, keyoff, keylen, mfns)
+		return
 	}
 
 	if reclen == 0 {
@@ -122,7 +167,7 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	} else {
 		lns, _, err = merge.Flreadstrings(fp, int64(0), reclen, iomem)
 	}
-	if err != nil {
+	if err != nil && err != io.EOF {
 		log.Fatalf("sortstringsfilech read %v: %v", fn, err)
 	}
 	var nlns = len(lns)
@@ -162,7 +207,7 @@ func sortstringsfilech(fn, ofn string, stype string, reclen, keyoff, keylen int,
 	for i := range tparts {
 		lns, ok := <-inch
 		tparts[i] = lns
-		if ok == false {
+		if !ok {
 			log.Printf("sortstringsfilech tpart %v <- inch %v", i, ok)
 		}
 		ns += len(lns)

@@ -1,7 +1,6 @@
 package sorts
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -27,15 +26,13 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 	var mfiles []string
 	//log.Print("Sortstringsfiles ofn  ", ofn)
 
-	var fp *os.File
+	var fp *os.File = os.Stdout
 	if ofn != "" {
 		fp, err = os.OpenFile(ofn, os.O_RDWR|os.O_CREATE, 0600)
 		if err != nil {
 			log.Fatal("Sortstringsfiles open ", err)
 		}
 		defer fp.Close()
-	} else {
-		fp = os.Stdout
 	}
 
 	if len(fns) == 0 {
@@ -72,6 +69,9 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 			if err != nil && err != io.EOF {
 				log.Fatal("Sortstringsfiles after sort ", err)
 			}
+			if len(lns) != 0 {
+				log.Fatalf("Sortstringsfiles sort[fv]lstringsfile %v %v", fn, stype)
+			}
 			if len(mfns) > 0 {
 				mfiles = append(mfiles, mfns...)
 				continue
@@ -79,10 +79,9 @@ func Sortstringsfiles(fns []string, ofn string, dn string, stype string, reclen 
 				log.Fatal("Sortstringsfiles no mergefiles")
 			}
 
-			mfn := fmt.Sprintf("%s", filepath.Base(fn))
+			mfn := filepath.Base(fn)
 			mpath := filepath.Join(dn, mfn)
-			var mf string
-			mf = merge.Savestringmergefile(lns, mpath)
+			mf := merge.Savestringmergefile(lns, mpath)
 			if mf == "" {
 				log.Fatal("Sortstringsfiles Savestringmergefile failed ", mpath)
 			}

@@ -148,7 +148,7 @@ func Sortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen 
 			break
 		}
 		mc, ok := <-rchan
-		if ok == false {
+		if !ok {
 			break
 		}
 		mfiles = append(mfiles, mc.mfls...)
@@ -203,7 +203,7 @@ func Sortstringsfilesch(fns []string, ofn string, dn string, stype string, recle
 			break
 		}
 		mc, ok := <-rchan
-		if ok == false {
+		if !ok {
 			break
 		}
 		mfiles = append(mfiles, mc.mfls...)

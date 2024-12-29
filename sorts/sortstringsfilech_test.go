@@ -19,7 +19,7 @@ func Test_sortstringsfilech(t *testing.T) {
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
-	var nrs int64 = 1 << 20
+	var nrs int64 = 1 << 23
 	var iomem int64 = 1 << 28
 	var stypes []string = make([]string, 4)
 	stypes[0] = "heap"

@@ -52,7 +52,7 @@ func Test_vlreadstrings(t *testing.T) {
 	if err != nil {
 		t.Fatal("flreadstrings test flush ", err)
 	}
-	finf, err := fp.Stat()
+	finf, _ := fp.Stat()
 	log.Printf("vlreadstrings test %v size %v", fn, finf.Size())
 	fp.Close()
 

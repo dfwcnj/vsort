@@ -30,7 +30,7 @@ func kvrsortsl(lns [][]byte, reclen, keyoff, keylen, recix int) [][]byte {
 	}
 
 	// count the number of lines that will fall each pile
-	for i, _ := range lns {
+	for i := range lns {
 		var c int
 		if len(lns[i]) == 0 {
 			log.Fatal("rsortsl 0 length string")
@@ -43,14 +43,14 @@ func kvrsortsl(lns [][]byte, reclen, keyoff, keylen, recix int) [][]byte {
 		sizes[c]++
 	}
 	// preallocate the piles so that they don't have to be resized
-	for i, _ := range sizes {
+	for i := range sizes {
 		if sizes[i] != 0 {
 			piles[i] = make([][]byte, 0, sizes[i])
 		}
 	}
 
 	// deal lines into piles
-	for i, _ := range lns {
+	for i := range lns {
 		var c int
 
 		if len(lns[i]) == 0 {
@@ -71,7 +71,7 @@ func kvrsortsl(lns [][]byte, reclen, keyoff, keylen, recix int) [][]byte {
 	if nc == 1 {
 		return inssort(lns)
 	}
-	for i, _ := range piles {
+	for i := range piles {
 		if len(piles[i]) == 0 {
 			continue
 		}
@@ -90,10 +90,8 @@ func kvrsortsl(lns [][]byte, reclen, keyoff, keylen, recix int) [][]byte {
 
 	// combine the sorted piles
 	var slns [][]byte
-	for i, _ := range piles {
-		for j, _ := range piles[i] {
-			slns = append(slns, piles[i][j])
-		}
+	for i := range piles {
+		slns = append(slns, piles[i]...)
 	}
 	return slns
 }
