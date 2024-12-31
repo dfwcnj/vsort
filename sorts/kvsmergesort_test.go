@@ -4,6 +4,7 @@ import (
 	"log"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 )
@@ -13,7 +14,7 @@ func Test_kvsmergesort(t *testing.T) {
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
 	//ns := []int64{1 << 3, 1 << 16, 1 << 20}
-	ns := []int64{1 << 20}
+	ns := []int64{1 << 23}
 
 	for _, ll := range ls {
 		for _, nl := range ns {
@@ -28,8 +29,11 @@ func Test_kvsmergesort(t *testing.T) {
 			if len(rsl) != int(nl) {
 				t.Fatal("kvsmergesort test rsl: wanted len ", nl, " got ", len(rsl))
 			}
-			log.Print("kvsmergesort sorting")
+
+			t0 := time.Now()
 			slns := kvsmergesort(rsl, reclen, keyoff, keylen)
+			log.Printf("kvsmergesort test duration %v", time.Since(t0))
+
 			if len(slns) != int(nl) {
 				t.Fatal("kvsmergesort test rsl: wanted len ", nl, " got ", len(slns))
 			}

@@ -18,6 +18,8 @@ import (
 // iomem  - size limit for each sort chunk
 func CSortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
 
+	// log.Printf("CSortbytesfilesch ofn %v dn %v", ofn, dn)
+
 	var mfiles []string
 
 	rchan = make(chan mflst, len(fns))
@@ -66,6 +68,8 @@ func CSortbytesfilesch(fns []string, ofn string, dn string, stype string, reclen
 // keylen - length of sort key
 // iomem  - size limit for each sort chunk
 func CSortstringsfilesch(fns []string, ofn string, dn string, stype string, reclen int, keyoff int, keylen int, iomem int64) {
+
+	// log.Printf("CSortstringsfilesch ofn %v dn %v", ofn, dn)
 
 	var mfiles []string
 

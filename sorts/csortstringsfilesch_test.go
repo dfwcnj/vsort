@@ -37,6 +37,7 @@ func Test_csortstringsfilesch(t *testing.T) {
 			if err != nil {
 				log.Fatal("csortstringsfilesch test initmergedir ", err)
 			}
+			// log.Print("csortstringsfilesch test initmergedir ", dn)
 
 			var fns []string
 			var tns int64
@@ -52,6 +53,7 @@ func Test_csortstringsfilesch(t *testing.T) {
 				var fn = filepath.Join(dn, fmt.Sprint("csortstringsfileschtest", i))
 				merge.Savestringmergefile(lns, fn)
 				fns = append(fns, fn)
+				// log.Printf("csortstringsfilesch test saving %v", fn)
 
 				if r == true {
 					tns += filelinecount(fn)
@@ -62,12 +64,13 @@ func Test_csortstringsfilesch(t *testing.T) {
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
+			// log.Printf("csortstringsfilesch test mpath %v ", mpath)
 
 			t0 := time.Now()
 			if r == true {
-				CSortstringsfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
+				CSortstringsfilesch(fns, mpath, dn, st, 0, 0, 0, iomem)
 			} else {
-				CSortstringsfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
+				CSortstringsfilesch(fns, mpath, dn, st, rlen, 0, rlen, iomem)
 			}
 			log.Printf("csortstringsfilesch test %v %v duration %v", st, r, time.Since(t0))
 

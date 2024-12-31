@@ -9,6 +9,7 @@ import (
 	"log"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 )
@@ -18,7 +19,7 @@ func Test_rsort2ba(t *testing.T) {
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
 	//ns := []int64{1 << 3, 1 << 16, 1 << 20}
-	ns := []int64{1 << 20}
+	ns := []int64{1 << 23}
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
@@ -42,7 +43,11 @@ func Test_rsort2ba(t *testing.T) {
 				if len(lns) != int(nl) {
 					log.Fatal("rsort2ba test lns: before rsort2ba wanted len ", nl, " got ", len(lns))
 				}
+
+				t0 := time.Now()
 				rsort2ba(lns)
+				log.Printf("rsort2ba test duration %v", time.Since(t0))
+
 				if len(lns) != int(nl) {
 					log.Fatal("rsort2ba test ulns: after rsort2ba wanted len ", nl, " got ", len(lns))
 				}
@@ -66,7 +71,11 @@ func Test_rsort2ba(t *testing.T) {
 					binary.LittleEndian.PutUint64(ub, u)
 					lns = append(lns, ub)
 				}
+
+				t0 = time.Now()
 				rsort2ba(lns)
+				log.Printf("rsort2ba test duration %v", time.Since(t0))
+
 				if len(lns) != int(nl) {
 					log.Fatal("rsort2ba test ulns: after rsort2ba wanted len ", nl, " got ", len(lns))
 				}

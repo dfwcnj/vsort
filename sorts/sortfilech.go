@@ -17,6 +17,7 @@ import (
 // shim to adapt sortbytesfilech to sort[fv]lbytesfilech
 func sortbytesfilechshim(fn, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
 	ofn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, 0)))
+	// log.Printf("sortbytesfilechshim ofn %v", ofn)
 	sortbytesfilech(fn, ofn, stype, reclen, keyoff, keylen, iomem)
 	var fns = make([]string, 1)
 	fns[0] = ofn
@@ -123,6 +124,7 @@ func sortbytesfilech(fn, ofn string, stype string, reclen, keyoff, keylen int, i
 // shim to adapt sortstringsfilech to sort[fv]lstringsfilech
 func sortstringsfilechshim(fn string, dn string, stype string, reclen, keyoff, keylen int, iomem int64, res chan mflst) {
 	ofn := filepath.Join(dn, filepath.Base(fmt.Sprintf("%s%d", fn, 0)))
+	// log.Printf("sortstringsfilechshim ofn %v", ofn)
 	sortstringsfilech(fn, ofn, stype, reclen, keyoff, keylen, iomem)
 	var fns = make([]string, 1)
 	fns[0] = ofn

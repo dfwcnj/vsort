@@ -4,6 +4,7 @@ import (
 	"log"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 )
@@ -12,7 +13,7 @@ func Test_ginsertionsort(t *testing.T) {
 
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
-	ns := []int64{1 << 16}
+	ns := []int64{1 << 17}
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
@@ -28,7 +29,9 @@ func Test_ginsertionsort(t *testing.T) {
 				if len(rsl) != int(nl) {
 					t.Fatal("ginsertionsort test rsl: wanted len ", nl, " got ", len(rsl))
 				}
+				t0 := time.Now()
 				ginsertionsort(rsl)
+				log.Printf("ginsertionsort test duration %v", time.Since(t0))
 				if !slices.IsSorted(rsl) {
 					t.Fatal("ginsertionsort test failed for size ", nl)
 				} else {

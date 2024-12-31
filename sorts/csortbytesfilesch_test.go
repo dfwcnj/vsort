@@ -37,7 +37,7 @@ func Test_csortbytesfilesch(t *testing.T) {
 			if err != nil {
 				log.Fatal("csortbytesfilesch test initmergedir ", err)
 			}
-			//log.Print("csortbytesfilesch test initmergedir ", dn)
+			// log.Print("csortbytesfilesch test initmergedir ", dn)
 
 			var fns []string
 			var tns int64
@@ -53,11 +53,11 @@ func Test_csortbytesfilesch(t *testing.T) {
 					lns = append(lns, ln)
 				}
 				if len(lns) != int(nrs) {
-					log.Fatal("csortbytesfilesch test before sort wanted len ", nrs, " got ", len(lns))
+					t.Fatal("csortbytesfilesch test before sort wanted len ", nrs, " got ", len(lns))
 				}
 
 				var fn = filepath.Join(dn, fmt.Sprint("csortbytesfileschtest", i))
-				//log.Print("csortbytesfilesch test saving ", fn)
+				// log.Printf("csortbytesfilesch test saving %v", fn)
 				merge.Savebytemergefile(lns, fn)
 				fns = append(fns, fn)
 				if r == true {
@@ -71,18 +71,19 @@ func Test_csortbytesfilesch(t *testing.T) {
 
 			mfn := "mergeout.txt"
 			mpath := filepath.Join(dn, mfn)
+			// log.Printf("csortbytesfilesch test mpath %v ", mpath)
 
 			t0 := time.Now()
 			if r == true {
-				CSortbytesfilesch(fns, mpath, "", st, 0, 0, 0, iomem)
+				CSortbytesfilesch(fns, mpath, dn, st, 0, 0, 0, iomem)
 			} else {
-				CSortbytesfilesch(fns, mpath, "", st, rlen, 0, rlen, iomem)
+				CSortbytesfilesch(fns, mpath, dn, st, rlen, 0, rlen, iomem)
 			}
 			log.Printf("csortbytesfilesch test %v %v  duration %v", st, r, time.Since(t0))
 
 			mfp, err := os.Open(mpath)
 			if err != nil {
-				log.Fatal("csortbytesfilesch test ", err)
+				t.Fatal("csortbytesfilesch test ", err)
 			}
 			defer mfp.Close()
 
@@ -104,7 +105,7 @@ func Test_csortbytesfilesch(t *testing.T) {
 						if err == io.EOF {
 							break
 						}
-						log.Fatal("csortbytesfilesch test  readfull ", err)
+						t.Fatal("csortbytesfilesch test  readfull ", err)
 					}
 					mlns = append(mlns, string(ln))
 				}

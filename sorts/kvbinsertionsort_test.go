@@ -4,6 +4,7 @@ import (
 	"log"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 )
@@ -13,7 +14,7 @@ func Test_kvbinsertionsort(t *testing.T) {
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
 	//ns := []int64{1 << 3, 1 << 16, 1 << 20}
-	ns := []int64{1 << 16}
+	ns := []int64{1 << 17}
 
 	for _, ll := range ls {
 		for _, nl := range ns {
@@ -32,7 +33,11 @@ func Test_kvbinsertionsort(t *testing.T) {
 			for _, s := range rsl {
 				lns = append(lns, []byte(s))
 			}
+
+			t0 := time.Now()
 			kvbinsertionsort(lns, reclen, keyoff, keylen)
+			log.Printf("kvbinsertionsort test duration %v", time.Since(t0))
+
 			ssl := make([]string, 0, nl)
 			for _, bs := range lns {
 				ssl = append(ssl, string(bs))

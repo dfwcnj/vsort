@@ -51,7 +51,7 @@ func Test_vlreadbytes(t *testing.T) {
 		t.Fatal("vlreadbytes test flush ", err)
 	}
 	finf, _ := fp.Stat()
-	log.Printf("vlreadbytes test %v size %v", fn, finf.Size())
+	// log.Printf("vlreadbytes test %v size %v", fn, finf.Size())
 	fp.Close()
 
 	var offset int64

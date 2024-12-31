@@ -4,6 +4,7 @@ import (
 	"log"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/dfwcnj/randomdata"
 )
@@ -13,7 +14,7 @@ func Test_rsort2sa(t *testing.T) {
 	//ls := []int{1 << 3, 1 << 4, 1 << 5, 1 << 6}
 	ls := []int{1 << 5}
 	//ns := []int64{1 << 3, 1 << 16, 1 << 20}
-	ns := []int64{1 << 20}
+	ns := []int64{1 << 23}
 	var bools []bool = make([]bool, 2)
 	bools[0] = false
 	bools[1] = true
@@ -32,7 +33,11 @@ func Test_rsort2sa(t *testing.T) {
 				if len(lns) != int(nl) {
 					log.Fatal("rsort2sa test lns: before rsort2sa wanted len ", nl, " got ", len(lns))
 				}
+
+				t0 := time.Now()
 				rsort2sa(lns, 0, 0, 0)
+				log.Printf("rsort2sa test duration %v", time.Since(t0))
+
 				if len(lns) != int(nl) {
 					log.Fatal("rsort2sa test ulns: after rsort2sa wanted len ", nl, " got ", len(lns))
 				}

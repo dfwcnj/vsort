@@ -53,7 +53,7 @@ func Test_vlreadstrings(t *testing.T) {
 		t.Fatal("flreadstrings test flush ", err)
 	}
 	finf, _ := fp.Stat()
-	log.Printf("vlreadstrings test %v size %v", fn, finf.Size())
+	// log.Printf("vlreadstrings test %v size %v", fn, finf.Size())
 	fp.Close()
 
 	var offset int64
